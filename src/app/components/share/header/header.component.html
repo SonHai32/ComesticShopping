@@ -1,0 +1,39 @@
+<div class="row base-background py-4 top-header position-sticky sticky-top">
+  <div class="col-md-2 col-xs-12  d-flex align-items-center flex-row">
+    <h1 class="text-danger text-center">Logo</h1>
+  </div>
+  <div class="col-md-6 col-xs-12">
+<ul class="navbar-nav flex-row justify-content-center align-items-center h-100 ">
+      <li class="nav-item mx-3" *ngFor="let item of navItems">
+          <a class="nav-link  text-dark" routerLink=[item.path]> {{item.name}}</a>
+      </li>
+    </ul>
+  </div>
+  <div class=" col-xs-12 col-md-3 d-flex flex-row  align-items-center justify-content-center">
+        <div class="user mx-2 py-3 px-4 pointer icon-item">
+          <i-feather name="user" class="mr-2" ></i-feather>
+          <span class="none-select">Tài khoản</span>
+          <div class="dropdown-item">
+          </div>
+        </div>
+        <div class="cart mx-2 py-3 px-4 pointer icon-item">
+          <i-feather name="shopping-cart" class="mx-2"></i-feather>
+          <span class="none-select">Giỏ hàng</span>
+          <div class="dropdown-item">
+            <p> aaaaa</p>
+
+            <p> aaaaa</p>
+
+            <p> aaaaa</p>
+
+            <p> aaaaa</p>
+
+            <p> aaaaa</p>
+
+          </div>
+        </div>
+  </div>
+
+</div>
+
+

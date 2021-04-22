@@ -1,1 +1,30 @@
 /* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@200&display=swap');
+*{
+  font-family: 'Source Sans Pro', sans-serif;
+  font-style: normal;
+}
+// globl-color
+$color-1: #f8dae6;
+$color-2: #FFD4E6;
+$color-3: #4B3761;
+
+.none-select{
+  user-select: none;
+}
+.head-text-color{
+    color: $color-3;
+    :hover{
+        font-weight: bold;
+    }
+}
+
+.base-background{
+  background-color: $color-1 !important;
+}
+
+.pointer{
+  cursor: pointer;
+}
+
+
