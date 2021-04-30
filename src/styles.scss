@@ -4,11 +4,14 @@
   font-family: 'Source Sans Pro', sans-serif;
   font-style: normal;
 }
+a{
+  text-decoration: none !important;
+}
 // globl-color
 $color-1: #f8dae6;
 $color-2: #FFD4E6;
 $color-3: #4B3761;
-
+$color-4: #F36CA8;
 .none-select{
   user-select: none;
 }
@@ -26,5 +29,4 @@ $color-3: #4B3761;
 .pointer{
   cursor: pointer;
 }
-
 

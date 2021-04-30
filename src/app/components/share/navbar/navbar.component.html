@@ -1,1 +1,47 @@
-<p>navbar works!</p>
+
+<div class="container-fluid ">
+<div class="row nav-container justify-content-center">
+<nav class="navbar col-md-8 navbar-expand-lg ">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <i nz-icon nzType="menu" nzTheme="outline"></i>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div nz-row
+    class="w-100 "
+
+>
+<div class="" nz-col nzSpan="24">
+  <ul class="d-flex justify-content-center nav-menu" nz-menu nzMode="horizontal" >
+    <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"></ng-container>
+    <ng-template #menuTpl let-menus>
+      <ng-container *ngFor="let menu of menus">
+        <li
+          *ngIf="!menu.children"
+          nz-menu-item
+        >
+          <i nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></i>
+          <a routerLink='#'>{{ menu.title | uppercase}}</a>
+        </li>
+        <li
+          *ngIf="menu.children"
+          nz-submenu
+          [nzOpen]="menu.open"
+          [nzTitle]="menu.title | uppercase"
+        >
+          <ul>
+            <ng-container *ngTemplateOutlet="menuTpl; context: { $implicit: menu.children }"></ng-container>
+          </ul>
+        </li>
+      </ng-container>
+    </ng-template>
+  </ul>
+</div>
+</div>
+
+  </div>
+</nav>
+</div>
+</div>
+
+
