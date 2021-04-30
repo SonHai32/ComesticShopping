@@ -7,8 +7,9 @@ import { config } from 'rxjs';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  data = [1, 2, 3, 4, 4, 5, 5, 5, 5, 51,32,3,3,3,33,3,3,3,3,3,];
+  data = [1,1,1,1,1,1,1,1,1,1,1,1];
   page =Math.floor( this.data.length / 12) + 1 * 10;
+  array = [1, 2, 3, 4];
   change(evt: any){
     console.log(evt)
   }

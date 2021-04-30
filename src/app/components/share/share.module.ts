@@ -12,6 +12,8 @@ import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { BannerComponent } from './banner/banner.component';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { IconModule } from './../icon/icon.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -49,6 +51,8 @@ import {RouterModule} from '@angular/router'
     NzPaginationModule,
     NzPageHeaderModule,
     NzCarouselModule,
+    NzSpaceModule,
+    NzDividerModule,
   ],
   exports: [
     HeaderComponent,
