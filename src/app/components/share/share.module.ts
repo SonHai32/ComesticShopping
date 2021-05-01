@@ -15,6 +15,7 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { IconModule } from './../icon/icon.module';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {HeaderComponent} from './header/header.component';
@@ -53,6 +54,7 @@ import {RouterModule} from '@angular/router'
     NzCarouselModule,
     NzSpaceModule,
     NzDividerModule,
+    CarouselModule,
   ],
   exports: [
     HeaderComponent,

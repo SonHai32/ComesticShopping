@@ -1,81 +1,126 @@
-  <!-- start-top-product -->
-  <ng-container
-    *ngTemplateOutlet="productTemplate; context: { productData: data, title: 'Top sản phẩm bán chạy'}"
+<div nz-row nzJustify="center">
+  <div
+    nz-col
+    nzXXl="16"
+    nzXl="18"
+    nzLg="20"
+    nzMd="22"
+    nzXs="24"
+    class="product-item-card"
   >
-  </ng-container>
-  <!-- end-top-product -->
-  <ng-container
-    *ngTemplateOutlet="productTemplate; context: { productData: data, title: 'Sản phẩm mới'}"
+    <ng-container
+      *ngTemplateOutlet="
+        productItemsCarousel;
+        context: { productData: data, title: 'Best seller' }
+      "
+    >
+    </ng-container>
+  </div>
+
+  <!-- start-product-item-carousel -->
+  <ng-template
+    #productItemsCarousel
+    let-productData="productData"
+    let-title="title"
   >
-  </ng-container>
-
-
-
-<ng-template #productTemplate let-productData="productData" let-title="title">
-  <div nz-row nzJustify="center" class="w-100">
-    <div nz-col nzXXl="16" nzXl="18" nzLg="20" nzMd="22" nzXs="23">
-      <nz-page-header class="site-page-header" nzTitle="{{title}}">
-        <nz-page-header-content>
-          <div nz-row nzJustify="center" [nzGutter]="[{ xs: 8, sm: 16, md: 24, lg: 32 }, 24]">
-            <div
-              *ngFor="let item of productData"
-              nz-col
-              nzXXl="6"
-              nzMd="8"
-              nzXs="12"
-              nzSm="14"
-              nzXs="20"
-              class="gutter-row"
-            >
-              <div class="inner-box">
-                <nz-card
-                  nzHoverable
-                  [nzLoading]="true"
-                  [nzActions]="[actionAddToCart, actionBuyNow]"
-                >
-                  <nz-card-meta
-                    nzTitle="Card title"
-                    nzDescription="This is the description"
-                  ></nz-card-meta>
-                </nz-card>
-                <ng-template #actionAddToCart>
-                  <em
-                    nz-icon
-                    nzTooltipTitle="Thêm vào giỏ hàng"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    nzTooltipColor="cyan"
-                    nzType="shopping-cart"
-                    nzTheme="outline"
-                  ></em>
-                </ng-template>
-                <ng-template #actionBuyNow>
-                  <em
-                    nzTooltipTitle="Mua ngay"
-                    nzTooltipPlacement="top"
-                    nz-tooltip
-                    nzTooltipColor="cyan"
-                    nz-icon
-                    nzType="dollar"
-                    nzTheme="outline"
-                  ></em>
-                </ng-template>
-              </div>
+    <nz-page-header class="site-page-header" nzTitle="{{ title }}">
+      <nz-page-header-content>
+        <owl-carousel-o [options]="customOptions">
+          <ng-template *ngFor="let item of productData" carouselSlide>
+            <div class="item-carousel p-4">
+              <ng-container *ngTemplateOutlet="productCardItem"> </ng-container>
             </div>
+          </ng-template>
+        </owl-carousel-o>
+      </nz-page-header-content>
+    </nz-page-header>
+  </ng-template>
+  <!-- end-product-item-carousel -->
+  <!-- start-product-template -->
+  <ng-template #productTemplate let-productData="productData" let-title="title">
+    <nz-page-header class="site-page-header" nzTitle="{{ title }}">
+      <nz-page-header-content>
+        <div
+          nz-row
+          nzJustify="center"
+          [nzGutter]="[{ xs: 8, sm: 16, md: 24, lg: 32 }, 24]"
+        >
+          <div
+            *ngFor="let item of productData"
+            nz-col
+            nzXXl="6"
+            nzMd="8"
+            nzXs="12"
+            nzSm="14"
+            nzXs="20"
+            class="gutter-row"
+          >
+            <ng-container *ngTemplateOutlet="productCardItem"></ng-container>
           </div>
-        </nz-page-header-content>
-      </nz-page-header>
+        </div>
+      </nz-page-header-content>
+    </nz-page-header>
+    <div class="py-3 mt-3" nzAlign="middle" nz-row nzJustify="center">
+      <div class="d-flex justify-content-center" nz-col nzSpan="16">
+        <nz-pagination
+          (nzPageIndexChange)="change($event)"
+          [nzPageIndex]="1"
+          nzTotal="{{ data.length }}"
+          nzPageSize="12"
+        ></nz-pagination>
+      </div>
     </div>
-  </div>
- <div class="py-3 mt-3" nzAlign="middle" nz-row nzJustify="center">
-    <div class="d-flex justify-content-center" nz-col nzSpan="16">
-      <nz-pagination
-        (nzPageIndexChange)="change($event)"
-        [nzPageIndex]="1"
-        nzTotal="{{ data.length }}"
-        nzPageSize="12"
-      ></nz-pagination>
-    </div>
-  </div>
+  </ng-template>
 
-</ng-template>
+  <!-- end-product-template -->
+
+  <!-- start-product-card-item-template -->
+
+  <ng-template #productCardItem>
+    <nz-card
+      nzHoverable
+      [nzLoading]="false"
+      [nzActions]="[actionAddToCart, actionBuyNow]"
+    >
+      <img
+        class="img-fluid"
+        alt="example"
+        src="https://adminbeauty.hvnet.vn/Upload/Files/bong-tay-trang-ipek-cotton-pads-120-mieng-beauty-garden-1.jpg?width=350&height=391&v=15042020"
+      />
+      <nz-card-meta
+        nzTitle="Card title"
+        nzDescription="This is the description"
+      ></nz-card-meta>
+    </nz-card>
+    <ng-template #actionAddToCart>
+      <em
+        nz-icon
+        nzTooltipTitle="Thêm vào giỏ hàng"
+        nzTooltipPlacement="top"
+        nz-tooltip
+        nzTooltipColor="cyan"
+        nzType="shopping-cart"
+        nzTheme="outline"
+      ></em>
+    </ng-template>
+    <ng-template #actionBuyNow>
+      <em
+        nzTooltipTitle="Mua ngay"
+        nzTooltipPlacement="top"
+        nz-tooltip
+        nzTooltipColor="cyan"
+        nz-icon
+        nzType="dollar"
+        nzTheme="outline"
+      ></em>
+    </ng-template>
+    <ng-template #productCardImageTemplate>
+      <img
+        alt="example"
+        src="https://adminbeauty.hvnet.vn/Upload/Files/bong-tay-trang-ipek-cotton-pads-120-mieng-beauty-garden-1.jpg?width=350&height=391&v=15042020"
+      />
+    </ng-template>
+  </ng-template>
+
+  <!-- end-product-card-item-template -->
+</div>
