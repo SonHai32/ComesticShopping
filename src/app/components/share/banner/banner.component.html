@@ -1,26 +1,34 @@
-<div class="container-fluid">
-
-<div class="row base-background vh-100 ">
-    <div id="carouselExampleIndicators" class="carousel slide col-12" data-ride="carousel">
+<div class="base-background" nz-row nzJustify="center">
+  <div nz-col nzSpan="24">
+    <div
+      id="carouselExampleIndicators"
+      class="carousel slide col-12"
+      data-ride="carousel"
+    >
       <div class="carousel-inner">
-        <div *ngFor="let item of banners; index as idx"  class="carousel-item {{idx == 0 ? 'active' : ''}}">
-          <img src={{item.bannerImageUrl}} class="img-fluid w=100" alt="...">
-          <div class="banner-content pb-5">
-            <h1 class="banner-content-title">
-              {{item.bannerTitle}}
-            </h1>
-            <h6 nz-typography nzType="secondary">{{item.bannerContent}}</h6>
-            <button class="mt-3" nzType="primary" nzSize="large" nzShape="round" nz-button >Chi tiết chương trình</button>
+        <div
+          *ngFor="let item of banners; index as idx"
+          class="carousel-item {{ idx == 0 ? 'active' : '' }}"
+        >
+        <img src="{{item.bannerImageUrl}}" class="d-block w-100" alt="...">
           </div>
         </div>
       </div>
-      <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <a
+        class="carousel-control-prev"
+        href="#carouselExampleIndicators"
+        role="button"
+        data-slide="prev"
+      >
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       </a>
-      <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <a
+        class="carousel-control-next"
+        href="#carouselExampleIndicators"
+        role="button"
+        data-slide="next"
+      >
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
       </a>
     </div>
-
-</div>
-</div>
+  </div>
