@@ -1,41 +1,51 @@
-<div class="container-fluid fixed-top">
-<div class="row base-background py-4  ">
-  <div class="col-md-2 col-xs-12  d-flex align-items-center justify-content-center flex-row">
-    <h1 class="text-danger text-center">Logo</h1>
-  </div>
-  <div class="col-md-6 col-xs-12">
-  <ul class="navbar-nav flex-row justify-content-center align-items-center h-100 ">
-      <li class="nav-item mx-3" *ngFor="let item of navItems">
-          <a class="nav-link  text-dark" routerLink=[item.path]> {{item.name}}</a>
-      </li>
-    </ul>
-  </div>
-  <div class=" col-xs-12 col-md-3 d-flex flex-row  align-items-center justify-content-center">
-        <div class="user mx-2 py-3 px-4 pointer icon-item d-flex align-items-center">
-          <i nz-icon nzType="user" nzTheme="outline"></i>
-          <span class="none-select mx-2">Tài khoản</span>
+<nz-affix>
 
-          <div class="dropdown-item">
-          </div>
+<div class="container-fluid">
+  <div class="row base-background py-4">
+    <div
+      class="col-md-2 col-xs-12 d-flex align-items-center justify-content-center flex-row"
+    >
+      <h1 class="text-danger text-center">Logo</h1>
+    </div>
+    <div class="col-md-6 col-xs-12">
+      <ul
+        class="navbar-nav flex-row justify-content-center align-items-center h-100"
+      >
+        <li class="nav-item mx-3" *ngFor="let item of navItems">
+          <a class="nav-link text-dark" routerLink="[item.path]">
+            {{ item.name }}</a
+          >
+        </li>
+      </ul>
+    </div>
+    <div
+      class="col-xs-12 col-md-3 d-flex flex-row align-items-center justify-content-center"
+    >
+      <div
+        class="user mx-2 py-3 px-4 pointer icon-item d-flex align-items-center"
+      >
+        <i nz-icon nzType="user" nzTheme="outline"></i>
+        <span class="none-select mx-2">Tài khoản</span>
+
+        <div class="dropdown-item"></div>
+      </div>
+      <div
+        class="cart mx-2 py-3 px-4 pointer icon-item d-flex align-items-center"
+      >
+        <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
+        <span class="none-select mx-2">Giỏ hàng</span>
+        <div class="dropdown-item">
+          <p>aaaaa</p>
+
+          <p>aaaaa</p>
+
+          <p>aaaaa</p>
+
+          <p>aaaaa</p>
         </div>
-        <div class="cart mx-2 py-3 px-4 pointer icon-item d-flex align-items-center">
-          <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
-          <span class="none-select mx-2">Giỏ hàng</span>
-          <div class="dropdown-item">
-            <p> aaaaa</p>
-
-            <p> aaaaa</p>
-
-            <p> aaaaa</p>
-
-            <p> aaaaa</p>
-
-          </div>
-        </div>
+      </div>
+    </div>
   </div>
-
 </div>
 
-
-
-</div>
+</nz-affix>
