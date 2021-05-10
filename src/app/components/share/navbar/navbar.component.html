@@ -1,57 +1,68 @@
-  <div nz-row nzJustify="center" nzAlign="middle">
-<nav nz-col nzXXl="16" nzXl="18" nzLg="20" nzMd="22" nzXs="24" class="navbar navbar-expand-lg">
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <em nz-icon nzType="menu" nzTheme="outline"></em>
-      </button>
+<div nz-row nzJustify="center" nzAlign="middle">
+  <nav
+    nz-col
+    nzXXl="16"
+    nzXl="18"
+    nzLg="20"
+    nzMd="22"
+    nzXs="24"
+    class="navbar navbar-expand-lg"
+  >
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <em nz-icon nzType="menu" nzTheme="outline"></em>
+    </button>
 
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <div nz-row class="bg-success w-100"  nzJustify="center">
-          <div  nz-col nzSpan="24">
-            <ul
-
-              class="d-flex justify-content-center nav-menu "
-              nz-menu
-              nzMode="horizontal"
-               nzTheme="light"
-            >
-              <ng-container
-                *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"
-              ></ng-container>
-              <ng-template #menuTpl let-menus>
-                <ng-container *ngFor="let menu of menus">
-                  <li *ngIf="!menu.children" nz-menu-item>
-                    <em nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></em>
-                    <a routerLink="#">{{ menu.title}}</a>
-                  </li>
-                  <li
-                    *ngIf="menu.children"
-                    nz-submenu
-                    [nzOpen]="menu.open"
-                    [nzTitle]="menu.title"
-                  >
-                    <ul>
-                      <ng-container
-                        *ngTemplateOutlet="
-                          menuTpl;
-                          context: { $implicit: menu.children }
-                        "
-                      ></ng-container>
-                    </ul>
-                  </li>
-                </ng-container>
-              </ng-template>
-            </ul>
-          </div>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <div nz-row class="bg-success w-100" nzJustify="center">
+        <div nz-col nzSpan="24">
+          <ul
+            class="d-flex justify-content-center nav-menu"
+            nz-menu
+            nzMode="inline"
+            nzTheme="light"
+          >
+            <ng-container
+              *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"
+            ></ng-container>
+            <ng-template #menuTpl let-menus>
+              <ng-container *ngFor="let menu of menus">
+                <li
+                  *ngIf="!menu.children"
+                  nz-menu-item
+                  [nzPaddingLeft]="menu.level * 24"
+                >
+                  <em nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></em>
+                  <a routerLink="#">{{ menu.title }}</a>
+                </li>
+                <li
+                  [nzPaddingLeft]="menu.level * 24"
+                  *ngIf="menu.children"
+                  nz-submenu
+                  [nzOpen]="menu.open"
+                  [nzTitle]="menu.title"
+                >
+                  <ul>
+                    <ng-container
+                      *ngTemplateOutlet="
+                        menuTpl;
+                        context: { $implicit: menu.children }
+                      "
+                    ></ng-container>
+                  </ul>
+                </li>
+              </ng-container>
+            </ng-template>
+          </ul>
         </div>
       </div>
-    </nav>
-  </div>
-
+    </div>
+  </nav>
+</div>

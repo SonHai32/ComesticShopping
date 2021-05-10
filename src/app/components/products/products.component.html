@@ -15,9 +15,16 @@
       "
     >
     </ng-container>
+  <ng-container
+      *ngTemplateOutlet="
+        productItemsCarousel;
+        context: { productData: data, title: 'Top 20' }
+      "
+    >
+    </ng-container>
   </div>
 
-  <!-- start-product-item-carousel -->
+  <!-- start-product-item-carousel-template -->
   <ng-template
     #productItemsCarousel
     let-productData="productData"
@@ -25,6 +32,7 @@
   >
     <nz-page-header class="site-page-header" nzTitle="{{ title }}">
       <nz-page-header-content>
+      <nz-divider nzType="horizontal"></nz-divider>
         <owl-carousel-o [options]="customOptions">
           <ng-template *ngFor="let item of productData" carouselSlide>
             <div class="item-carousel p-4">
@@ -35,7 +43,9 @@
       </nz-page-header-content>
     </nz-page-header>
   </ng-template>
-  <!-- end-product-item-carousel -->
+  <!-- end-product-item-carousel-template -->
+
+
   <!-- start-product-template -->
   <ng-template #productTemplate let-productData="productData" let-title="title">
     <nz-page-header class="site-page-header" nzTitle="{{ title }}">
@@ -116,6 +126,7 @@
     </ng-template>
     <ng-template #productCardImageTemplate>
       <img
+      class="img-fluid"
         alt="example"
         src="https://adminbeauty.hvnet.vn/Upload/Files/bong-tay-trang-ipek-cotton-pads-120-mieng-beauty-garden-1.jpg?width=350&height=391&v=15042020"
       />

@@ -1,3 +1,4 @@
+import { ProductDetailComponent } from './../product-detail/product-detail.component';
 import { ProductsComponent } from './../products/products.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -18,6 +19,10 @@ import { IconModule } from './../icon/icon.module';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {HeaderComponent} from './header/header.component';
@@ -25,6 +30,7 @@ import {FooterComponent} from './footer/footer.component'
 import {NavbarComponent} from './navbar/navbar.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {RouterModule} from '@angular/router'
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -35,7 +41,8 @@ import {RouterModule} from '@angular/router'
     FooterComponent,
     NavbarComponent,
     BannerComponent,
-    ProductsComponent
+    ProductsComponent,
+    ProductDetailComponent
   ],
   imports: [
     CommonModule,
@@ -59,13 +66,19 @@ import {RouterModule} from '@angular/router'
     CarouselModule,
     NzImageModule,
     NzAffixModule,
+    NzListModule,
+    NzInputModule,
+    NzRateModule,
+    FormsModule,
+    NzBadgeModule
   ],
   exports: [
     HeaderComponent,
     FooterComponent,
     NavbarComponent,
     BannerComponent,
-    ProductsComponent
+    ProductsComponent,
+    ProductDetailComponent
   ]
 
 })
