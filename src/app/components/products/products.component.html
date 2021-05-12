@@ -11,14 +11,18 @@
     <ng-container
       *ngTemplateOutlet="
         productItemsCarousel;
-        context: { productData: data, title: 'Best seller' }
+        context: { listProducts: productData, title: 'Best seller' }
       "
     >
     </ng-container>
-  <ng-container
+    <ng-container
+      *ngTemplateOutlet="productTemplate; context: { listProducts: productData, title: 'Best seller' }"
+    >
+    </ng-container>
+    <ng-container
       *ngTemplateOutlet="
         productItemsCarousel;
-        context: { productData: data, title: 'Top 20' }
+        context: { listProducts: productData, title: 'Top 20' }
       "
     >
     </ng-container>
@@ -27,16 +31,19 @@
   <!-- start-product-item-carousel-template -->
   <ng-template
     #productItemsCarousel
-    let-productData="productData"
+    let-listProducts="listProducts"
     let-title="title"
   >
     <nz-page-header class="site-page-header" nzTitle="{{ title }}">
       <nz-page-header-content>
-      <nz-divider nzType="horizontal"></nz-divider>
+        <nz-divider nzType="horizontal"></nz-divider>
         <owl-carousel-o [options]="customOptions">
-          <ng-template *ngFor="let item of productData" carouselSlide>
+          <ng-template *ngFor="let item of listProducts" carouselSlide>
             <div class="item-carousel p-4">
-              <ng-container *ngTemplateOutlet="productCardItem"> </ng-container>
+              <ng-container
+                *ngTemplateOutlet="productCardItem; context: { product: item }"
+              >
+              </ng-container>
             </div>
           </ng-template>
         </owl-carousel-o>
@@ -45,9 +52,12 @@
   </ng-template>
   <!-- end-product-item-carousel-template -->
 
-
   <!-- start-product-template -->
-  <ng-template #productTemplate let-productData="productData" let-title="title">
+  <ng-template
+    #productTemplate
+    let-listProducts="listProducts"
+    let-title="title"
+  >
     <nz-page-header class="site-page-header" nzTitle="{{ title }}">
       <nz-page-header-content>
         <div
@@ -56,7 +66,7 @@
           [nzGutter]="[{ xs: 8, sm: 16, md: 24, lg: 32 }, 24]"
         >
           <div
-            *ngFor="let item of productData"
+            *ngFor="let item of listProducts"
             nz-col
             nzXXl="6"
             nzMd="8"
@@ -65,7 +75,9 @@
             nzXs="20"
             class="gutter-row"
           >
-            <ng-container *ngTemplateOutlet="productCardItem"></ng-container>
+            <ng-container
+              *ngTemplateOutlet="productCardItem; context: { product: item }"
+            ></ng-container>
           </div>
         </div>
       </nz-page-header-content>
@@ -74,9 +86,9 @@
       <div class="d-flex justify-content-center" nz-col nzSpan="16">
         <nz-pagination
           (nzPageIndexChange)="change($event)"
-          [nzPageIndex]="1"
-          nzTotal="{{ data.length }}"
-          nzPageSize="12"
+          [nzPageIndex]="page + 1"
+          nzTotal="{{ total_result }}"
+          nzPageSize="{{ entries_per_page }}"
         ></nz-pagination>
       </div>
     </div>
@@ -86,20 +98,27 @@
 
   <!-- start-product-card-item-template -->
 
-  <ng-template #productCardItem>
+  <ng-template #productCardItem let-product="product">
     <nz-card
+      routerLink="product-detail"
       nzHoverable
       [nzLoading]="false"
       [nzActions]="[actionAddToCart, actionBuyNow]"
     >
-      <img
-        class="img-fluid"
-        alt="example"
-        src="https://adminbeauty.hvnet.vn/Upload/Files/bong-tay-trang-ipek-cotton-pads-120-mieng-beauty-garden-1.jpg?width=350&height=391&v=15042020"
-      />
+     <img
+
+      nz-image
+      width="230px"
+      height="230px"
+      nzSrc="{{ product.product_img_urls[0] }}"
+      nzDisablePreview
+      alt=""
+    />
+
       <nz-card-meta
-        nzTitle="Card title"
-        nzDescription="This is the description"
+
+        nzTitle="{{ product.product_name }}"
+        nzDescription="{{ product.product_price }}"
       ></nz-card-meta>
     </nz-card>
     <ng-template #actionAddToCart>
@@ -126,7 +145,7 @@
     </ng-template>
     <ng-template #productCardImageTemplate>
       <img
-      class="img-fluid"
+        class="img-fluid"
         alt="example"
         src="https://adminbeauty.hvnet.vn/Upload/Files/bong-tay-trang-ipek-cotton-pads-120-mieng-beauty-garden-1.jpg?width=350&height=391&v=15042020"
       />

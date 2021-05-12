@@ -1,3 +1,5 @@
+import { ProductService } from './../../services/product.service';
+import { Product } from './../../models/product.model';
 import { Component, OnInit } from '@angular/core';
 import { config } from 'rxjs';
 import { OwlOptions } from 'ngx-owl-carousel-o';
@@ -8,6 +10,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
+  productData:  Product[] = []
 
   customOptions: OwlOptions = {
     loop: true,
@@ -45,15 +48,24 @@ export class ProductsComponent implements OnInit {
     nav: true
   }
 
-  data = [1,1,1,1,1,1,1,1,1,1,1,1];
-  page =Math.floor( this.data.length / 12) + 1 * 10;
-  array = [1, 2, 3, 4];
+  page = 0
+  total_result = 0
+  entries_per_page=12
+  array = [1, 2, 3, 4]
   change(evt: any){
     console.log(evt)
   }
-  constructor() {}
+  constructor(private prod: ProductService) {}
 
   ngOnInit(): void {
-    console.log(this.page)
+    this.getAll()
+  }
+  getAll(){
+    this.prod.getAllProduct().subscribe((data: any) =>{
+      this.productData = data['products']
+      this.page = data['page']
+      this.entries_per_page = data['entries_per_page']
+      this.total_result = data['total_result']
+    })
   }
 }
