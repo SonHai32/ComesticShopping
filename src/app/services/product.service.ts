@@ -9,18 +9,18 @@ import { Observable } from 'rxjs';
 export class ProductService {
 
   httpOptions = {
-    heades: new HttpHeaders({'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' })
+    headers: new HttpHeaders({'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' })
   }
   apiURI = 'http://localhost:5000/api/products'
   constructor(private http:HttpClient) { }
 
   getProducts(filter: any): Observable<Product[]>{
-      return this.http.get<Product[]>(this.apiURI).pipe();
+      return this.http.get<Product[]>(this.apiURI, this.httpOptions).pipe();
 
   }
 
   searchProducts(filter: any): Observable<Product[]>{
-      return this.http.get<Product[]>(`${this.apiURI}${filter['product_id']?'?id=' + filter['product_id']: ''}`).pipe();
+      return this.http.get<Product[]>(`${this.apiURI}${filter['product_id']?'?id=' + filter['product_id']: '', this.httpOptions}`).pipe();
 
   }
 
