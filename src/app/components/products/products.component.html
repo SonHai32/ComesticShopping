@@ -105,8 +105,9 @@
       [nzLoading]="false"
       [nzActions]="[actionAddToCart, actionBuyNow]"
     >
-     <img
+    <div class="card-content w-100" style="height: 300px;">
 
+     <img
       nz-image
       width="230px"
       height="230px"
@@ -114,13 +115,17 @@
       nzDisablePreview
       alt=""
     />
+    <nz-space nzDirection="vertical" nzSize="large">
+      <span *nzSpaceItem nz-typography><strong>{{product.product_name}}</strong></span>
+      <div *nzSpaceItem class="w-100 d-flex align-items-center">
+        <h5 class="mr-4" nz-typography nzType="success">{{product.product_price}}</h5>
+        <h6 nz-typography nzType="secondary"><del>{{product.product_old_price}}</del></h6>
+      </div>
+    </nz-space>
 
-      <nz-card-meta
-
-        nzTitle="{{ product.product_name }}"
-        nzDescription="{{ product.product_price }}"
-      ></nz-card-meta>
+    </div>
     </nz-card>
+
     <ng-template #actionAddToCart>
       <em
         nz-icon
