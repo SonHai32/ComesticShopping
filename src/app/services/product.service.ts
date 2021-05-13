@@ -14,7 +14,8 @@ export class ProductService {
   apiURI = 'http://localhost:5000/api/products'
   constructor(private http:HttpClient) { }
 
-  getAllProduct(): Observable<Product[]>{
-    return this.http.get<Product[]>(this.apiURI).pipe();
+  getProducts(filter: any): Observable<Product[]>{
+      return this.http.get<Product[]>(`${this.apiURI}${filter['product_id'] ? '?id=' + filter['product_id'] : ''}`).pipe();
   }
+
 }

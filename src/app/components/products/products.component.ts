@@ -61,7 +61,7 @@ export class ProductsComponent implements OnInit {
     this.getAll()
   }
   getAll(){
-    this.prod.getAllProduct().subscribe((data: any) =>{
+    this.prod.getProducts(null).subscribe((data: any) =>{
       this.productData = data['products']
       this.page = data['page']
       this.entries_per_page = data['entries_per_page']

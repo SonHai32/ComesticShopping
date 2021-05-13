@@ -15,7 +15,7 @@
                 nz-image
                 width="300px"
                 height="300px"
-                nzSrc="https://adminbeauty.hvnet.vn/Upload/Files/q1-11122018104905.jpg"
+                nzSrc="{{product.product_img_urls[selectImageIndex]}}"
                 alt=""
                 nzZoom
               />
@@ -28,38 +28,14 @@
             <div class="image-list-container  d-flex align-items-center justify-content-between">
 
                 <img
+                  *ngFor="let item of product.product_img_urls; index as idx"
                   class="border"
+                  nzDisablePreview
                   nz-image
-                  width="70px"
-                  height="70px"
-                  nzSrc="https://adminbeauty.hvnet.vn/Upload/Files/q1-11122018104905.jpg"
-                  alt=""
-                  nzZoom
-                />
-                <img
-                  class="border"
-                  nz-image
-                  width="70px"
-                  height="70px"
-                  nzSrc="https://adminbeauty.hvnet.vn/Upload/Files/q1-11122018104905.jpg"
-                  alt=""
-                  nzZoom
-                />
-                <img
-                  class="border"
-                  nz-image
-                  width="70px"
-                  height="70px"
-                  nzSrc="https://adminbeauty.hvnet.vn/Upload/Files/q1-11122018104905.jpg"
-                  alt=""
-                  nzZoom
-                />
-                <img
-                  class="border"
-                  nz-image
-                  width="70px"
-                  height="70px"
-                  nzSrc="https://adminbeauty.hvnet.vn/Upload/Files/q1-11122018104905.jpg"
+                  width="80px"
+                  height="80px"
+                  nzSrc="{{item}}"
+                  (click)="changeSelectImageIndex(idx)"
                   alt=""
                   nzZoom
                 />
@@ -74,16 +50,16 @@
         nzSm="24"
         class="p-4 d-flex flex-column align-items-start justify-content-center"
       >
-        <h2 nz-typography>Tinh Chất The Ordinary Hyaluronic Acid 2% + B5</h2>
+        <h2 nz-typography>{{product.product_name}}</h2>
         <nz-space
           nzDirection="horizontal"
           nzSize="middle"
           nzAlign="baseline"
           nzWrap="true"
         >
-          <nz-rate *nzSpaceItem [ngModel]="3" nzDisabled></nz-rate>
+          <nz-rate *nzSpaceItem [ngModel]="product.product_rating" nzDisabled></nz-rate>
           <span *nzSpaceItem nz-typography nzType="secondary"
-            >4.1 sao - 90 lượt đánh giá</span
+            >{{product.product_rating}} sao - 90 lượt đánh giá</span
           >
         </nz-space>
         <nz-space
@@ -92,12 +68,12 @@
           nzAlign="baseline"
           nzWrap="true"
         >
-          <h3 *nzSpaceItem nz-typography nzType="success">250.000đ</h3>
+          <h3 *nzSpaceItem nz-typography nzType="success">{{product.product_price}}</h3>
           <h3 *nzSpaceItem nz-typography nzType="secondary">
-            <del>350.000đ</del>
+            <del>{{product.product_old_price}}</del>
           </h3>
           <h5 *nzSpaceItem nzDisabled nz-typography nzType="secondary">
-            Tiết kiệm 100.000đ
+            Tiết kiệm {{product.product_discount}}
           </h5>
         </nz-space>
         <nz-divider nzOrientation="center" nzType="horizontal"> </nz-divider>

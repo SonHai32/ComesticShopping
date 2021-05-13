@@ -1,5 +1,9 @@
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ProductService } from 'src/app/services/product.service';
+import { Product } from 'src/app/models/product.model';
+import { ClassGetter } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-product-detail',
@@ -7,7 +11,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-
+  product = new Product
+  selectImageIndex = 0;
   rate: number = 4;
   customOptions: OwlOptions = {
     loop: true,
@@ -44,9 +49,23 @@ export class ProductDetailComponent implements OnInit {
     },
     nav: true
   }
-  constructor() { }
+
+  constructor(private route: ActivatedRoute, private prod: ProductService) { }
 
   ngOnInit(): void {
+    this.getRoutePro(parseInt(this.route.snapshot.params['product_id'], 10))
+    console.log(this.route.snapshot.params['product_id'])
   }
+
+  getRoutePro(productID: number){
+    this.prod.getProducts(productID ?  {'product_id': productID} : null).subscribe((data: any) =>{
+      this.product = data['products'][0]
+    })
+  }
+
+  changeSelectImageIndex(index: number){
+   this.selectImageIndex = index;
+  }
+
 
 }
