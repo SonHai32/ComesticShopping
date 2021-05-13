@@ -54,11 +54,10 @@ export class ProductDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getRoutePro(parseInt(this.route.snapshot.params['product_id'], 10))
-    console.log(this.route.snapshot.params['product_id'])
   }
 
   getRoutePro(productID: number){
-    this.prod.getProducts(productID ?  {'product_id': productID} : null).subscribe((data: any) =>{
+    this.prod.searchProducts(productID ?  {'product_id': productID} : null).subscribe((data: any) =>{
       this.product = data['products'][0]
     })
   }
