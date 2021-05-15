@@ -1,5 +1,6 @@
+import { Category } from './../../../models/category.model';
+import { CategoriesService } from './../../../services/categories.service';
 import { Component, OnInit } from '@angular/core';
-
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
+  categories: Category[] = []
   menus = [
     {
       level: 1,
@@ -91,10 +93,19 @@ export class NavbarComponent implements OnInit {
       ]
     }
   ];
-  constructor() { }
+
+
+  constructor(private categoriesService: CategoriesService) { }
 
 
   ngOnInit(): void {
+    this.getAllCategories()
   }
 
+  getAllCategories(){
+    this.categoriesService.getAllCategories().subscribe((data: any) =>{
+      this.categories = data['categories']
+      console.log(this.categories)
+    })
+  }
 }

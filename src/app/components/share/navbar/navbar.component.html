@@ -30,30 +30,27 @@
             nzTheme="light"
           >
             <ng-container
-              *ngTemplateOutlet="menuTpl; context: { $implicit: menus }"
+              *ngTemplateOutlet="menuTpl; context: { $implicit: categories }"
             ></ng-container>
-            <ng-template #menuTpl let-menus>
-              <ng-container *ngFor="let menu of menus">
+            <ng-template #menuTpl let-categories>
+              <ng-container *ngFor="let menu of categories">
                 <li
-                  *ngIf="!menu.children"
+                  *ngIf="!menu.cat_child"
                   nz-menu-item
-                  [nzPaddingLeft]="menu.level * 24"
                 >
-                  <em nz-icon [nzType]="menu.icon" *ngIf="menu.icon"></em>
-                  <a routerLink="#">{{ menu.title }}</a>
+                  <em nz-icon [nzType]="menu.cat_icon" *ngIf="menu.cat_icon"></em>
+                  <a routerLink="#">{{ menu.cat_text }}</a>
                 </li>
                 <li
-                  [nzPaddingLeft]="menu.level * 24"
-                  *ngIf="menu.children"
+                  *ngIf="menu.cat_child"
                   nz-submenu
-                  [nzOpen]="menu.open"
-                  [nzTitle]="menu.title"
+                  [nzTitle]="menu.cat_text"
                 >
                   <ul>
                     <ng-container
                       *ngTemplateOutlet="
                         menuTpl;
-                        context: { $implicit: menu.children }
+                        context: { $implicit: menu.cat_child }
                       "
                     ></ng-container>
                   </ul>
