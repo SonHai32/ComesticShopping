@@ -48,10 +48,11 @@ export class ProductsComponent implements OnInit {
     nav: true
   }
 
-  page = 0
+  page = 1
   total_result = 0
   entries_per_page=12
   array = [1, 2, 3, 4]
+  category_id = ''
   change(evt: any){
     console.log(evt)
   }
@@ -59,31 +60,23 @@ export class ProductsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    if(this.route.snapshot.params['category_id']){
-      this.getProductsByCategory(this.route.snapshot.params['category_id'])
-    }else{
-
-      this.getAll()
-    }
+    this.page = this.route.snapshot.queryParams['page'] ? parseInt(this.route.snapshot.queryParams['page']) : 1
+    this.category_id = this.route.snapshot.params['category_id'] ? this.route.snapshot.params['category_id'] : ''
+    this.getProducts(this.category_id)
 
   }
 
-  getAll(){
-    this.prodService.searchProducts({page: 2}).subscribe((data: any) =>{
+  getProducts(categoryID: string){
+    this.prodService.searchProducts({page: this.page , category_id: categoryID}).subscribe((data: any) =>{
       this.productData = data['products']
-      this.page = data['page']
-      this.entries_per_page = data['entries_per_page']
-      this.total_result = data['total_result']
-    })
-  }
-
-  getProductsByCategory(categoryID: string){
-    this.prodService.searchProducts({page: 0, category_id: categoryID}).subscribe((data: any) =>{
-      this.productData = data['products']
-      this.page = data['page']
       this.entries_per_page = data['entries_per_page']
       this.total_result = data['total_result']
     })
 
+  }
+
+  handlePageIndexChange(index: number){
+    this.page = index
+    this.getProducts(this.category_id)
   }
 }

@@ -85,8 +85,8 @@
     <div class="py-3 mt-3" nzAlign="middle" nz-row nzJustify="center">
       <div class="d-flex justify-content-center" nz-col nzSpan="16">
         <nz-pagination
-          (nzPageIndexChange)="change($event)"
-          [nzPageIndex]="page + 1"
+          (nzPageIndexChange)="handlePageIndexChange($event)"
+          [nzPageIndex]="page"
           nzTotal="{{ total_result }}"
           nzPageSize="{{ entries_per_page }}"
         ></nz-pagination>
