@@ -1,3 +1,4 @@
+import { ProductsRoutingModule } from './modules/products/products-routing.module';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { IconModule } from './components/icon/icon.module';
 import { NgModule } from '@angular/core';
@@ -14,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
-import vi from '@angular/common/locales/vi';
 
 registerLocaleData(en);
 @NgModule({
@@ -23,6 +23,7 @@ registerLocaleData(en);
   ],
   imports: [
     BrowserModule,
+    ProductsRoutingModule,
     AppRoutingModule,
     ShareModule,
     FormsModule,

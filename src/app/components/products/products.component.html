@@ -100,7 +100,7 @@
 
   <ng-template #productCardItem let-product="product">
     <nz-card
-      [routerLink]="['/product-detail', product.id]"
+      [routerLink]="['/product','product-detail', product.id]"
       nzHoverable
       [nzActions]="[actionAddToCart, actionBuyNow]"
     >

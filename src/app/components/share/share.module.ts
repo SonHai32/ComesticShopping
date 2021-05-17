@@ -1,3 +1,4 @@
+import { DefaultComponent } from './../default/default.component';
 import { ProductDetailComponent } from './../product-detail/product-detail.component';
 import { ProductsComponent } from './../products/products.component';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -37,6 +38,7 @@ import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
+    DefaultComponent,
     HeaderComponent,
     FooterComponent,
     NavbarComponent,
@@ -73,6 +75,7 @@ import { FormsModule } from '@angular/forms';
     NzBadgeModule
   ],
   exports: [
+    DefaultComponent,
     HeaderComponent,
     FooterComponent,
     NavbarComponent,
