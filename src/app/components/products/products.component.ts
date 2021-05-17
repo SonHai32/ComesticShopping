@@ -1,4 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
+import { NavigateByCateService } from './../../services/navigate-by-cate.service';
+import { ActivatedRoute,} from '@angular/router';
 import { ProductService } from './../../services/product.service';
 import { Product } from './../../models/product.model';
 import { Component, OnInit } from '@angular/core';
@@ -10,7 +11,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrls: ['./products.component.scss'],
 })
 export class ProductsComponent implements OnInit {
-  productData:  Product[] = []
+  productData: Product[] = [];
 
   customOptions: OwlOptions = {
     loop: true,
@@ -26,57 +27,68 @@ export class ProductsComponent implements OnInit {
     navText: ['<<<', '>>>'],
     responsive: {
       0: {
-        items: 1
+        items: 1,
       },
       576: {
-        items: 2
+        items: 2,
       },
       768: {
-        items: 3
+        items: 3,
       },
       992: {
-        items: 4
+        items: 4,
       },
-      1200:{
-        items: 5
+      1200: {
+        items: 5,
       },
-      1600:{
-        items: 5
+      1600: {
+        items: 5,
       },
-
     },
-    nav: true
-  }
+    nav: true,
+  };
 
-  page = 1
-  total_result = 0
-  entries_per_page=12
-  array = [1, 2, 3, 4]
-  category_id = ''
-  change(evt: any){
-    console.log(evt)
-  }
-  constructor(private prodService: ProductService, private route: ActivatedRoute) {}
+  page = 1;
+  total_result = 0;
+  entries_per_page = 12;
+  category_id = '';
+
+  constructor(
+    private prodService: ProductService,
+    private route: ActivatedRoute,
+    private handleCategoryService: NavigateByCateService
+  ) {}
 
   ngOnInit(): void {
+    this.page = this.route.snapshot.queryParams['page']
+      ? parseInt(this.route.snapshot.queryParams['page'])
+      : 1;
+    this.category_id = this.route.snapshot.params['category_id']
+      ? this.route.snapshot.params['category_id']
+      : '';
+    this.getProducts(this.category_id);
 
-    this.page = this.route.snapshot.queryParams['page'] ? parseInt(this.route.snapshot.queryParams['page']) : 1
-    this.category_id = this.route.snapshot.params['category_id'] ? this.route.snapshot.params['category_id'] : ''
-    this.getProducts(this.category_id)
-
-  }
-
-  getProducts(categoryID: string){
-    this.prodService.searchProducts({page: this.page , category_id: categoryID}).subscribe((data: any) =>{
-      this.productData = data['products']
-      this.entries_per_page = data['entries_per_page']
-      this.total_result = data['total_result']
+    this.handleCategoryService.btnHandleCategoryObservable.subscribe((data: string) =>{
+      this.category_id = data
+      this.getProducts(this.category_id)
     })
-
   }
 
-  handlePageIndexChange(index: number){
-    this.page = index
-    this.getProducts(this.category_id)
+
+  getRoute() {}
+
+  getProducts(categoryID: string) {
+    this.prodService
+      .searchProducts({ page: this.page, category_id: categoryID })
+      .subscribe((data: any) => {
+        this.productData = data['products'];
+        this.entries_per_page = data['entries_per_page'];
+        this.total_result = data['total_result'];
+      });
+  }
+
+  handlePageIndexChange(index: number) {
+    this.page = index;
+    this.getProducts(this.category_id);
   }
 }
