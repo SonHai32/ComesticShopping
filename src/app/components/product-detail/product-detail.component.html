@@ -26,9 +26,12 @@
         <div nz-row nzJustify="center" class="mt-4 w-100">
           <div nz-col nzXXl="16" nzMd="24">
             <div class="image-list-container  d-flex align-items-center justify-content-between">
+              <ng-container
+                  *ngFor="let item of product.product_img_urls; index as idx"
+              >
 
                 <img
-                  *ngFor="let item of product.product_img_urls; index as idx"
+                  *ngIf="idx <4"
                   class="border"
                   nzDisablePreview
                   nz-image
@@ -39,6 +42,8 @@
                   alt=""
                   nzZoom
                 />
+
+              </ng-container>
             </div>
           </div>
         </div>
@@ -78,16 +83,10 @@
         </nz-space>
         <nz-divider nzOrientation="center" nzType="horizontal"> </nz-divider>
         <span nz-typography nzType="secondary">
-          Làm dịu và cấp ẩm cho da với Công thức Hyalu-Cica độc quyền của
-          Skin1004
+          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem error nesciunt voluptatibus assumenda doloremque tempore molestiae vero. Harum quidem et at obcaecati voluptas rem impedit tenetur ipsum? Officiis, optio nobis.
         </span>
         <span nz-typography nzType="secondary">
-          Làm dịu và cấp ẩm cho da với Công thức Hyalu-Cica độc quyền của
-          Skin1004
-        </span>
-        <span nz-typography nzType="secondary">
-          Làm dịu và cấp ẩm cho da với Công thức Hyalu-Cica độc quyền của
-          Skin1004
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum eaque reiciendis hic tempore error suscipit, porro iure inventore magni, eum quas! Aspernatur ipsam architecto beatae quasi, quae provident? Similique, dicta!
         </span>
         <nz-divider nzOrientation="center" nzType="horizontal"> </nz-divider>
         <nz-space

@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit {
     })
   }
 
-  handleCategory(e: string){
-    this.handleCateService.btnHandleCategory.next(e)
+  handleCategory(categoryID: string){
+    this.handleCateService.btnHandleCategory.next(categoryID)
   }
 }

@@ -1,9 +1,12 @@
+import { Category } from './../../models/category.model';
+import { CategoriesService } from './../../services/categories.service';
 import { NavigateByCateService } from './../../services/navigate-by-cate.service';
 import { ActivatedRoute,} from '@angular/router';
 import { ProductService } from './../../services/product.service';
 import { Product } from './../../models/product.model';
 import { Component, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
+import { ThisReceiver } from '@angular/compiler';
 
 @Component({
   selector: 'app-products',
@@ -52,11 +55,14 @@ export class ProductsComponent implements OnInit {
   total_result = 0;
   entries_per_page = 12;
   category_id = '';
+  category_text = 'Tất cả sản phẩm'
+
 
   constructor(
     private prodService: ProductService,
     private route: ActivatedRoute,
-    private handleCategoryService: NavigateByCateService
+    private handleCategoryService: NavigateByCateService,
+    private categoryService: CategoriesService
   ) {}
 
   ngOnInit(): void {
@@ -68,14 +74,11 @@ export class ProductsComponent implements OnInit {
       : '';
     this.getProducts(this.category_id);
 
-    this.handleCategoryService.btnHandleCategoryObservable.subscribe((data: string) =>{
-      this.category_id = data
+    this.handleCategoryService.btnHandleCategoryObservable.subscribe((categoryID: string) =>{
+      this.category_id = categoryID
       this.getProducts(this.category_id)
     })
   }
-
-
-  getRoute() {}
 
   getProducts(categoryID: string) {
     this.prodService
@@ -85,6 +88,14 @@ export class ProductsComponent implements OnInit {
         this.entries_per_page = data['entries_per_page'];
         this.total_result = data['total_result'];
       });
+
+      if(this.category_id != ''){
+        this.categoryService.getCategoryDetail(this.category_id).subscribe((data: any) =>{
+          let cate: Category = data['categories'][0];
+          this.category_text = cate.cat_id == this.category_id ? cate.cat_text : cate.cat_child.filter((childCate: any) => childCate.cat_id == this.category_id)[0].cat_text
+        })
+      }
+
   }
 
   handlePageIndexChange(index: number) {

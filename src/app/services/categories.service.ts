@@ -17,4 +17,7 @@ export class CategoriesService {
   getAllCategories():Observable<Category[]>{
     return this.http.get<Category[]>(this.apiURI, this.httpOptions).pipe()
   }
+  getCategoryDetail(categoryID: string):Observable<Category[]>{
+    return this.http.get<Category[]>(this.apiURI+'?category_id='+categoryID).pipe()
+  }
 }
