@@ -1,4 +1,3 @@
-import { NavigateByCateService } from './../../../services/navigate-by-cate.service';
 import { Category } from './../../../models/category.model';
 import { CategoriesService } from './../../../services/categories.service';
 import { Component, OnInit } from '@angular/core';
@@ -11,7 +10,7 @@ export class NavbarComponent implements OnInit {
 
   categories: Category[] = []
 
-  constructor(private categoriesService: CategoriesService, private handleCateService: NavigateByCateService) { }
+  constructor(private categoriesService: CategoriesService) { }
 
 
   ngOnInit(): void {
@@ -21,11 +20,7 @@ export class NavbarComponent implements OnInit {
   getAllCategories(){
     this.categoriesService.getAllCategories().subscribe((data: any) =>{
       this.categories = data['categories']
-      console.log(this.categories)
     })
   }
 
-  handleCategory(categoryID: string){
-    this.handleCateService.btnHandleCategory.next(categoryID)
-  }
 }

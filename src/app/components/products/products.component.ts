@@ -1,12 +1,12 @@
 import { Category } from './../../models/category.model';
 import { CategoriesService } from './../../services/categories.service';
-import { NavigateByCateService } from './../../services/navigate-by-cate.service';
-import { ActivatedRoute,} from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from './../../services/product.service';
 import { Product } from './../../models/product.model';
 import { Component, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { ThisReceiver } from '@angular/compiler';
+import { map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-products',
@@ -55,51 +55,71 @@ export class ProductsComponent implements OnInit {
   total_result = 0;
   entries_per_page = 12;
   category_id = '';
-  category_text = 'Tất cả sản phẩm'
-
+  category_text = 'Tất cả sản phẩm';
+  isFirstLoad = true;
 
   constructor(
     private prodService: ProductService,
     private route: ActivatedRoute,
-    private handleCategoryService: NavigateByCateService,
+    private router: Router,
     private categoryService: CategoriesService
   ) {}
 
   ngOnInit(): void {
-    this.page = this.route.snapshot.queryParams['page']
-      ? parseInt(this.route.snapshot.queryParams['page'])
-      : 1;
-    this.category_id = this.route.snapshot.params['category_id']
-      ? this.route.snapshot.params['category_id']
-      : '';
-    this.getProducts(this.category_id);
+    combineLatest([this.route.queryParamMap.pipe(), this.route.paramMap.pipe()])
+      .pipe(
+        map(([query, param]) => {
+          return {
+            page: query.get('page'),
+            categoryID: param.get('category_id'),
+          };
+        })
+      )
+      .subscribe(({ page, categoryID }) => {
+        this.page = page ? parseInt(page.toString()) : 1;
+        this.category_id = categoryID ? categoryID : '';
+        this.getProducts(this.category_id, this.page);
 
-    this.handleCategoryService.btnHandleCategoryObservable.subscribe((categoryID: string) =>{
-      this.category_id = categoryID
-      this.getProducts(this.category_id)
-    })
+        if (categoryID) {
+          this.categoryService
+            .getCategoryDetail(categoryID)
+            .subscribe((data: any) => {
+              if (data) {
+                let cate: Category = data['categories'][0];
+                console.log(cate);
+                this.category_text =
+                  cate.cat_id == this.category_id
+                    ? cate.cat_text
+                    : cate.cat_child.filter(
+                        (childCate: Category) => childCate.cat_id == categoryID
+                      )[0].cat_text;
+              }
+            });
+        }
+      });
   }
 
-  getProducts(categoryID: string) {
+  getProducts(categoryID: string, page: number) {
     this.prodService
-      .searchProducts({ page: this.page, category_id: categoryID })
+      .searchProducts({ page: page, category_id: categoryID })
       .subscribe((data: any) => {
         this.productData = data['products'];
         this.entries_per_page = data['entries_per_page'];
         this.total_result = data['total_result'];
       });
-
-      if(this.category_id != ''){
-        this.categoryService.getCategoryDetail(this.category_id).subscribe((data: any) =>{
-          let cate: Category = data['categories'][0];
-          this.category_text = cate.cat_id == this.category_id ? cate.cat_text : cate.cat_child.filter((childCate: any) => childCate.cat_id == this.category_id)[0].cat_text
-        })
-      }
-
   }
 
   handlePageIndexChange(index: number) {
-    this.page = index;
-    this.getProducts(this.category_id);
+    if (this.isFirstLoad) {
+      this.isFirstLoad = false;
+
+    this.route.queryParams.forEach(query =>{
+      if(query['page']){
+        this.page = query['page']
+      }
+    })
+    } else {
+      this.router.navigate([], { queryParams: { page: index } });
+    }
   }
 }
