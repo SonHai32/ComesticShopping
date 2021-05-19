@@ -1,3 +1,5 @@
+
+<swal (willClose)="swalDidClose()" [swalVisible]="showSweetAlert" [swalOptions]="sweetAlertOptions" title='{{errorMessage}}'></swal>
 <div nz-row nzAlign="middle" nzJustify="center" class="vh-100 base-background">
   <div
     nz-col
@@ -92,6 +94,7 @@
                     </nz-form-item>
                   </div>
                 </div>
+
                 <div nz-row nzJustify="center" class="login-form-margin">
                   <div nz-col nzLg="7" nzXs="11">
                     <label nz-checkbox formControlName="remember">

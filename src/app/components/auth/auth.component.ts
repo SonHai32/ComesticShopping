@@ -22,6 +22,15 @@ export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
   loginLoading: boolean = false;
+  showSweetAlert: boolean = false;
+  errorMessage: string = '';
+  sweetAlertOptions: any = {
+    confirmButtonText: 'OK',
+    imageUrl: '/assets/images/oops.jpg',
+    imageWidth: 200,
+    imageHeigh: 200
+  };
+
   comparePassword(c: AbstractControl) {
     const v = c.value;
     return v.password === v.confirmPassword
@@ -37,12 +46,20 @@ export class AuthComponent implements OnInit {
     private router: Router
   ) {}
 
-
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: [this.cookieService.get('savedUsername') || '', [Validators.required, Validators.maxLength(30)]],
-      password: [this.cookieService.get('savedPassword') || '', [Validators.required, Validators.maxLength(30)]],
-      remember: [toBoolean(this.cookieService.get('rememberChecked')) || false, []],
+      username: [
+        this.cookieService.get('savedUsername') || '',
+        [Validators.required, Validators.maxLength(30)],
+      ],
+      password: [
+        this.cookieService.get('savedPassword') || '',
+        [Validators.required, Validators.maxLength(30)],
+      ],
+      remember: [
+        toBoolean(this.cookieService.get('rememberChecked')) || false,
+        [],
+      ],
     });
 
     this.registerForm = this.fb.group({
@@ -97,14 +114,14 @@ export class AuthComponent implements OnInit {
       if (this.loginForm.get('remember')?.value) {
         this.cookieService.set('savedUsername', user.username);
         this.cookieService.set('savedPassword', user.password);
-        this.cookieService.set('rememberChecked', 'true')
+        this.cookieService.set('rememberChecked', 'true');
       } else {
         this.cookieService.set('savedUsername', '');
         this.cookieService.set('savedPassword', '');
-        this.cookieService.set('rememberChecked', 'false')
+        this.cookieService.set('rememberChecked', 'false');
       }
 
-      this.login(user)
+      this.login(user);
     }
   }
 
@@ -121,17 +138,21 @@ export class AuthComponent implements OnInit {
   }
 
   login(user: { username: string; password: string }) {
-    this.authService
-      .login(user)
-      .subscribe((result: any) => {
-        if(result.success)
-        {
-          let user:User = result.userInfo
-          localStorage.setItem('currentUser', user.toString())
-          this.router.navigate(['/'])
-        }
-        this.loginLoading = false;
-      })
-      ;
+    this.authService.login(user).subscribe((result: any) => {
+      if (result.success) {
+        let user: User = result.userInfo;
+        localStorage.setItem('currentUser', user.toString());
+        this.router.navigate(['/']);
+      } else {
+        this.errorMessage= result.message;
+        this.showSweetAlert = true;
+      }
+      this.loginLoading = false;
+    });
   }
+  swalDidClose() {
+    this.showSweetAlert = false;
+    this.errorMessage = '';
+  }
+
 }
