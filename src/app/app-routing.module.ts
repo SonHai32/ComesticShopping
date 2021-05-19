@@ -1,3 +1,4 @@
+import { LoginGuard } from './helper/guard/login.guard';
 import { AuthComponent } from './components/auth/auth.component';
 import { DefaultComponent } from './components/default/default.component';
 import { ProductDetailComponent } from './components/product-detail/product-detail.component';
@@ -8,7 +9,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   { path: '',  redirectTo: '/product', pathMatch: 'full'},
-  {path: 'auth', component: AuthComponent}
+  {path: 'auth',canActivate: [LoginGuard],  component: AuthComponent}
 ];
 
 @NgModule({
