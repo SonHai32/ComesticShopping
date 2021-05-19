@@ -26,6 +26,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NgModule } from '@angular/core';
@@ -83,6 +84,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NzFormModule,
     NzCheckboxModule,
     ReactiveFormsModule,
+    NzSpinModule,
   ],
   exports: [
     DefaultComponent,

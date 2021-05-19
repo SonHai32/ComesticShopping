@@ -1,36 +1,48 @@
+import { Router } from '@angular/router';
+import { User } from './../../models/user.model';
+import { AuthenticateService } from './../../services/authenticate.service';
+import { CookieService } from 'ngx-cookie-service';
 import { Component, OnInit } from '@angular/core';
+User;
 import {
   FormBuilder,
   FormGroup,
   Validators,
-  FormControl,
-  AbstractControl
+  AbstractControl,
 } from '@angular/forms';
+import { toBoolean } from 'ng-zorro-antd/core/util';
 
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  providers: [CookieService]
+  providers: [CookieService],
 })
 export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
+  loginLoading: boolean = false;
+  comparePassword(c: AbstractControl) {
+    const v = c.value;
+    return v.password === v.confirmPassword
+      ? null
+      : {
+          passwordnotmatch: true,
+        };
+  }
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthenticateService,
+    private cookieService: CookieService,
+    private router: Router
+  ) {}
 
-comparePassword(c: AbstractControl) {
-  const v = c.value;
-  return v.password === v.confirmPassword
-    ? null
-    : {
-        passwordnotmatch: true,
-      };
-    }
-  constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.maxLength(30)]],
-      password: ['', [Validators.required, Validators.maxLength(30)]],
+      username: [this.cookieService.get('savedUsername') || '', [Validators.required, Validators.maxLength(30)]],
+      password: [this.cookieService.get('savedPassword') || '', [Validators.required, Validators.maxLength(30)]],
+      remember: [toBoolean(this.cookieService.get('rememberChecked')) || false, []],
     });
 
     this.registerForm = this.fb.group({
@@ -76,13 +88,50 @@ comparePassword(c: AbstractControl) {
       this.loginForm.controls[i].markAsDirty();
       this.loginForm.controls[i].updateValueAndValidity();
     }
+    if (this.loginForm.valid) {
+      this.loginLoading = true;
+      const user = {
+        username: this.loginForm.get('username')?.value,
+        password: this.loginForm.get('password')?.value,
+      };
+      if (this.loginForm.get('remember')?.value) {
+        this.cookieService.set('savedUsername', user.username);
+        this.cookieService.set('savedPassword', user.password);
+        this.cookieService.set('rememberChecked', 'true')
+      } else {
+        this.cookieService.set('savedUsername', '');
+        this.cookieService.set('savedPassword', '');
+        this.cookieService.set('rememberChecked', 'false')
+      }
+
+      this.login(user)
+    }
   }
-  submitRegisterForm(value: {username: string, pw: {password: string, confirmPassword: string}, phoneNumber: string, email: string}) {
+
+  submitRegisterForm(value: {
+    username: string;
+    pw: { password: string; confirmPassword: string };
+    phoneNumber: string;
+    email: string;
+  }) {
     for (const i in this.registerForm.controls) {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
     }
+  }
 
-    console.log(this.registerForm.valid)
+  login(user: { username: string; password: string }) {
+    this.authService
+      .login(user)
+      .subscribe((result: any) => {
+        if(result.success)
+        {
+          let user:User = result.userInfo
+          localStorage.setItem('currentUser', user.toString())
+          this.router.navigate(['/'])
+        }
+        this.loginLoading = false;
+      })
+      ;
   }
 }
