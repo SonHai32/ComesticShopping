@@ -1,3 +1,4 @@
+import { AuthComponent } from './../auth/auth.component';
 import { DefaultComponent } from './../default/default.component';
 import { ProductDetailComponent } from './../product-detail/product-detail.component';
 import { ProductsComponent } from './../products/products.component';
@@ -24,6 +25,9 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzRateModule } from 'ng-zorro-antd/rate';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzTabsModule } from 'ng-zorro-antd/tabs';
+import { NzFormModule } from 'ng-zorro-antd/form';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {HeaderComponent} from './header/header.component';
@@ -32,6 +36,7 @@ import {NavbarComponent} from './navbar/navbar.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {RouterModule} from '@angular/router'
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -39,6 +44,7 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     DefaultComponent,
+    AuthComponent,
     HeaderComponent,
     FooterComponent,
     NavbarComponent,
@@ -72,10 +78,15 @@ import { FormsModule } from '@angular/forms';
     NzInputModule,
     NzRateModule,
     FormsModule,
-    NzBadgeModule
+    NzBadgeModule,
+    NzTabsModule,
+    NzFormModule,
+    NzCheckboxModule,
+    ReactiveFormsModule,
   ],
   exports: [
     DefaultComponent,
+    AuthComponent,
     HeaderComponent,
     FooterComponent,
     NavbarComponent,
