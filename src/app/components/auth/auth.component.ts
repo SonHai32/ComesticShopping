@@ -1,3 +1,4 @@
+import { UserService } from './../../services/user-service/user.service';
 import { Router } from '@angular/router';
 import { User } from './../../models/user.model';
 import { AuthenticateService } from './../../services/authenticate.service';
@@ -43,6 +44,7 @@ export class AuthComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthenticateService,
+    private userService: UserService,
     private cookieService: CookieService,
     private router: Router
   ) {}
@@ -139,8 +141,13 @@ export class AuthComponent implements OnInit {
 
     if (this.registerForm.valid) {
       this.registerLoading = true;
-      const user = {username: value.username, emailAddress: value.email, password: value.pw.password, phoneNumber: value.phoneNumber}
-      this.register(user)
+      const user = {
+        username: value.username,
+        emailAddress: value.email,
+        password: value.pw.password,
+        phoneNumber: value.phoneNumber,
+      };
+      this.register(user);
     }
   }
 
@@ -155,7 +162,7 @@ export class AuthComponent implements OnInit {
         let user: User = result.userInfo;
         this.sweetAlertMessage = result.message;
         this.showSweetAlert = true;
-        localStorage.setItem('currentUser', user.toString());
+        this.userService.logIn(user);
         setTimeout(() => {
           this.router.navigate(['/']);
         }, 1000);
@@ -171,7 +178,7 @@ export class AuthComponent implements OnInit {
     this.authService.login(user).subscribe((result: any) => {
       if (result.success) {
         let user: User = result.userInfo;
-        localStorage.setItem('currentUser', user.toString());
+        this.userService.logIn(user);
         this.router.navigate(['/']);
       } else {
         this.sweetAlertMessage = result.message;
