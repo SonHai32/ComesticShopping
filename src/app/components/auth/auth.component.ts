@@ -22,13 +22,14 @@ export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
   loginLoading: boolean = false;
+  registerLoading: boolean = false;
   showSweetAlert: boolean = false;
-  errorMessage: string = '';
+  sweetAlertMessage: string = '';
   sweetAlertOptions: any = {
     confirmButtonText: 'OK',
     imageUrl: '/assets/images/oops.jpg',
     imageWidth: 200,
-    imageHeigh: 200
+    imageHeigh: 200,
   };
 
   comparePassword(c: AbstractControl) {
@@ -135,6 +136,35 @@ export class AuthComponent implements OnInit {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
     }
+
+    if (this.registerForm.valid) {
+      this.registerLoading = true;
+      const user = {username: value.username, emailAddress: value.email, password: value.pw.password, phoneNumber: value.phoneNumber}
+      this.register(user)
+    }
+  }
+
+  register(user: {
+    username: string;
+    password: string;
+    emailAddress: string;
+    phoneNumber: string;
+  }) {
+    this.authService.register(user).subscribe((result: any) => {
+      if (result.success) {
+        let user: User = result.userInfo;
+        this.sweetAlertMessage = result.message;
+        this.showSweetAlert = true;
+        localStorage.setItem('currentUser', user.toString());
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 1000);
+      } else {
+        this.sweetAlertMessage = result.message;
+        this.showSweetAlert = true;
+      }
+      this.registerLoading = false;
+    });
   }
 
   login(user: { username: string; password: string }) {
@@ -144,7 +174,7 @@ export class AuthComponent implements OnInit {
         localStorage.setItem('currentUser', user.toString());
         this.router.navigate(['/']);
       } else {
-        this.errorMessage= result.message;
+        this.sweetAlertMessage = result.message;
         this.showSweetAlert = true;
       }
       this.loginLoading = false;
@@ -152,7 +182,6 @@ export class AuthComponent implements OnInit {
   }
   swalDidClose() {
     this.showSweetAlert = false;
-    this.errorMessage = '';
+    this.sweetAlertMessage = '';
   }
-
 }
