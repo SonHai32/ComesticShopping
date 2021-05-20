@@ -22,6 +22,16 @@ export class AuthComponent implements OnInit {
   loginForm!: FormGroup;
   registerForm!: FormGroup;
   loginLoading: boolean = false;
+  registerLoading: boolean = false;
+  showSweetAlert: boolean = false;
+  sweetAlertMessage: string = '';
+  sweetAlertOptions: any = {
+    confirmButtonText: 'OK',
+    imageUrl: '/assets/images/oops.jpg',
+    imageWidth: 200,
+    imageHeigh: 200,
+  };
+
   comparePassword(c: AbstractControl) {
     const v = c.value;
     return v.password === v.confirmPassword
@@ -37,12 +47,20 @@ export class AuthComponent implements OnInit {
     private router: Router
   ) {}
 
-
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      username: [this.cookieService.get('savedUsername') || '', [Validators.required, Validators.maxLength(30)]],
-      password: [this.cookieService.get('savedPassword') || '', [Validators.required, Validators.maxLength(30)]],
-      remember: [toBoolean(this.cookieService.get('rememberChecked')) || false, []],
+      username: [
+        this.cookieService.get('savedUsername') || '',
+        [Validators.required, Validators.maxLength(30)],
+      ],
+      password: [
+        this.cookieService.get('savedPassword') || '',
+        [Validators.required, Validators.maxLength(30)],
+      ],
+      remember: [
+        toBoolean(this.cookieService.get('rememberChecked')) || false,
+        [],
+      ],
     });
 
     this.registerForm = this.fb.group({
@@ -97,14 +115,14 @@ export class AuthComponent implements OnInit {
       if (this.loginForm.get('remember')?.value) {
         this.cookieService.set('savedUsername', user.username);
         this.cookieService.set('savedPassword', user.password);
-        this.cookieService.set('rememberChecked', 'true')
+        this.cookieService.set('rememberChecked', 'true');
       } else {
         this.cookieService.set('savedUsername', '');
         this.cookieService.set('savedPassword', '');
-        this.cookieService.set('rememberChecked', 'false')
+        this.cookieService.set('rememberChecked', 'false');
       }
 
-      this.login(user)
+      this.login(user);
     }
   }
 
@@ -118,20 +136,52 @@ export class AuthComponent implements OnInit {
       this.registerForm.controls[i].markAsDirty();
       this.registerForm.controls[i].updateValueAndValidity();
     }
+
+    if (this.registerForm.valid) {
+      this.registerLoading = true;
+      const user = {username: value.username, emailAddress: value.email, password: value.pw.password, phoneNumber: value.phoneNumber}
+      this.register(user)
+    }
+  }
+
+  register(user: {
+    username: string;
+    password: string;
+    emailAddress: string;
+    phoneNumber: string;
+  }) {
+    this.authService.register(user).subscribe((result: any) => {
+      if (result.success) {
+        let user: User = result.userInfo;
+        this.sweetAlertMessage = result.message;
+        this.showSweetAlert = true;
+        localStorage.setItem('currentUser', user.toString());
+        setTimeout(() => {
+          this.router.navigate(['/']);
+        }, 1000);
+      } else {
+        this.sweetAlertMessage = result.message;
+        this.showSweetAlert = true;
+      }
+      this.registerLoading = false;
+    });
   }
 
   login(user: { username: string; password: string }) {
-    this.authService
-      .login(user)
-      .subscribe((result: any) => {
-        if(result.success)
-        {
-          let user:User = result.userInfo
-          localStorage.setItem('currentUser', user.toString())
-          this.router.navigate(['/'])
-        }
-        this.loginLoading = false;
-      })
-      ;
+    this.authService.login(user).subscribe((result: any) => {
+      if (result.success) {
+        let user: User = result.userInfo;
+        localStorage.setItem('currentUser', user.toString());
+        this.router.navigate(['/']);
+      } else {
+        this.sweetAlertMessage = result.message;
+        this.showSweetAlert = true;
+      }
+      this.loginLoading = false;
+    });
+  }
+  swalDidClose() {
+    this.showSweetAlert = false;
+    this.sweetAlertMessage = '';
   }
 }

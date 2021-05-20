@@ -1,3 +1,10 @@
+<swal
+  (willClose)="swalDidClose()"
+  [swalVisible]="showSweetAlert"
+  [swalOptions]="sweetAlertOptions"
+  title="{{ sweetAlertMessage }}"
+></swal>
+
 <div nz-row nzAlign="middle" nzJustify="center" class="vh-100 base-background">
   <div
     nz-col
@@ -6,17 +13,17 @@
     nzLg="18"
     nzMd="20"
     nzXs="22"
-    class="h-75 bg-white auth-container"
-    style="overflow: hidden"
+    class="bg-white auth-container"
   >
-    <div nz-row nzJustify="center" class="h-100">
+    <div class="image-absolute"></div>
+    <div nz-row nzJustify="center" nzAlign="middle" class="h-100" >
       <div
         nz-col
         nzLg="12"
         nzMd="12"
         nzXl="12"
         nzXs="0"
-        class="h-100 left-login-container"
+        class="left-login-container"
       ></div>
       <div
         nz-col
@@ -26,17 +33,14 @@
         nzXs="20"
         class="h-100 right-login-container"
       >
-        <div nz-row nzAlign="middle" nzJustify="center">
-          <div nz-col nzSpan="24" class="img-title"></div>
-        </div>
-        <div class="w-100 h-100">
+        <div class="w-100">
           <nz-tabset
-            [nzCentered]="false"
+            [nzCentered]="true"
             nzSize="large"
             [nzAnimated]="true"
             nzSize="large"
           >
-            <nz-tab nzTitle="Tab 1">
+            <nz-tab nzTitle="Đăng nhập">
               <!-- start login form -->
               <form
                 nz-form
@@ -92,6 +96,7 @@
                     </nz-form-item>
                   </div>
                 </div>
+
                 <div nz-row nzJustify="center" class="login-form-margin">
                   <div nz-col nzLg="7" nzXs="11">
                     <label nz-checkbox formControlName="remember">
@@ -107,7 +112,7 @@
                     <button
                       nzBlock="true"
                       nz-button
-                      class="login-form-button login-form-margin my-2"
+                      class="login-form-button login-form-margin mb-1"
                       [nzType]="'primary'"
                       [nzLoading]="loginLoading"
                     >
@@ -126,7 +131,7 @@
               </form>
               <!-- end login form -->
             </nz-tab>
-            <nz-tab nzTitle="Tab 2">
+            <nz-tab nzTitle="Đăng ký">
               <!-- START-----------------REGISTER---------------------FORM -->
               <form
                 nz-form
@@ -169,6 +174,23 @@
                   <div nz-col nzLg="14" nzXs="22">
                     <nz-form-item formGroupName="pw">
                       <nz-form-control
+                        nzValidateStatus="{{
+                          (registerForm
+                            .get('pw')
+                            ?.get('password')
+                            ?.hasError('required') ||
+                            registerForm
+                              .get('pw')
+                              ?.get('password')
+                              ?.hasError('maxlenght') ||
+                            registerForm
+                              .get('pw')
+                              ?.get('password')
+                              ?.hasError('minlength')) &&
+                          registerForm.get('pw')?.dirty
+                            ? 'error'
+                            : ''
+                        }}"
                         [nzErrorTip]="
                           registerForm
                             .get('pw')
@@ -205,8 +227,15 @@
                     <nz-form-item formGroupName="pw">
                       <nz-form-control
                         nzValidateStatus="{{
-                          !registerForm.get('pw')?.valid &&
-                          registerForm.get('pw')?.get('confirmPassword')?.dirty
+                          (!registerForm.get('pw')?.valid
+                          &&
+                          registerForm.get('pw')?.dirty)
+                          ||
+                          registerForm
+                            .get('pw')
+                            ?.get('confirmPassword')
+                            ?.hasError('required') &&
+                          registerForm.get('pw')?.dirty
                             ? 'error'
                             : ''
                         }}"
@@ -291,16 +320,14 @@
                 </div>
                 <div nz-row nzJustify="center">
                   <div nz-col nzLg="5">
-
                     <button
                       nzBlock="true"
+                      [nzLoading]="registerLoading"
                       nz-button
-                      class="login-form-button login-form-margin my-2"
+                      class="login-form-button login-form-margin mb-1"
                       [nzType]="'primary'"
                     >
-
-
-
+                      Đăng ký
                     </button>
                   </div>
                 </div>
