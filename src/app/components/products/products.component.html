@@ -16,7 +16,10 @@
     >
     </ng-container>
     <ng-container
-      *ngTemplateOutlet="productTemplate; context: { listProducts: productData, title: category_text }"
+      *ngTemplateOutlet="
+        productTemplate;
+        context: { listProducts: productData, title: category_text }
+      "
     >
     </ng-container>
     <ng-container
@@ -85,7 +88,7 @@
     <div class="py-3 mt-3" nzAlign="middle" nz-row nzJustify="center">
       <div class="d-flex justify-content-center" nz-col nzSpan="16">
         <nz-pagination
-          nzPageIndex={{page}}
+          nzPageIndex="{{ page }}"
           (nzPageIndexChange)="handlePageIndexChange($event)"
           nzTotal="{{ total_result }}"
           nzPageSize="{{ entries_per_page }}"
@@ -99,33 +102,43 @@
   <!-- start-product-card-item-template -->
 
   <ng-template #productCardItem let-product="product">
-    <nz-card
-      [routerLink]="['/product','product-detail', product.id]"
-      nzHoverable
-      [nzActions]="[actionAddToCart, actionBuyNow]"
-    >
-    <div class="card-content w-100" style="height: 300px;">
+    <nz-card nzHoverable [nzActions]="[actionAddToCart, actionBuyNow]">
+      <div
+        [routerLink]="['/product', 'product-detail', product.id]"
+        class="card-content w-100"
+        style="height: 300px"
+      >
+        <div class="img-container w-100 d-flex justify-content-center">
+          <img
+            nz-image
+            width="230px"
+            height="230px"
+            nzSrc="{{ product.product_img_urls[0] }}"
+            nzDisablePreview
+            alt=""
+          />
+        </div>
 
-    <div class="img-container w-100 d-flex justify-content-center">
-    <img
-      nz-image
-      width="230px"
-      height="230px"
-      nzSrc="{{ product.product_img_urls[0] }}"
-      nzDisablePreview
-      alt=""
-    />
-    </div>
-
-    <nz-space nzDirection="vertical" nzSize="large" class="w-100">
-      <span *nzSpaceItem nz-typography class="d-flex justify-content-center w-100 mt-3"><strong>{{product.product_name}}</strong></span>
-      <div *nzSpaceItem class="w-100 d-flex align-items-center justify-content-center">
-        <h5 class="mr-4" nz-typography nzType="success">{{product.product_price}}</h5>
-        <h6 nz-typography nzType="secondary"><del>{{product.product_old_price}}</del></h6>
+        <nz-space nzDirection="vertical" nzSize="large" class="w-100">
+          <span
+            *nzSpaceItem
+            nz-typography
+            class="d-flex justify-content-center w-100 mt-1"
+            ><strong>{{ product.product_name }}</strong></span
+          >
+          <div
+            *nzSpaceItem
+            class="w-100 d-flex align-items-center justify-content-center"
+          >
+            <h5 class="mr-4" nz-typography nzType="success">
+              {{ product.product_price }}
+            </h5>
+            <h6 nz-typography nzType="secondary">
+              <del>{{ product.product_old_price }}</del>
+            </h6>
+          </div>
+        </nz-space>
       </div>
-    </nz-space>
-
-    </div>
     </nz-card>
 
     <ng-template #actionAddToCart>
