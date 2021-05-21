@@ -1,5 +1,5 @@
 import { UserService } from './../../services/user-service/user.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { User } from './../../models/user.model';
 import { AuthenticateService } from './../../services/authenticate.service';
 import { CookieService } from 'ngx-cookie-service';
@@ -12,6 +12,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { toBoolean } from 'ng-zorro-antd/core/util';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-auth',
@@ -46,10 +47,20 @@ export class AuthComponent implements OnInit {
     private authService: AuthenticateService,
     private userService: UserService,
     private cookieService: CookieService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+
+    this.route.queryParamMap.pipe(
+      map(tab => tab.get('tab'))
+    ).subscribe(tab =>{
+      if(!tab){
+        this.router.navigate(['/auth'], {queryParams: {tab: 'login'}})
+      }
+    })
+
     this.loginForm = this.fb.group({
       username: [
         this.cookieService.get('savedUsername') || '',
