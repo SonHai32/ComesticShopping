@@ -1,6 +1,8 @@
+import { CartService } from '../../../services/cart-service/cart.service';
 import { User } from './../../../models/user.model';
 import { UserService } from './../../../services/user-service/user.service';
 import { Component, OnInit } from '@angular/core';
+import { toCssPixel } from 'ng-zorro-antd/core/util';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -9,9 +11,11 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
 
   isLoggedIn = false
+  totalCart = 0
   navItems: any;
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private CartService: CartService
   ) {
     this.navItems = [
       {name: 'Trang chủ', path: '/'},
@@ -25,6 +29,9 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.userService.isLoggedIn().subscribe({
       next: val => this.isLoggedIn = val,
+    })
+    this.CartService.cartTotalObservable().subscribe((totalCart: number) =>{
+      this.totalCart = totalCart
     })
   }
 

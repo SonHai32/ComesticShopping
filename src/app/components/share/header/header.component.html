@@ -39,7 +39,9 @@
         "
       >
         <div
-          [nzPopoverContent]="isLoggedIn?userPopoverLoginedTmp:userPopoverUnLoggedInTmp"
+          [nzPopoverContent]="
+            isLoggedIn ? userPopoverLoginedTmp : userPopoverUnLoggedInTmp
+          "
           nz-popover
           nzPopoverPlacement="bottom"
           nzPopoverTrigger="hover"
@@ -55,10 +57,21 @@
           "
         >
           <ng-template #userPopoverUnLoggedInTmp>
-            <div class="user-popover-logout d-flex align-items-end justify-content-center">
+            <div
+              class="
+                user-popover-logout
+                d-flex
+                align-items-end
+                justify-content-center
+              "
+            >
               <span class="login-text" nz-typography>Bạn chưa đăng nhập</span>
-              <button class="mx-1" nz-button nzBlock nzType="primary">Đăng nhập</button>
-              <button class="mx-1" nz-button nzBlock nzType="primary">Đăng ký</button>
+              <button class="mx-1" nz-button nzBlock nzType="primary">
+                Đăng nhập
+              </button>
+              <button class="mx-1" nz-button nzBlock nzType="primary">
+                Đăng ký
+              </button>
             </div>
           </ng-template>
           <ng-template #userPopoverLoginedTmp>
@@ -78,6 +91,7 @@
                   <i nz-icon nzType="lock" nzTheme="outline"></i>
                   <span>Đổi mật khẩu</span>
                 </li>
+
                 <li
                   nz-menu-item
                   class="user-pop-over-item d-flex align-items-center"
@@ -93,13 +107,17 @@
                   <span>Thông báo</span>
                 </li>
               </div>
-              <button nz-button (click)="logOut()" nzBlock nzType="primary">Đăng xuất</button>
+              <button nz-button (click)="logOut()" nzBlock nzType="primary">
+                Đăng xuất
+              </button>
             </div>
           </ng-template>
 
           <i nz-icon nzType="user" nzTheme="outline"></i>
           <span class="none-select mx-2">Tài khoản</span>
         </div>
+
+          <nz-badge [nzCount]="totalCart" [nzOffset]="[-30, 10]" >
         <div
           class="
             cart
@@ -113,7 +131,8 @@
           "
         >
           <i nz-icon nzType="shopping-cart" nzTheme="outline"></i>
-          <span class="none-select mx-2">Giỏ hàng</span>
+
+            <span class="none-select mx-2">Giỏ hàng</span>
           <div class="dropdown-item">
             <p>aaaaa</p>
 
@@ -124,6 +143,7 @@
             <p>aaaaa</p>
           </div>
         </div>
+          </nz-badge>
       </div>
     </div>
   </div>
