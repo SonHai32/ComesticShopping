@@ -1,5 +1,6 @@
+import { User } from './../../../models/user.model';
+import { UserService } from './../../../services/user-service/user.service';
 import { Component, OnInit } from '@angular/core';
-import {NzDatePickerModule} from 'ng-zorro-antd/date-picker'
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -7,8 +8,11 @@ import {NzDatePickerModule} from 'ng-zorro-antd/date-picker'
 })
 export class HeaderComponent implements OnInit {
 
+  isLoggedIn = false
   navItems: any;
-  constructor() {
+  constructor(
+    private userService: UserService
+  ) {
     this.navItems = [
       {name: 'Trang chủ', path: '/'},
       {name: 'Giới thiệu', path: 'gioi-thieu'},
@@ -19,6 +23,13 @@ export class HeaderComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.userService.isLoggedIn().subscribe({
+      next: val => this.isLoggedIn = val,
+    })
+  }
+
+  logOut(){
+    this.userService.logOut()
   }
 
 }
