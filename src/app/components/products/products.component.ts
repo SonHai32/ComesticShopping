@@ -9,6 +9,7 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { Cart } from 'src/app/models/cart.model';
+import { NzMessageService } from 'ng-zorro-antd/message';
 
 @Component({
   selector: 'app-products',
@@ -65,7 +66,8 @@ export class ProductsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private categoryService: CategoriesService,
-    private cartService: CartService
+    private cartService: CartService,
+    private message: NzMessageService
   ) {}
 
   ngOnInit(): void {
@@ -133,5 +135,6 @@ export class ProductsComponent implements OnInit {
   addToCart(product: Product){
     console.log(product)
     this.cartService.addToCart(new Cart(product, 1))
+    this.message.success('Một sản phẩm vừa được thêm vào giỏ hàng của bạn', {nzAnimate: true});
   }
 }

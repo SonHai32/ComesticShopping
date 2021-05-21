@@ -31,6 +31,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { NzMessageModule } from 'ng-zorro-antd/message';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -91,6 +92,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     ReactiveFormsModule,
     NzSpinModule,
     NzPopoverModule,
+    NzMessageModule,
     SweetAlert2Module.forRoot(),
     ScrollingModule
   ],
