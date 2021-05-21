@@ -1,3 +1,4 @@
+import { CartService } from './../../services/cart-service/cart.service';
 import { Category } from './../../models/category.model';
 import { CategoriesService } from './../../services/categories.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,6 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
 import { map } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
+import { Cart } from 'src/app/models/cart.model';
 
 @Component({
   selector: 'app-products',
@@ -62,7 +64,8 @@ export class ProductsComponent implements OnInit {
     private prodService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private categoryService: CategoriesService
+    private categoryService: CategoriesService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -97,6 +100,10 @@ export class ProductsComponent implements OnInit {
             });
         }
       });
+
+      this.cartService.cartObservable().subscribe((cart: Cart[]) =>{
+        console.log(cart)
+      })
   }
 
   getProducts(categoryID: string, page: number) {
@@ -121,5 +128,10 @@ export class ProductsComponent implements OnInit {
     } else {
       this.router.navigate([], { queryParams: { page: index } });
     }
+  }
+
+  addToCart(product: Product){
+    console.log(product)
+    this.cartService.addToCart(new Cart(product, 1))
   }
 }

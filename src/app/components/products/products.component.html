@@ -141,7 +141,7 @@
       </div>
     </nz-card>
 
-    <ng-template #actionAddToCart>
+    <ng-template #actionAddToCart >
       <em
         nz-icon
         nzTooltipTitle="Thêm vào giỏ hàng"
@@ -150,6 +150,7 @@
         nzTooltipColor="cyan"
         nzType="shopping-cart"
         nzTheme="outline"
+        (click)="addToCart(product)"
       ></em>
     </ng-template>
     <ng-template #actionBuyNow>
