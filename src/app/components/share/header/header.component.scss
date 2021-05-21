@@ -60,5 +60,17 @@
   font-size: 15px;
 }
 
-
+.cart-list-item-popover{
+  width: 200px;
+  height: 300px;
+  position: relative;
+}
+.cart-empty{
+  width: 180px;
+  height: 180px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 

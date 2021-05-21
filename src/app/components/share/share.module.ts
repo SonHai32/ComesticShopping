@@ -40,6 +40,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {RouterModule} from '@angular/router'
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import {ScrollingModule} from '@angular/cdk/scrolling';
 
 
 
@@ -89,6 +90,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NzSpinModule,
     NzPopoverModule,
     SweetAlert2Module.forRoot(),
+    ScrollingModule
   ],
   exports: [
     DefaultComponent,

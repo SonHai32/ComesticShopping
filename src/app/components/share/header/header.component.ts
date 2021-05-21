@@ -1,3 +1,4 @@
+import { Cart } from './../../../models/cart.model';
 import { CartService } from '../../../services/cart-service/cart.service';
 import { User } from './../../../models/user.model';
 import { UserService } from './../../../services/user-service/user.service';
@@ -12,6 +13,7 @@ export class HeaderComponent implements OnInit {
 
   isLoggedIn = false
   totalCart = 0
+  listCart: Cart[] = []
   navItems: any;
   constructor(
     private userService: UserService,
@@ -32,6 +34,9 @@ export class HeaderComponent implements OnInit {
     })
     this.CartService.cartTotalObservable().subscribe((totalCart: number) =>{
       this.totalCart = totalCart
+    })
+    this.CartService.cartObservable().subscribe((listCart: Cart[]) =>{
+      this.listCart = listCart
     })
   }
 
