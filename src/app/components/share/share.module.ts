@@ -1,3 +1,4 @@
+import { CartDetailComponent } from './../cart-detail/cart-detail.component';
 import { AuthComponent } from './../auth/auth.component';
 import { DefaultComponent } from './../default/default.component';
 import { ProductDetailComponent } from './../product-detail/product-detail.component';
@@ -53,6 +54,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     FooterComponent,
     NavbarComponent,
     BannerComponent,
+    CartDetailComponent,
     ProductsComponent,
     ProductDetailComponent
   ],
@@ -100,7 +102,8 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     NavbarComponent,
     BannerComponent,
     ProductsComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    CartDetailComponent,
   ]
 
 })

@@ -1,4 +1,4 @@
-import { ProductsRoutingModule } from './modules/products/products-routing.module';
+import { DefaultRoutingModule } from './modules/default-routing/default-routing.module';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { IconModule } from './components/icon/icon.module';
 import { NgModule } from '@angular/core';
@@ -23,7 +23,7 @@ registerLocaleData(en);
   ],
   imports: [
     BrowserModule,
-    ProductsRoutingModule,
+    DefaultRoutingModule,
     AppRoutingModule,
     ShareModule,
     FormsModule,

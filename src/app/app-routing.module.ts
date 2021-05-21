@@ -8,7 +8,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  { path: '',  redirectTo: '/product', pathMatch: 'full'},
+  { path: '',  redirectTo: '/default/product', pathMatch: 'full'},
   {path: 'auth',canActivate: [LoginGuard],  component: AuthComponent}
 ];
 
