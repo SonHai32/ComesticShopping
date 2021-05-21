@@ -29,6 +29,7 @@ import { NzTabsModule } from 'ng-zorro-antd/tabs';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -86,6 +87,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NzCheckboxModule,
     ReactiveFormsModule,
     NzSpinModule,
+    NzPopoverModule,
     SweetAlert2Module.forRoot(),
   ],
   exports: [
