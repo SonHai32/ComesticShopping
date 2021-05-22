@@ -2,14 +2,15 @@ import { Cart } from '../../models/cart.model';
 import { Observable, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as Rx from 'rxjs';
-import { prepareEventListenerParameters } from '@angular/compiler/src/render3/view/template';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  cartSubject = new Rx.BehaviorSubject([] as Cart[]);
-  cartTotalSubject = new Rx.BehaviorSubject(0);
+  private cartSubject = new Rx.BehaviorSubject([] as Cart[]);
+  private cartTotalSubject = new Rx.BehaviorSubject(0);
+  private totalItemSubject = new Rx.BehaviorSubject(0);
+  private totalPriceSubject = new Rx.BehaviorSubject(0);
 
   cartTotalObservable(): Observable<number> {
     return this.cartTotalSubject.asObservable();
@@ -21,10 +22,43 @@ export class CartService {
   constructor() {
     const listCartInStorage = localStorage.getItem('cart-list');
     if (listCartInStorage) {
-      const listCart = JSON.parse(listCartInStorage);
+      const listCart: Cart[] = JSON.parse(listCartInStorage);
       this.cartSubject.next(listCart);
       this.cartTotalSubject.next(this.cartSubject.value.length);
+      this.updateTotalItem(listCart);
+      this.updateTotalPrice(listCart);
     }
+  }
+
+  updateTotalItem(listCart: Cart[]): void {
+    let sumTotalItem = () => {
+      let totalItem = 0;
+      return new Promise((reslove, reject) => {
+        listCart.forEach((cart: Cart) => {
+          totalItem += cart.amount;
+        });
+        reslove(totalItem);
+      });
+    };
+
+    sumTotalItem().then((sum: any) => {
+      this.totalItemSubject.next(sum);
+    });
+  }
+
+  updateTotalPrice(listCart: Cart[]) {
+    const getTotalPrice = () => {
+      let totalPrice: number = 0;
+      return new Promise((reslove, reject) => {
+        listCart.forEach((cart: Cart) => {
+          totalPrice += cart.amount * cart.product.product_price;
+        });
+        reslove(totalPrice)
+      });
+    };
+    getTotalPrice().then((totalPrice: any) =>{
+      this.totalPriceSubject.next(totalPrice)
+    })
   }
 
   updateCartAmount(productID: string, amount: number) {
@@ -46,20 +80,22 @@ export class CartService {
     }
   }
 
-  updateCart(listCart: Cart[]): void{
+  updateCart(listCart: Cart[]): void {
     this.cartSubject.next(listCart);
     this.cartTotalSubject.next(listCart.length);
+    this.updateTotalItem(listCart);
+    this.updateTotalPrice(listCart)
     localStorage.setItem('cart-list', JSON.stringify(this.cartSubject.value));
   }
 
-  deleteCart(productID: string): void{
-    let listCart: Cart[] = this.cartSubject.value
+  deleteCart(productID: string): void {
+    let listCart: Cart[] = this.cartSubject.value;
 
-    let newListCart: Cart[] = listCart.filter((cart: Cart) =>{
-      return cart.product._id !== productID
-    })
+    let newListCart: Cart[] = listCart.filter((cart: Cart) => {
+      return cart.product._id !== productID;
+    });
 
-    this.updateCart(newListCart)
+    this.updateCart(newListCart);
   }
 
   addToCart(cart: Cart) {
@@ -88,5 +124,12 @@ export class CartService {
 
       this.updateCart(listCart);
     });
+  }
+  totalItemObservable(): Observable<number> {
+    return this.totalItemSubject.asObservable();
+  }
+
+  totalPriceObservable():Observable<number>{
+    return this.totalPriceSubject.asObservable()
   }
 }
