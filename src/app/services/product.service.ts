@@ -16,7 +16,6 @@ export class ProductService {
 
 
   searchProducts(filter: any): Observable<Product[]>{
-      console.log(filter)
       return this.http.get<Product[]>(`${this.apiURI}?page=${filter['page'] -1}${filter['product_id']?'&id=' + filter['product_id']: ''}${filter['category_id']?'&product_cat=' + filter['category_id']: ''}`, this.httpOptions).pipe();
 
   }

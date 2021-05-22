@@ -32,6 +32,7 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzTableModule } from 'ng-zorro-antd/table';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -88,6 +89,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     NzBadgeModule,
     NzTabsModule,
     NzFormModule,
+    NzTableModule,
     NzCheckboxModule,
     ReactiveFormsModule,
     NzSpinModule,
