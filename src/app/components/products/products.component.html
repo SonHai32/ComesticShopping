@@ -104,7 +104,7 @@
   <ng-template #productCardItem let-product="product">
     <nz-card nzHoverable [nzActions]="[actionAddToCart, actionBuyNow]">
       <div
-        [routerLink]="['/product', 'product-detail', product.id]"
+        [routerLink]="['/default','product', 'product-detail', product._id]"
         class="card-content w-100"
         style="height: 300px"
       >
@@ -131,10 +131,10 @@
             class="w-100 d-flex align-items-center justify-content-center"
           >
             <h5 class="mr-4" nz-typography nzType="success">
-              {{ product.product_price }}
+              {{ product.product_price | currency:'VND':'symbol' }}
             </h5>
             <h6 nz-typography nzType="secondary">
-              <del>{{ product.product_old_price }}</del>
+              <del>{{ product.product_old_price | currency:'VND':'symbol'}}</del>
             </h6>
           </div>
         </nz-space>
