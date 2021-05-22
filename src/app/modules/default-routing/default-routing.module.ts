@@ -19,8 +19,11 @@ const productRoutes: Routes = [
       },
       {
         path: 'product',
-        component: ProductsComponent,
         children: [
+          {
+            path: '',
+            component: ProductsComponent
+          },
           {
             path: 'category/:category_id',
             component: ProductsComponent,

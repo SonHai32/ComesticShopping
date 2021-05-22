@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit {
     this.userService.isLoggedIn().subscribe({
       next: val => this.isLoggedIn = val,
     })
-    this.CartService.cartTotalObservable().subscribe((totalCart: number) =>{
+    this.CartService.totalItemObservable().subscribe((totalCart: number) =>{
       this.totalCart = totalCart
     })
     this.CartService.cartObservable().subscribe((listCart: Cart[]) =>{
