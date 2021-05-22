@@ -35,8 +35,12 @@ export class CartDetailComponent implements OnInit {
   updateCartAmount(amount: string, productID: string) {
     try {
       if (amount !== '') {
-        this.cartService.updateCartAmount(productID, parseInt(amount));
-        this.messageService.success('Cập nhật giỏ hàng thành công');
+        if(parseInt(amount) >= 0){
+          this.cartService.updateCartAmount(productID, parseInt(amount));
+          this.messageService.success('Cập nhật giỏ hàng thành công');
+        }else{
+          this.messageService.error('Số lượng phải lớn hơn hoặc bằng 0');
+        }
       } else {
         this.messageService.error(
           'Cập nhật giỏ hàng thành thất bại, vui lòng kiểm tra số lượng nhập'
