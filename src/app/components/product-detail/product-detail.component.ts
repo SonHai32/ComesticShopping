@@ -17,11 +17,11 @@ export class ProductDetailComponent implements OnInit {
   constructor(private route: ActivatedRoute, private prod: ProductService) { }
 
   ngOnInit(): void {
-    this.getRoutePro(parseInt(this.route.snapshot.params['product_id'], 10))
+    this.getRoutePro(this.route.snapshot.params['product_id'])
   }
 
   getRoutePro(productID: number){
-    this.prod.searchProducts(productID ?  {'product_id': productID} : null).subscribe((data: any) =>{
+    this.prod.searchProducts(productID ?  {'product_id': productID, 'page': 1} : null).subscribe((data: any) =>{
       this.product = data['products'][0]
     })
   }
