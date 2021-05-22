@@ -136,4 +136,11 @@ export class ProductsComponent implements OnInit {
     this.cartService.addToCart(new Cart(product, 1))
     this.message.success('Một sản phẩm vừa được thêm vào giỏ hàng của bạn', {nzAnimate: true});
   }
+
+  buyClick(product: Product){
+    this.addToCart(product)
+    setTimeout(() => {
+      this.router.navigate(['/default', 'cart-detail'])
+    }, 1000);
+  }
 }
