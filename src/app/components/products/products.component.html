@@ -104,44 +104,53 @@
   <ng-template #productCardItem let-product="product">
     <nz-card nzHoverable [nzActions]="[actionAddToCart, actionBuyNow]">
       <div
-        [routerLink]="['/default','product', 'product-detail', product._id]"
-        class="card-content w-100"
+        [routerLink]="['/default', 'product', 'product-detail', product._id]"
+        class="card-content w-100 d-flex flex-column align-items-center justify-content-center"
         style="height: 300px"
       >
         <div class="img-container w-100 d-flex justify-content-center">
           <img
             nz-image
-            width="230px"
-            height="230px"
+            width="200px"
+            height="200px"
             nzSrc="{{ product.product_img_urls[0] }}"
             nzDisablePreview
             alt=""
           />
         </div>
 
-        <nz-space nzDirection="vertical" nzSize="large" class="w-100">
+        <div
+          class="
+            d-flex
+            flex-column
+            align-items-center
+            justify-content-center
+            w-100
+            mt-auto
+          "
+        >
           <span
-            *nzSpaceItem
             nz-typography
             class="d-flex justify-content-center w-100 mt-1"
             ><strong>{{ product.product_name }}</strong></span
           >
           <div
-            *nzSpaceItem
             class="w-100 d-flex align-items-center justify-content-center"
           >
             <h5 class="mr-4" nz-typography nzType="success">
-              {{ product.product_price | currency:'VND':'symbol' }}
+              {{ product.product_price | currency: "VND":"symbol" }}
             </h5>
             <h6 nz-typography nzType="secondary">
-              <del>{{ product.product_old_price | currency:'VND':'symbol'}}</del>
+              <del>{{
+                product.product_old_price | currency: "VND":"symbol"
+              }}</del>
             </h6>
           </div>
-        </nz-space>
+        </div>
       </div>
     </nz-card>
 
-    <ng-template #actionAddToCart >
+    <ng-template #actionAddToCart>
       <em
         nz-icon
         nzTooltipTitle="Thêm vào giỏ hàng"
@@ -163,13 +172,6 @@
         nzType="dollar"
         nzTheme="outline"
       ></em>
-    </ng-template>
-    <ng-template #productCardImageTemplate>
-      <img
-        class="img-fluid"
-        alt="example"
-        src="https://adminbeauty.hvnet.vn/Upload/Files/bong-tay-trang-ipek-cotton-pads-120-mieng-beauty-garden-1.jpg?width=350&height=391&v=15042020"
-      />
     </ng-template>
   </ng-template>
 
