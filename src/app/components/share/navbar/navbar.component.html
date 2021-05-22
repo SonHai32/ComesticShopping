@@ -40,11 +40,11 @@
                     [nzType]="menu.cat_icon"
                     *ngIf="menu.cat_icon"
                   ></em>
-                  <a  [routerLink]="['category', menu.cat_id]" routerLinkActive='active'>{{
+                  <a  [routerLink]="['/default','product','category', menu.cat_id]" routerLinkActive='active'>{{
                     menu.cat_text
                   }}</a>
                 </li>
-                <li *ngIf="menu.cat_child"  [routerLink]="['category', menu.cat_id]" routerLinkActive='active' nz-submenu [nzTitle]="menu.cat_text">
+                <li *ngIf="menu.cat_child"  [routerLink]="['/default','product','category', menu.cat_id]" routerLinkActive='active' nz-submenu [nzTitle]="menu.cat_text">
                   <ul>
                     <ng-container
                       *ngTemplateOutlet="
