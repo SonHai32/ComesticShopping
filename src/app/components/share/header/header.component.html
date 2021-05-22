@@ -39,8 +39,9 @@
         "
       >
         <div
-[routerLink]="['/auth']" routerLinkActive="active"
-          [nzPopoverContent]="isLoggedIn?userPopoverLoginedTmp:''"
+          [routerLink]="['/auth']"
+          routerLinkActive="active"
+          [nzPopoverContent]="isLoggedIn ? userPopoverLoginedTmp : ''"
           nz-popover
           nzPopoverPlacement="bottom"
           nzPopoverTrigger="hover"
@@ -113,7 +114,7 @@
           </ng-template>
 
           <i nz-icon nzType="user" nzTheme="outline"></i>
-          <span class="none-select mx-2"  >Tài khoản</span>
+          <span class="none-select mx-2">Tài khoản</span>
         </div>
 
         <nz-badge [nzCount]="totalCart" [nzOffset]="[-30, 10]">
@@ -160,7 +161,7 @@
                           <span nz-typography
                             ><strong>Đơn giá: </strong>
                             <span nz-typography nzType="danger">
-                              {{ item.product.product_price }}
+                              {{ item.product.product_price | currency:'VND':'symbol' }}
                             </span></span
                           >
                         </nz-list-item-meta-title>
@@ -176,9 +177,26 @@
                     </nz-list-item>
                   </nz-list>
                 </cdk-virtual-scroll-viewport>
-                <nz-divider nzOrientation="center" nzType="horizontal" class="m-0"></nz-divider>
-                <button *ngIf="listCart.length > 0" nz-button nzBlock class="mt-3" nzType="dashed">Thanh toán ngay</button>
-                <img *ngIf="listCart.length == 0" src="assets/images/empty.png" alt="" class='cart-empty'>
+                <nz-divider
+                  nzOrientation="center"
+                  nzType="horizontal"
+                  class="m-0"
+                ></nz-divider>
+                <button
+                  *ngIf="listCart.length > 0"
+                  nz-button
+                  nzBlock
+                  class="mt-3"
+                  nzType="dashed"
+                >
+                  Thanh toán ngay
+                </button>
+                <img
+                  *ngIf="listCart.length == 0"
+                  src="assets/images/empty.png"
+                  alt=""
+                  class="cart-empty"
+                />
               </div>
             </ng-template>
           </div>
