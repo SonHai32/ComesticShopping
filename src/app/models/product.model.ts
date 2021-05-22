@@ -3,7 +3,7 @@ export class Product{
   product_price = 0
   product_old_price = 0
   product_discount = 0
-  id = ''
+  _id = ''
   product_rating = 0
   product_cat = {}
   product_colors = []
