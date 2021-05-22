@@ -1,4 +1,4 @@
-<div nz-row nzJustify="center">
+<div nz-row nzJustify="center" class="bg-light">
   <div
     nz-col
     nzXXl="16"
@@ -6,15 +6,16 @@
     nzLg="20"
     nzMd="22"
     nzXs="24"
-    class="product-item-card"
+    class="product-item-card bg-white"
   >
-    <ng-container
-      *ngTemplateOutlet="
-        productItemsCarousel;
-        context: { listProducts: productData, title: 'Best seller' }
-      "
-    >
-    </ng-container>
+    <div nz-col nzSpan="24">
+      <img
+        nz-image
+        nzSrc="/assets/images/banners/__MBL_HN_1320x500.jpg"
+        class="img-fluid"
+        alt="Banner"
+      />
+    </div>
     <ng-container
       *ngTemplateOutlet="
         productTemplate;
@@ -22,10 +23,30 @@
       "
     >
     </ng-container>
+    <div nz-row nzJustify="center">
+      <div nz-col nzXXl="12" nzXl="12" nzLg="12" nzMd="12" nzXs="24" nzSm="24">
+        <img
+          nz-image
+          nzSrc="/assets/images/banners/PG0601640X2401609984998.jpg"
+          class="img-fluid"
+          alt="Banner"
+        />
+      </div>
+
+      <div nz-col nzXXl="12" nzXl="12" nzLg="12" nzMd="12" nzXs="24" nzSm="24">
+        <img
+          nz-image
+          nzSrc="/assets/images/banners/HTD1705640x2401621227779.jpg"
+          class="img-fluid"
+          alt="Banner"
+        />
+      </div>
+    </div>
+
     <ng-container
       *ngTemplateOutlet="
         productItemsCarousel;
-        context: { listProducts: productData, title: 'Top 20' }
+        context: { listProducts: productData, title: 'Top các sản phẩm bán chạy trong tuần' }
       "
     >
     </ng-container>
@@ -66,12 +87,14 @@
         <div
           nz-row
           nzJustify="center"
-          [nzGutter]="[{ xs: 8, sm: 16, md: 24, lg: 32 }, 24]"
+          [nzGutter]="[{ xs: 8, sm: 16, md: 20, lg: 32 }, 24]"
         >
           <div
             *ngFor="let item of listProducts"
             nz-col
             nzXXl="6"
+            nzXl="6"
+            nzLg="8"
             nzMd="8"
             nzXs="12"
             nzSm="14"
@@ -102,53 +125,63 @@
   <!-- start-product-card-item-template -->
 
   <ng-template #productCardItem let-product="product">
-    <nz-card nzHoverable [nzActions]="[actionAddToCart, actionBuyNow]">
-      <div
-        [routerLink]="['/default', 'product', 'product-detail', product._id]"
-        class="card-content w-100 d-flex flex-column align-items-center justify-content-center"
-        style="height: 300px"
-      >
-        <div class="img-container w-100 d-flex justify-content-center">
-          <img
-            nz-image
-            width="200px"
-            height="200px"
-            nzSrc="{{ product.product_img_urls[0] }}"
-            nzDisablePreview
-            alt=""
-          />
-        </div>
-
+    <nz-ribbon nzText="{{ product.product_discount }}">
+      <nz-card nzHoverable [nzActions]="[actionAddToCart, actionBuyNow]">
         <div
+          [routerLink]="['/default', 'product', 'product-detail', product._id]"
           class="
+            card-content
+            w-100
             d-flex
             flex-column
             align-items-center
             justify-content-center
-            w-100
-            mt-auto
           "
+          style="height: 280px"
         >
-          <span
-            nz-typography
-            class="d-flex justify-content-center w-100 mt-1"
-            ><strong>{{ product.product_name }}</strong></span
-          >
+          <div class="img-container w-100 d-flex justify-content-center">
+            <img
+              nz-image
+              class="img-fluid"
+              width="200px"
+              height="200px"
+              nzSrc="{{ product.product_img_urls[0] }}"
+              nzDisablePreview
+              alt=""
+            />
+          </div>
+
           <div
-            class="w-100 d-flex align-items-center justify-content-center"
+            class="
+              d-flex
+              flex-column
+              align-items-center
+              justify-content-center
+              w-100
+              mt-auto
+            "
           >
-            <h5 class="mr-4" nz-typography nzType="success">
-              {{ product.product_price | currency: "VND":"symbol" }}
-            </h5>
-            <h6 nz-typography nzType="secondary">
-              <del>{{
-                product.product_old_price | currency: "VND":"symbol"
-              }}</del>
-            </h6>
+            <span nz-typography class="d-flex justify-content-center w-100 mt-1"
+              ><strong>{{ product.product_name }}</strong></span
+            >
+            <div
+              class="w-100 d-flex align-items-center justify-content-between"
+            >
+              <h5 class="mr-4" nz-typography>
+                <a nz-typography nzEditable="false">
+                  {{ product.product_price | currency: "VND":"symbol" }}
+                </a>
+              </h5>
+              <h6 nz-typography nzType="secondary">
+                <del>{{
+                  product.product_old_price | currency: "VND":"symbol"
+                }}</del>
+              </h6>
+            </div>
           </div>
         </div>
-      </div>
-    </nz-card>
+      </nz-card>
+    </nz-ribbon>
 
     <ng-template #actionAddToCart>
       <em
