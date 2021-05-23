@@ -1,18 +1,18 @@
 <nz-affix>
-  <div class="container-fluid">
-    <div class="row base-background py-4">
+    <div nz-row nzJustify="center" class="base-background py-4">
       <div
-        class="
-          col-md-2 col-xs-12
-          d-flex
-          align-items-center
-          justify-content-center
-          flex-row
-        "
+        nz-col
+        nzXXl="4"
+        nzXl="4"
+        nzLg="4"
+        nzMd="24"
+        nzXs="24"
+        nzSm="24"
+        class="d-flex align-items-center justify-content-center flex-row"
       >
         <h1 class="text-danger text-center">Logo</h1>
       </div>
-      <div class="col-md-6 col-xs-12">
+      <div nz-col nzXXl="12" nzXl="12" nzLg="12" nzMd="24" nzXs="24" nzSm="24">
         <ul
           class="
             navbar-nav
@@ -30,18 +30,21 @@
         </ul>
       </div>
       <div
-        class="
-          col-xs-12 col-md-3
-          d-flex
-          flex-row
-          align-items-center
-          justify-content-center
-        "
+        nz-col
+        nzXXl="6"
+        nzXl="6"
+        nzLg="6"
+        nzMd="6"
+        nzXs="24"
+        nzSm="24"
+        class="d-flex flex-row align-items-center justify-content-center"
       >
         <div
           [routerLink]="['/auth']"
           routerLinkActive="active"
-          [nzPopoverContent]="(isLoggedIn && !isMobile)? userPopoverLoggedInTmp : ''"
+          [nzPopoverContent]="
+            isLoggedIn && !isMobile ? userPopoverLoggedInTmp : ''
+          "
           (click)="openDrawerLoggedIn()"
           nz-popover
           nzPopoverPlacement="bottom"
@@ -85,7 +88,6 @@
         </nz-badge>
       </div>
     </div>
-  </div>
 </nz-affix>
 
 <nz-drawer
@@ -137,9 +139,15 @@
           [nzDescription]="cartItemLinkTmp"
         >
           <ng-template #cartItemLinkTmp>
-            <a [routerLink]="['/default', 'product','product-detail', item.product._id]">{{
-              item.product.product_name
-            }}</a>
+            <a
+              [routerLink]="[
+                '/default',
+                'product',
+                'product-detail',
+                item.product._id
+              ]"
+              >{{ item.product.product_name }}</a
+            >
           </ng-template>
 
           <nz-list-item-meta-title>
