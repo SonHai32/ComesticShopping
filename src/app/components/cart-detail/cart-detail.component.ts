@@ -1,5 +1,5 @@
 import { Cart } from './../../models/cart.model';
-import { CartService } from './../../services/cart-service/cart.service';
+import { CartService } from '../../services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService } from 'ng-zorro-antd/message';
 @Component({

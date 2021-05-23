@@ -9,7 +9,8 @@ export class AuthenticateService {
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'Application/json' }),
   };
-  apiURI = 'http://localhost:5000/api/users/';
+  // apiURI = 'http://localhost:5000/api/users/';
+  apiURI = "https://hame-comestic-api.herokuapp.com/api/users/"
   constructor(private http: HttpClient) {}
 
   login(user: { username: string; password: string }): Observable<User[]> {

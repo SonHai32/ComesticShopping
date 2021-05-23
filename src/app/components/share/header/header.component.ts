@@ -1,9 +1,7 @@
 import { Cart } from './../../../models/cart.model';
-import { CartService } from '../../../services/cart-service/cart.service';
-import { User } from './../../../models/user.model';
-import { UserService } from './../../../services/user-service/user.service';
+import { CartService } from '../../../services/cart.service';
 import { Component, OnInit } from '@angular/core';
-import { toCssPixel } from 'ng-zorro-antd/core/util';
+import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',

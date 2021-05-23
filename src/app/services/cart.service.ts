@@ -1,5 +1,5 @@
-import { Cart } from '../../models/cart.model';
-import { Observable, Subject } from 'rxjs';
+import { Cart } from '../models/cart.model';
+import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import * as Rx from 'rxjs';
 

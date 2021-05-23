@@ -1,4 +1,4 @@
-import { CartService } from './../../services/cart-service/cart.service';
+import { CartService } from '../../services/cart.service';
 import { Category } from './../../models/category.model';
 import { CategoriesService } from './../../services/categories.service';
 import { ActivatedRoute, Router } from '@angular/router';

@@ -10,7 +10,8 @@ export class CategoriesService {
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' })
   }
-  apiURI = 'http://localhost:5000/api/categories'
+  // apiURI = 'http://localhost:5000/api/categories'
+  apiURI = "https://hame-comestic-api.herokuapp.com/api/categories"
 
   constructor(private http: HttpClient) { }
 

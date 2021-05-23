@@ -14,7 +14,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), DefaultRoutingModule],
+  imports: [RouterModule.forRoot(routes, {onSameUrlNavigation: 'reload'}), DefaultRoutingModule],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

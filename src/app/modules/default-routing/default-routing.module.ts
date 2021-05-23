@@ -22,7 +22,7 @@ const productRoutes: Routes = [
         children: [
           {
             path: '',
-            component: ProductsComponent
+            component: ProductsComponent,
           },
           {
             path: 'category/:category_id',
@@ -38,7 +38,6 @@ const productRoutes: Routes = [
     ],
   },
 
-  { path: 'cart-detail', component: CartDetailComponent },
 ];
 
 @NgModule({

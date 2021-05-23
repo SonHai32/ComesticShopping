@@ -17,7 +17,7 @@
       />
     </div>
     <ng-container
-      id="product-container"
+      fragment="product-container"
       *ngTemplateOutlet="
         productTemplate;
         context: { listProducts: productData, title: category_text }
@@ -47,7 +47,10 @@
     <ng-container
       *ngTemplateOutlet="
         productItemsCarousel;
-        context: { listProducts: productData, title: 'Top các sản phẩm bán chạy trong tuần' }
+        context: {
+          listProducts: productData,
+          title: 'Top các sản phẩm bán chạy trong tuần'
+        }
       "
     >
     </ng-container>

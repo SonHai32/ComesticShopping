@@ -11,7 +11,8 @@ export class ProductService {
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' })
   }
-  apiURI = 'http://localhost:5000/api/products'
+  // apiURI = 'http://localhost:5000/api/products'
+  apiURI = "https://hame-comestic-api.herokuapp.com/api/products"
   constructor(private http:HttpClient) { }
 
 
