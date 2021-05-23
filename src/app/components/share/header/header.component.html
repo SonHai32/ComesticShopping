@@ -137,7 +137,7 @@
           [nzDescription]="cartItemLinkTmp"
         >
           <ng-template #cartItemLinkTmp>
-            <a [routerLink]="['product-detail', item.product.id]">{{
+            <a [routerLink]="['/default', 'product','product-detail', item.product._id]">{{
               item.product.product_name
             }}</a>
           </ng-template>
