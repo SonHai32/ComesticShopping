@@ -1,35 +1,57 @@
 <div nz-row nzJustify="center" class="bg-light">
-  <div nz-col nzXXl="16" nzXl="18" nzLg="20" nzMd="22" nzXs="24" class="pt-3">
-    <div nz-row nzJustify="center"  nzGutter="4">
-      <div nz-col nzSm="22" nzMd=10>
+  <div
+    nz-col
+    nzXXl="16"
+    nzXl="18"
+    nzLg="20"
+    nzMd="22"
+    nzSm="22"
+    nzXs="22"
+    class="pt-3"
+  >
+    <div nz-row nzJustify="center" nzGutter="4">
+      <div nz-col nzSm="22" nzXs="22" nzMd="22" nzLg="10">
         <ng-template #listHeader_1>
-          <h4 nz-typography class="primary-text-color">HỆ THỐNG CỬA HÀNG</h4>
+          <h4 nz-typography class="primary-text-color text-center">
+            HỆ THỐNG CỬA HÀNG
+          </h4>
         </ng-template>
 
-        <nz-list  [nzHeader]="listHeader_1">
+        <nz-list [nzHeader]="listHeader_1">
           <nz-list-item *ngFor="let item of storeAddressData">
             <div class="store-info w-100 d-flex align-items-center">
-              <em
-                class="mr-2"
-                nz-icon
-                nzType="home"
-                nzTwotoneColor="#F36CA8"
-                nzTheme="twotone"
-              ></em>
-              <span class="mr-2" nz-typography
-                ><strong>{{ item.district }}</strong></span
-              >
-              <span nz-typography>{{ item.addrInfo }}</span>
+              <div nz-row nzJustify="space-between">
+                <div nz-col nzSpan="12">
+                  <em
+                    class="mr-2"
+                    nz-icon
+                    nzType="home"
+                    nzTwotoneColor="#F36CA8"
+                    nzTheme="twotone"
+                  ></em>
+                  <span class="mr-2" nz-typography
+                    ><strong>{{ item.district }}</strong></span
+                  >
+                </div>
+
+                <div nz-col nzSpan="24">
+                  <span nz-typography >{{
+                    item.addrInfo
+                  }}</span>
+                </div>
+              </div>
             </div>
           </nz-list-item>
         </nz-list>
       </div>
-      <div nz-col nzSm="22" nzMd="6">
+      <div nz-col nzSm="22" nzXs="22" nzMd="22" nzLg="6">
         <ng-template #listHeader_2>
-          <h4 nz-typography class="primary-text-color">VỀ CHÚNG TÔI</h4>
+          <h4 nz-typography class="primary-text-color text-center">
+            VỀ CHÚNG TÔI
+          </h4>
         </ng-template>
 
-        <nz-list  [nzHeader]="listHeader_2">
+        <nz-list [nzHeader]="listHeader_2">
           <nz-list-item>
             <a href="#"
               ><span nz-typography><strong>Hệ thống cửa hàng</strong></span></a
@@ -61,14 +83,14 @@
           </nz-list-item>
         </nz-list>
       </div>
-      <div nz-col nzSm="22" nzMd="6">
+      <div nz-col nzSm="22" nzXs="22" nzMd="22" nzLg="6">
         <ng-template #listHeader_3>
-          <h4 nz-typography class="primary-text-color">
+          <h4 nz-typography class="primary-text-color text-center">
             Phản hồi với chúng tôi
           </h4>
         </ng-template>
 
-        <nz-list  [nzHeader]="listHeader_3">
+        <nz-list [nzHeader]="listHeader_3">
           <nz-list-item>
             <ng-template #emailPrefix>
               <em nz-icon nzType="mail" nzTheme="outline"></em>
@@ -83,8 +105,8 @@
               <textarea placeholder="Phản hồi của bạn" nz-input></textarea>
             </nz-form-control>
           </nz-list-item>
-          <nz-list-item class="d-flex justify-content-center" >
-            <button nz-button nzType="primary" >Gửi phản hồi</button>
+          <nz-list-item class="d-flex justify-content-center">
+            <button nz-button nzType="primary">Gửi phản hồi</button>
           </nz-list-item>
         </nz-list>
       </div>
