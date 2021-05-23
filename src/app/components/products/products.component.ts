@@ -54,6 +54,7 @@ export class ProductsComponent implements OnInit {
     nav: true,
   };
 
+  isMobile = false
   page = 1;
   total_result = 0;
   entries_per_page = 12;
@@ -71,6 +72,9 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    if(navigator.userAgent.includes('Mobile')){
+      this.isMobile = true
+    }
     combineLatest([this.route.queryParamMap.pipe(), this.route.paramMap.pipe()])
       .pipe(
         map(([query, param]) => {

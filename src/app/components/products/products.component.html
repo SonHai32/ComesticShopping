@@ -190,7 +190,7 @@
     <ng-template #actionAddToCart>
       <em
         nz-icon
-        nzTooltipTitle="Thêm vào giỏ hàng"
+        nzTooltipTitle="{{!isMobile ? 'Thêm vào giỏ hàng' : ''}}"
         nzTooltipPlacement="top"
         nz-tooltip
         nzTooltipColor="cyan"
@@ -201,13 +201,13 @@
     </ng-template>
     <ng-template #actionBuyNow>
       <em
-        nzTooltipTitle="Mua ngay"
         nzTooltipPlacement="top"
         nz-tooltip
         nzTooltipColor="cyan"
         nz-icon
         nzType="dollar"
         nzTheme="outline"
+        nzTooltipTitle="{{!isMobile ? 'Mua ngay' : ''}}"
         (click)="buyClick(product)"
       ></em>
     </ng-template>
