@@ -1,16 +1,17 @@
-<div class="base-background" nz-row nzJustify="center">
+<div class="base-background p-0 m-0" nz-row nzJustify="center">
   <div nz-col nzSpan="24">
     <div
       id="carouselExampleIndicators"
-      class="carousel slide col-12"
+      class="carousel slide "
       data-ride="carousel"
     >
       <div class="carousel-inner">
         <div
           *ngFor="let item of banners; index as idx"
           class="carousel-item {{ idx == 0 ? 'active' : '' }}"
-        >
-        <img src="{{item.bannerImageUrl}}" class="d-block w-100" alt="...">
+          >
+        <img nz-image [ngStyle]="{'height': bannerHeight}" style=" width: 100%;  object-fit: cover;"  nzSrc="{{item}}" class="" alt="...">
+
           </div>
         </div>
       </div>
