@@ -1,0 +1,26 @@
+<nz-layout class="layout bg-dark ">
+  <nz-sider [nzWidth]="280" nzCollapsible class="sider" nzBreakpoint="md" [nzCollapsedWidth]="0">
+    <dashboard-menu></dashboard-menu>
+  </nz-sider>
+  <nz-layout class="right-layout main-background p-4">
+    <nz-content class="content main-background p-4 overflow-auto">
+      <div nz-row>
+        <div nz-col nzSpan="24">
+          <h3 nz-typography>wellcome back, <strong>Admin</strong> </h3>
+        </div>
+        <div nz-col nzSpan="24" class="p-2 rounded bg-white mb-2">
+          <nz-breadcrumb nzAutoGenerate="true">
+          </nz-breadcrumb>
+        </div>
+        <div *ngIf="pageHeaderTitle" nz-col nzSpan="24" class="py-2">
+          <h2 class="ant-text-primary" nz-typography [nzContent]="pageHeaderTitle | titlecase"></h2>
+        </div>
+      </div>
+      <div nz-row class="w-100">
+        <div nz-col nzSpan="24" class="overflow-auto position-relative">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </nz-content>
+  </nz-layout>
+</nz-layout>

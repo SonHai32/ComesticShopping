@@ -1,0 +1,68 @@
+<form *ngIf="currentFormGroup" nz-form [formGroup]="currentFormGroup">
+  <ng-container *ngIf="currentFormList">
+    <div nz-row nzGutter="8">
+      <ng-container *ngFor="let item of currentFormList">
+        <div nz-col [nzSpan]="item.gridCol.nzSpan" [nzXXl]="item.gridCol.nzXxl" [nzXl]="item.gridCol.nzXl"
+          [nzLg]="item.gridCol.nzLg" [nzMd]="item.gridCol.nzMd" [nzXs]="item.gridCol.nzXs" [nzSm]="item.gridCol.nzSm"
+          [nzSpan]="item.gridCol.nzSpan">
+          <nz-form-item class="m-0">
+            <nz-form-label nzSpan="24" class="m-0 p-0">
+              {{item.formLabel}}
+            </nz-form-label>
+            <nz-form-control nzErrorTip="{{item.errorTooltips(item.formControlName)}}">
+              <ng-container *ngIf="!item.icon">
+                <input
+                  (ngModelChange)="handleInputChange(item.formControlName, $event)"
+                  type="{{item.type ? item.type: 'text'}}" nz-input formControlName="{{item.formControlName}}"
+                  placeholder="{{item.placeholder}}" />
+              </ng-container>
+              <ng-container *ngIf="item.icon">
+                <nz-input-group [nzAddOnAfter]="fieldIconTpl">
+                  <input (ngModelChange)="handleInputChange(item.formControlName, $event)"
+                    type="{{item.type ? item.type: 'text'}}" nz-input formControlName="{{item.formControlName}}"
+                    placeholder="{{item.placeholder}}" />
+                </nz-input-group>
+                <ng-template #fieldIconTpl>
+                  <i nz-icon [nzTheme]="item.icon.theme" [nzType]="item.icon.type"></i>
+                </ng-template>
+              </ng-container>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="currentDynamicFormList">
+    <ng-container *ngFor="let item of currentDynamicFormList">
+      <nz-form-item *ngIf="item.formLabel" class="m-0">
+        <nz-form-label class="p-0 m-0" nzSpan="24">{{item.formLabel}}</nz-form-label>
+      </nz-form-item>
+      <ng-container *ngIf="item.listOfForm">
+        <div nz-row nzGutter="8" nzJustify="center">
+          <div *ngFor="let form of item.listOfForm; index as idx" nz-col nzXl="6" nzLg="8" nzMd="12" nzSpan="12">
+            <nz-form-item nzJustify="space-around" class="my-1">
+              <nz-form-control nzSpan="24" nzErrorTip="{{item.errorTooltips(form.controlInstance)}}">
+                <nz-input-group>
+                  <input class="text-center" nz-tooltip="Double click để xoá"
+                    (dblclick)="handleRemoveChildDynamicForm(item.fieldName , form,  $event)" nz-input
+                    formControlName="{{form.controlInstance}}" placeholder="{{item.placeHolder + ' ' + (idx + 1)}}" />
+                </nz-input-group>
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+      </ng-container>
+      <nz-form-item class="m-0 mb-2">
+        <nz-form-control nzSpan="24">
+          <button class=" d-flex align-items-center justify-content-center" [disabled]="item.listOfForm.length >=12"
+            nz-button nzBlock="true" nzType="dashed" (click)="handleAddChildDynamicForm(item.fieldName ,$event)">
+            <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+            {{item.buttonName}}
+          </button>
+        </nz-form-control>
+      </nz-form-item>
+
+    </ng-container>
+  </ng-container>
+
+</form>

@@ -1,0 +1,127 @@
+<div nz-row nzJustify="center" nzAlign="middle" #container class="position-relative">
+  <div nz-col nzSpan="24" class="mb-2">
+    <h4 nz-typography class="ant-text-primary m-0 p-0 text-center">Danh sách sản phẩm</h4>
+  </div>
+  <nz-affix class="w-100" nzOffsetTop="0" >
+
+    <div nz-col nzSpan="24" class="mb-2 py-3 bg-white-backdrop rounded">
+      <div nz-row nzJustify="center" [nzGutter]="[8,8]" nzAlign="middle" class="px-2">
+        <div nz-col nzXl="2" nzLg="2" nzMd="24" nzSpan="24" class="d-flex justify-content-center align-items-center">
+          <span nz-typography class="mx-2"><strong>Bộ lọc</strong></span>
+          <i nz-icon nzType="filter" nzTheme="outline"></i>
+        </div>
+        <div nz-col nzXl="5" nzLg="5" nzMd="12" nzSpan="24" class="d-flex justify-content-end">
+          <nz-select class="w-100" [compareWith]="compareFn" [ngModelOptions]="{standalone: true}"
+            [(ngModel)]="categorySelected" nzAllowClear nzShowSearch="true" nzPlaceHolder="Lọc theo danh mục">
+            <ng-container *ngFor="let item of categoriesSelectData">
+              <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="categoriesSelectDataLoading" nzDisabled nzCustomContent="true">
+              <div class="w-100 d-flex justify-content-center align-items-center">
+                <i nz-icon nzType='loading' class="mx-2"></i> Loading
+              </div>
+            </nz-option>
+          </nz-select>
+        </div>
+        <div nz-col nzXl="5" nzLg="5" nzMd="12" nzSpan="24" class="d-flex justify-content-end">
+          <ng-template #contentTemplate>
+            <div class="p-3">
+              <nz-slider class="w-100" [nzMarks]="sliderProductPrice.marks"
+                [nzTipFormatter]="sliderProductPrice.valueFormater" nzRange [(ngModel)]="sliderProductPrice.value"
+                [nzMin]="sliderProductPrice.min" [nzMax]="sliderProductPrice.max"></nz-slider>
+            </div>
+          </ng-template>
+          <button [nzPopoverOverlayStyle]="{'min-width': '300px'}" nz-button nzPopoverPlacement="bottom" nzBlock
+            nz-popover nzPopoverTitle="Giá sản phẩm" [nzPopoverContent]="contentTemplate" nzPopoverTrigger="click"
+            class="text-left ant-text-placholder-color">
+            Lọc theo giá
+          </button>
+        </div>
+        <div nz-col nzXl="5" nzLg="5" nzMd="12" nzSpan="24" class="d-flex justify-content-end">
+          <input [(ngModel)]="productFilterName" nz-input placeholder="Lọc theo tên" />
+        </div>
+        <div nz-col nzXl="2" nzLg="2" nzMd="12" nzSpan="24" class="d-flex justify-content-end align-items-center">
+          <button (click)="productFilterSubmmit()" class="d-flex justify-content-center align-items-center" nz-button
+            nzBlock="true" nzType="primary">
+            <i nz-icon nzType="filter" nzTheme="outline"></i>
+            Lọc
+          </button>
+        </div>
+        <div nz-col nzXl="5" nzLg="5" nzMd="24" nzSpan="24" class="d-flex justify-content-end">
+          <button [routerLink]="['../form']" nz-button nzType="primary">Thêm mới</button>
+          <button *ngIf="(indeterminated || productChecked) && setOfProductCheck.size >0"
+            (click)="deleteConfirmMultipleItem()" nz-button nzType="dashed"
+            class="d-flex align-items-center justify-content-center ml-2">
+            <i nz-icon nzTheme="outline" nzType="delete"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </nz-affix>
+  <div nz-col nzSpan="24">
+    <nz-table class="backdrop-filter" [nzBordered]="true" [nzOuterBordered]="true" nzShowSizeChanger
+      [nzPageSizeOptions]="[]" [nzData]="productList" [nzFrontPagination]="false" [nzLoading]="productLoading"
+      [nzTotal]="totalProduct" [nzPageSize]="perPage" [nzPageIndex]="pageIndex"
+      (nzQueryParams)="onQueryParamsChange($event)" #basicTable [nzData]="productList">
+      <thead>
+        <tr>
+          <th nzAlign="center"><strong>Sản phẩm</strong></th>
+          <th nzAlign="center" [nzFilters]="listOfCategoryFilters" [nzFilterFn]="categoryFilterFuntion"><strong>Danh
+              mục</strong></th>
+          <th nzAlign="center"><strong>Giá gốc</strong></th>
+          <th nzAlign="center"><strong>Giá bán</strong></th>
+          <th nzAlign="center"><strong>Chiết khấu</strong></th>
+          <th nzAlign="center"><strong>Tồn kho</strong></th>
+          <th nzAlign="center"><strong>Hành động</strong></th>
+          <th [nzChecked]="productChecked" [nzIndeterminate]="indeterminated"
+            (nzCheckedChange)="onAllProductChecked($event)" nzAlign="center"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>
+            <div class="d-flex align-items-center">
+              <img nz-image width="100" height="100" nzSrc="{{data.images_list[0]}}" />
+              <span nz-typography class="ant-text-primary mx-2"><strong>{{data.name}}</strong></span>
+            </div>
+          </td>
+          <td nzAlign="center">
+            <span nz-typography>
+              {{data.category.name}}
+            </span>
+          </td>
+          <td nzAlign="center"> <span nz-typography>{{data.original_price| currency: 'VND':
+              'symbol'}}</span></td>
+          <td> <span nz-typography>
+              {{data.display_price| currency: 'VND': 'symbol'}}
+            </span></td>
+          <td nzAlign="center">
+            <span nz-typography>
+              {{data.discount}}%
+            </span>
+          </td>
+          <td nzAlign="center">{{data.quantity}}</td>
+          <td nzAlign="center">
+            <div class="d-flex align-items-center justify-content-center w-100">
+              <button [routerLink]="['../form', 'edit', data._id]" nz-button nzShape="circle" nzType="text"
+                class="d-flex align-items-center justify-content-center">
+                <span nz-typography class="mx-1" nzType="warning" nz-tooltip="Chỉnh sửa">
+                  <i class="mx-1" nz-icon nzTheme="outline" nzType="edit"></i>
+                </span>
+              </button>
+              <button (click)="deteteConfirmSingleItem(data._id, data.name)" nz-button nzShape="circle" nzType="text"
+                class="d-flex align-items-center justify-content-center">
+                <span nz-typography class="mx-1" nzType="danger" nz-tooltip="Xoá">
+                  <i class="mx-1" nz-icon nzTheme="outline" nzType="delete"></i>
+                </span>
+              </button>
+            </div>
+          </td>
+          <td *ngIf="data._id" nzAlign="center" nzShowCheckbox="true" [nzChecked]="setOfProductCheck.has(data._id)"
+            (nzCheckedChange)="onProductChecked(data._id ,$event)"></td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

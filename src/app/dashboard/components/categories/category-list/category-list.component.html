@@ -1,0 +1,44 @@
+<div nz-row nzJustify="center" nzAlign="middle" class="py-5">
+  <div nz-col nzSpan="24" class="mb-2">
+    <h4 nz-typography class="ant-text-primary m-0 p-0 text-center">Danh sách sản phẩm</h4>
+  </div>
+  <div nz-col nzSpan="24">
+    <nz-table class="backdrop-filter" nzShowPagination="true" nzFrontPagination="false" [(nzPageIndex)]="categoriesVM.page"
+      [nzTotal]="categoriesVM.totalResult" [nzData]="categoriesVM.categories" [nzPageSize]="categoriesVM.perPage"
+      [nzLoading]="categoriesVM.loading" (nzPageIndexChange)="onPageIndexChange()" #basicTable>
+      <thead>
+        <tr>
+          <th><strong>Tên Danh Mục</strong></th>
+          <th><strong>Slug</strong></th>
+          <th><strong>Danh Mục Phụ</strong></th>
+          <th nzAlign="center"><strong>Hành động</strong></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of basicTable.data">
+          <td>
+            <span nz-typography> {{data.name}}</span>
+          </td>
+          <td>
+            <span nz-typography> {{data.slug}}</span>
+          </td>
+          <td>
+            <span *ngIf="data.sub_category; else elseTpl" nz-typography> {{data.sub_category.name}}</span>
+            <ng-template #elseTpl>
+              <span nz-typography nzType="danger">Không có</span>
+            </ng-template>
+          </td>
+          <td nzAlign="center">
+            <span [routerLink]="['../form', 'edit', data.slug]" nz-typography class="mx-1" nzType="warning"
+              nz-tooltip="Chỉnh sửa">
+              <i class="mx-1" nz-icon nzTheme="outline" nzType="edit"></i>
+            </span>
+            <span nz-typography class="mx-1" nzType="danger" nz-tooltip="Xoá">
+              <i class="mx-1" nz-icon nzTheme="outline" nzType="delete"></i>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+</div>

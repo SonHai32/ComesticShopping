@@ -1,0 +1,66 @@
+<div nz-row nzAlign="middle" nzJustify="center" class="mt-4">
+  <div class="bg-white-backdrop p-4 rounded shadow" nz-col nzXl="16" nzLg="16" nzMd="18" nzSpan="24">
+    <!-- <dashboard-custom-form [currentFormList]="formList" [currentFormGroup]="formValidate"></dashboard-custom-form> -->
+    <form *ngIf="formValidate" nz-form [formGroup]="formValidate">
+      <div nz-row [nzGutter]="[8, 8]">
+        <div nz-col nzXXl="12" nzXl="12" nzLg="12" nzMd="24" nzSpan="24">
+          <nz-form-item class="m-0">
+            <nz-form-label nzSpan="24" class="m-0 p-0">
+              Tên danh mục
+            </nz-form-label>
+            <nz-form-control nzErrorTip="{{getErrorTooltips('name')}}">
+              <input (ngModelChange)="onCategoryNameChange($event)" nz-input formControlName="name"
+                placeholder="Nhập tên danh mục" type="text">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzXXl="12" nzXl="12" nzLg="12" nzMd="24" nzSpan="24">
+          <nz-form-item class="m-0">
+            <nz-form-label nzSpan="24" class="m-0 p-0">
+              Slug
+            </nz-form-label>
+            <nz-form-control nzErrorTip="{{getErrorTooltips('slug')}}">
+              <input formControlName="slug" nz-input placeholder="Nhập slug">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+        <div nz-col nzSpan="24">
+          <span style="font-size: 14px;" nz-typography>Danh mục phụ</span>
+        </div>
+        <div nz-col nzSpan="24" class="mb-3">
+          <nz-select [ngModelOptions]="{standalone: true}" [compareWith]="selectCategoyCompareFn"
+            [(ngModel)]="subCateSelected" nzShowSearch nzAllowClear nzPlaceHolder="Lựa chọn danh mục phụ" class="w-100">
+            <ng-container *ngFor="let item of categories">
+              <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
+            </ng-container>
+            <nz-option *ngIf="cateListLoadingStatus" nzDisabled nzCustomContent="true">
+              <div class="w-100 d-flex justify-content-center align-items-center">
+                <i nz-icon nzType='loading' class="mx-2"></i> Loading
+              </div>
+            </nz-option>
+          </nz-select>
+        </div>
+        <div nz-col nzXl="12" nzLg="12" nzMd="12" nzSpan="24">
+          <button (click)="clearForm()" nzBlock nz-button class="d-flex align-items-center justify-content-center"
+            [nzType]="'dashed'">
+            <i nz-icon nzType="delete" nzTheme="outline"></i>
+            Xoá nhập
+          </button>
+        </div>
+        <div nz-col nzXl="12" nzLg="12" nzMd="12" nzSpan="24">
+          <button (click)="formSubmit()" nzBlock nz-button class="d-flex align-items-center justify-content-center"
+            [nzType]="'primary'">
+            <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+            {{currentCategory ? 'Cập nhật' : 'Thêm'}}
+          </button>
+        </div>
+      </div>
+    </form>
+    <div nz-row nzGutter="8">
+
+    </div>
+    <div nz-row nzGutter="8" class="mt-4">
+
+    </div>
+  </div>
+</div>
