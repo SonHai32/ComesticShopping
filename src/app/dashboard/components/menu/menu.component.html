@@ -1,0 +1,17 @@
+<div nz-row  nzJustify="center" class="h-100 bg-dark">
+  <div nz-col nzSpan="24" class="d-flex align-items-center">
+    <h2 class="text-white ">Logooooo</h2>
+  </div>
+  <div nz-col nzSpan="24">
+    <div nz-row nzAlign="middle" nzJustify="center">
+      <div nz-col nzSpan="24">
+        <ng-container *ngFor="let item of dashboardMenu">
+          <div (click)="itemToggle(item.name, item.routerLink)" [class.menu-item-active]="item.name === menuItemActive" [class.menu-item-idle]="item.name !== menuItemActive" class="d-flex justify-content-start align-items-center my-3 menu-item-idle p-2">
+            <i class="mx-2" nz-icon [nzType]="item.icon" [nzTheme]="item.iconTheme"></i>
+            <span class="mx-2">{{item.name}}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

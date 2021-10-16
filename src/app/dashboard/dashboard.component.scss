@@ -1,0 +1,31 @@
+.overflow-auto{
+  overflow: auto;
+  &::-webkit-scrollbar{
+    display: none;
+  }
+}
+.main-background{
+  background: #F0F2F5;
+}
+.layout{
+  min-height: 100vh;
+}
+
+.content{
+  // background-color: #FDFEFF;
+  height: 100%;
+  border-radius: 25px;
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/social-network-360bd.appspot.com/o/public%2Fassets%2Fbackground%2Fbg2.png?alt=media&token=9e9320aa-4585-40c3-a28c-b0092b0bbc42');
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+}
+
+
+.right-layout{
+  background: inherit;
+  max-height: 100vh;
+  overflow-y: auto;
+  // height: 100%;
+}

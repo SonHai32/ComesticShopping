@@ -1,0 +1,41 @@
+$primary-color: #ff235c;
+.menu-item-idle {
+  font-size: 1rem !important;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  &:hover {
+    color: $primary-color;
+    transform: scale(1.1);
+  }
+  &::before {
+    content: "";
+    width: 4px;
+    height: 100%;
+    background: #fff;
+    border-radius: 1px solid #fff;
+    position: absolute;
+    top: -200%;
+    left: 0;
+    transition: all 0.4s ease-in-out;
+
+  }
+}
+
+.menu-item-active {
+  @extend .menu-item-idle;
+  color: #ff235c;
+  position: relative;
+  overflow: hidden;
+
+  &::before{
+    top: 0;
+  }
+
+  &:hover{
+    transform: scale(1);
+    color: $primary-color;
+  }
+}

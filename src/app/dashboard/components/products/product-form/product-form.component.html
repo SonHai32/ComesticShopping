@@ -1,0 +1,49 @@
+<div nz-row nzAlign="middle" nzJustify="center">
+  <div nz-col nzSpan="24" class="mn-2">
+    <h2 nz-typography class="ant-text-primary text-center">{{currentRoute === 'edit' ? 'Chỉnh sửa sản phẩm' : 'Thêm sản
+      phẩm'}}</h2>
+  </div>
+  <div class="product-create-container-bg p-4 rounded shadow" nz-col nzXl="16" nzLg="16" nzMd="18" nzSpan="24">
+    <dashboard-custom-form (inputChange)="onFormInputChange($event)" (removeChildDynamicForm)="removeChildDynamicForm($event.fieldName, $event.control)"
+      (addChildDynamicForm)="addProductField($event)" [currentFormList]="formList"
+      [currentDynamicFormList]="dynamicFormList" [currentFormGroup]="validateForm"></dashboard-custom-form>
+    <div nz-row nzGutter="8" nzJustify="center">
+      <div nz-col nzSpan="24">
+        <form nz-form>
+          <nz-form-item class="m-0 p-0">
+            <nz-form-label>Danh mục</nz-form-label>
+          </nz-form-item>
+          <nz-form-item class="m-0 p-0">
+            <nz-select [compareWith]="compareFn" [ngModelOptions]="{standalone: true}" [(ngModel)]="categorySelected"
+              nzAllowClear nzShowSearch="true" nzPlaceHolder="Chọn danh mục">
+              <ng-container *ngFor="let item of categoriesSelectData">
+                <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
+              </ng-container>
+              <nz-option *ngIf="categoriesSelectDataLoading" nzDisabled nzCustomContent="true">
+                <div class="w-100 d-flex justify-content-center align-items-center">
+                  <i nz-icon nzType='loading' class="mx-2"></i> Loading
+                </div>
+              </nz-option>
+            </nz-select>
+          </nz-form-item>
+        </form>
+      </div>
+    </div>
+    <div nz-row nzGutter="16" class="mt-4">
+      <div nz-col nzXl="12" nzLg="12" nzMd="12" nzSpan="24">
+        <button (click)="clearData()" nzBlock nz-button class="d-flex align-items-center justify-content-center"
+          [nzType]="'dashed'">
+          <i nz-icon nzType="delete" nzTheme="outline"></i>
+          Xoá nhập
+        </button>
+      </div>
+      <div nz-col nzXl="12" nzLg="12" nzMd="12" nzSpan="24">
+        <button (click)="submit()" nzBlock nz-button class="d-flex align-items-center justify-content-center"
+          [nzType]="'primary'">
+          <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+          {{currentRoute === 'edit'? 'Cập nhật': 'Thêm'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
