@@ -10,7 +10,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 export class CartDetailComponent implements OnInit {
   listCart: Cart[] = [];
   totalAmount: number = 0;
-  totalPrice: number = 0
+  totalPrice: number = 0;
   constructor(
     private cartService: CartService,
     private messageService: NzMessageService
@@ -23,22 +23,22 @@ export class CartDetailComponent implements OnInit {
     this.cartService.cartTotalObservable().subscribe((total: number) => {
       this.totalAmount = total;
     });
-    this.cartService.totalPriceObservable().subscribe((total: number) =>{
-      this.totalPrice = total
-    })
+    this.cartService.totalPriceObservable().subscribe((total: number) => {
+      this.totalPrice = total;
+    });
   }
 
   calcTotalPricePerProduct(amount: number, price: number): string {
     return (amount * price).toString();
   }
 
-  updateCartAmount(amount: string, productID: string) {
+  updateCartAmount(amount: string, productID?: string) {
     try {
-      if (amount !== '') {
-        if(parseInt(amount) >= 0){
+      if (amount !== '' && productID) {
+        if (parseInt(amount) >= 0) {
           this.cartService.updateCartAmount(productID, parseInt(amount));
           this.messageService.success('Cập nhật giỏ hàng thành công');
-        }else{
+        } else {
           this.messageService.error('Số lượng phải lớn hơn hoặc bằng 0');
         }
       } else {
@@ -53,8 +53,10 @@ export class CartDetailComponent implements OnInit {
     }
   }
 
-  deleteCart(productID: string){
-    this.cartService.deleteCart(productID)
-    this.messageService.success("Xoá thành công sản phẩm khỏi giỏ hàng")
+  deleteCart(productID?: string) {
+    if (productID) {
+      this.cartService.deleteCart(productID);
+      this.messageService.success('Xoá thành công sản phẩm khỏi giỏ hàng');
+    }
   }
 }

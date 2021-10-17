@@ -51,7 +51,7 @@ export class CartService {
       let totalPrice: number = 0;
       return new Promise((reslove, reject) => {
         listCart.forEach((cart: Cart) => {
-          totalPrice += cart.amount * cart.product.product_price;
+          totalPrice += cart.amount * cart.product.display_price;
         });
         reslove(totalPrice)
       });

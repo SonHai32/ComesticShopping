@@ -1,20 +1,22 @@
+import { CommonModule } from '@angular/common';
 import { DefaultRoutingModule } from './modules/default-routing/default-routing.module';
-import { LoginGuard } from './helper/guard/login.guard';
+import { LoginGuard } from './helpers/guard/login.guard';
 import { AuthComponent } from './components/auth/auth.component';
-import { DefaultComponent } from './components/default/default.component';
-import { ProductDetailComponent } from './components/product-detail/product-detail.component';
-import { ProductsComponent } from './components/products/products.component';
-import { AppComponent } from './app.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-{ path: '',  redirectTo: '/default/product', pathMatch: 'full'},
-  {path: 'auth',canActivate: [LoginGuard],  component: AuthComponent}
+  { path: '', redirectTo: '/default/product', pathMatch: 'full' , data: {breadcrumb: 'Home'}},
+  { path: 'auth', canActivate: [LoginGuard], component: AuthComponent },
+  {
+    path: 'dashboard',
+    data: {breadcrumb: 'Dashboard'},
+    loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'}), DefaultRoutingModule],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes), DefaultRoutingModule, CommonModule],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

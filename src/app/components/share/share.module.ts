@@ -97,6 +97,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     NzPopoverModule,
     NzDrawerModule,
     NzMessageModule,
+    NzSpinModule,
     SweetAlert2Module.forRoot(),
     ScrollingModule
   ],

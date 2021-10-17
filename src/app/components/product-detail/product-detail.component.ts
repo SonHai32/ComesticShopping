@@ -9,7 +9,7 @@ import { Product } from 'src/app/models/product.model';
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-  product = new Product
+  product!: Product
   selectImageIndex = 0;
   rate: number = 4;
 

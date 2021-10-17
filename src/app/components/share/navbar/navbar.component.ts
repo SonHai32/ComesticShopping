@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { Category } from './../../../models/category.model';
 import { CategoriesService } from './../../../services/categories.service';
 import { Component, OnInit } from '@angular/core';
@@ -8,19 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
-  categories: Category[] = []
-
+  categories$!: Observable<Category[]>
   constructor(private categoriesService: CategoriesService) { }
 
 
-  ngOnInit(): void {
-    this.getAllCategories()
+  affixChange(s: any){
   }
+  ngOnInit(): void {
+    this.categories$ = this.categoriesService.getAllCategories()
 
-  getAllCategories(){
-    this.categoriesService.getAllCategories().subscribe((data: any) =>{
-      this.categories = data['categories']
-    })
   }
 
 }

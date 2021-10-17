@@ -6,8 +6,8 @@ import { ProductService } from './../../services/product.service';
 import { Product } from './../../models/product.model';
 import { Component, OnInit } from '@angular/core';
 import { OwlOptions } from 'ngx-owl-carousel-o';
-import { map } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
 import { Cart } from 'src/app/models/cart.model';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
@@ -18,6 +18,7 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 })
 export class ProductsComponent implements OnInit {
   productData: Product[] = [];
+  productsList$!: Observable<Product[]>;
 
   customOptions: OwlOptions = {
     loop: true,
@@ -54,7 +55,7 @@ export class ProductsComponent implements OnInit {
     nav: true,
   };
 
-  isMobile = false
+  isMobile = false;
   page = 1;
   total_result = 0;
   entries_per_page = 12;
@@ -72,16 +73,21 @@ export class ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if(navigator.userAgent.includes('Mobile')){
-      this.isMobile = true
+    if (navigator.userAgent.includes('Mobile')) {
+      this.isMobile = true;
     }
-    combineLatest([this.route.queryParamMap.pipe(), this.route.paramMap.pipe()])
+    combineLatest([this.route.queryParamMap, this.route.paramMap])
       .pipe(
         map(([query, param]) => {
           return {
             page: query.get('page'),
             categoryID: param.get('category_id'),
           };
+        }),
+        tap((query) => {
+          const { categoryID, page } = query;
+          this.page = page ? parseInt(page) : 0;
+          this.category_id = categoryID ? categoryID : '';
         })
       )
       .subscribe(({ page, categoryID }) => {
@@ -96,55 +102,66 @@ export class ProductsComponent implements OnInit {
               if (data) {
                 let cate: Category = data['categories'][0];
                 console.log(cate);
-                this.category_text =
-                  cate.cat_id == this.category_id
-                    ? cate.cat_text
-                    : cate.cat_child.filter(
-                        (childCate: Category) => childCate.cat_id == categoryID
-                      )[0].cat_text;
+                // this.category_text =
+                //   cate.cat_id == this.category_id
+                //     ? cate.cat_name
+                //     : cate.cat_child.filter(
+                //         (childCate: Category) => childCate.cat_id == categoryID
+                //       )[0].cat_name;
               }
             });
         }
       });
 
-      this.cartService.cartObservable().subscribe((cart: Cart[]) =>{
-        console.log(cart)
-      })
+    this.cartService.cartObservable().subscribe((cart: Cart[]) => {
+      console.log(cart);
+    });
   }
 
   getProducts(categoryID: string, page: number) {
-    this.prodService
-      .searchProducts({ page: page, category_id: categoryID })
-      .subscribe((data: any) => {
-        this.productData = data['products'];
-        this.entries_per_page = data['entries_per_page'];
-        this.total_result = data['total_result'];
-      });
+    // this.prodService
+    //   .searchProducts({ page: page, category_id: categoryID })
+    //   .subscribe((data: any) => {
+    //     this.productData = data['products'];
+    //     this.entries_per_page = data['entries_per_page'];
+    //     this.total_result = data['total_result'];
+    //   });
+    this.productsList$ = this.prodService
+      .searchProducts({ page, category_id: categoryID })
+      .pipe(
+        tap((res: any) => {
+          this.entries_per_page = res['entries_per_page'];
+          this.total_result = res['total_result'];
+        }),
+        map((res: any) => res['products'] as Product[])
+      );
   }
 
   handlePageIndexChange(index: number) {
     if (this.isFirstLoad) {
       this.isFirstLoad = false;
 
-    this.route.queryParams.forEach(query =>{
-      if(query['page']){
-        this.page = query['page']
-      }
-    })
+      this.route.queryParams.forEach((query) => {
+        if (query['page']) {
+          this.page = query['page'];
+        }
+      });
     } else {
       this.router.navigate([], { queryParams: { page: index } });
     }
   }
 
-  addToCart(product: Product){
-    this.cartService.addToCart(new Cart(product, 1))
-    this.message.success('Một sản phẩm vừa được thêm vào giỏ hàng của bạn', {nzAnimate: true});
+  addToCart(product: Product) {
+    this.cartService.addToCart(new Cart(product, 1));
+    this.message.success('Một sản phẩm vừa được thêm vào giỏ hàng của bạn', {
+      nzAnimate: true,
+    });
   }
 
-  buyClick(product: Product){
-    this.addToCart(product)
+  buyClick(product: Product) {
+    this.addToCart(product);
     setTimeout(() => {
-      this.router.navigate(['/default', 'cart-detail'])
+      this.router.navigate(['/default', 'cart-detail']);
     }, 1000);
   }
 }

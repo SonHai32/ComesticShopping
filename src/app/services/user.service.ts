@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { User } from './../models/user.model';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
@@ -8,7 +9,7 @@ import * as Rx from 'rxjs'
 export class UserService {
   logger = new Rx.BehaviorSubject(false)
 
-  constructor() {
+  constructor(private http: HttpClient) {
     const user = localStorage.getItem('currentUser');
     if(user){
       const userParse = JSON.parse(user)
@@ -29,5 +30,8 @@ export class UserService {
 
   isLoggedIn(): Observable<boolean> {
     return this.logger.asObservable()
+  }
+
+  getUserInfo(userID: string){
   }
 }

@@ -16,9 +16,8 @@ export class ProductService {
   constructor(private http:HttpClient) { }
 
 
-  searchProducts(filter: any): Observable<Product[]>{
-      return this.http.get<Product[]>(`${this.apiURI}?page=${filter['page'] -1}${filter['product_id']?'&id=' + filter['product_id']: ''}${filter['category_id']?'&product_cat=' + filter['category_id']: ''}`, this.httpOptions).pipe();
-
+  searchProducts(filter: any): Observable<any[]>{
+      return this.http.get<Product[]>(`${this.apiURI}?page=${filter['page'] -1}${filter['product_id']?'&id=' + filter['product_id']: ''}${filter['category_id']?'&product_cat=' + filter['category_id']: ''}`, this.httpOptions);
   }
 
 

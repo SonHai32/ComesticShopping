@@ -23,7 +23,7 @@
       >
         <img
           nz-image
-          nzSrc="{{ cart.product.product_img_urls[0] }}"
+          nzSrc="{{ cart.product.images_list[0] }}"
           class="img-fluid img-thumbnail"
           alt=""
         />
@@ -48,7 +48,7 @@
           ]"
           nz-typography
         >
-          <a nz-typography>{{ cart.product.product_name }}</a>
+          <a nz-typography>{{ cart.product.name }}</a>
         </h6>
       </div>
       <div
@@ -104,11 +104,11 @@
         >
           <h6 nz-typography nzType="secondary">
             <del>
-              {{ cart.product.product_old_price | currency: "VND":"symbol" }}
+              {{ cart.product.original_price| currency: "VND":"symbol" }}
             </del>
           </h6>
           <h5 class="my-0 mt-1" nz-typography nzType="success">
-            {{ cart.product.product_price | currency: "VND":"symbol" }}
+            {{ cart.product.display_price| currency: "VND":"symbol" }}
           </h5>
         </div>
       </div>
@@ -125,7 +125,7 @@
         <h5 nz-typography nzType="danger">
           Thành tiền:
           {{
-            calcTotalPricePerProduct(cart.amount, cart.product.product_price)
+            calcTotalPricePerProduct(cart.amount, cart.product.display_price)
               | currency: "VND":"symbol"
           }}
         </h5>
