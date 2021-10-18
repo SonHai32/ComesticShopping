@@ -155,9 +155,9 @@ export class ProductListComponent implements OnInit {
 
   deleteSingleProduct(ID: string) {
     this.productService
-      .detete(ID)
-      .pipe(take(1))
+      .deleteProduct([ID])
       .subscribe((res: any) => {
+        console.log(res);
         if (res.status === 'SUCCESS') {
           this.nzMessageService.success('Xoá thành công');
           this.productList = this.productList.filter((val) => val._id !== ID);
@@ -175,7 +175,7 @@ export class ProductListComponent implements OnInit {
       .map((val: Product) => (val._id ? val._id : ''));
     if (listOfCheckedID) {
       this.productService
-        .deleteMany(listOfCheckedID)
+        .deleteProduct(listOfCheckedID)
         .pipe(take(1))
         .subscribe((res: any) => {
           if (res.status === 'SUCCESS') {

@@ -1,5 +1,7 @@
+import { AppEffects } from './store/auth/effects/app.effect';
+import { NzMessageService, NzMessageModule } from 'ng-zorro-antd/message';
 import { AuthEffect } from './store/auth/effects/auth.effect';
-import { initializer } from './helpers/app.initializer';
+import { initializer, initialAppListening } from './helpers/app.initializer';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { environment } from './../environments/environment.prod';
 import { authReducer } from './store/auth/reducers/auth.reducer';
@@ -22,6 +24,7 @@ import { Store, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AuthenticateService } from './services/authenticate.service';
 import { EffectsModule } from '@ngrx/effects';
+import { AppReducers } from './store/auth/reducers/app.reducer';
 
 registerLocaleData(en);
 @NgModule({
@@ -33,8 +36,8 @@ registerLocaleData(en);
     AppRoutingModule,
     ShareModule,
     FormsModule,
-    StoreModule.forRoot({ auth: authReducer }),
-    EffectsModule.forRoot([AuthEffect]),
+    StoreModule.forRoot({ auth: authReducer, app: AppReducers }),
+    EffectsModule.forRoot([AuthEffect, AppEffects]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,
@@ -43,6 +46,7 @@ registerLocaleData(en);
     HttpClientModule,
     BrowserAnimationsModule,
     IconsProviderModule,
+    NzMessageModule,
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
@@ -51,6 +55,12 @@ registerLocaleData(en);
       useFactory: initializer,
       multi: true,
       deps: [Store],
+    },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initialAppListening,
+      multi: true,
+      deps: [Store, NzMessageService],
     },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
   ],

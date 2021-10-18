@@ -1,6 +1,6 @@
 import { environment } from './../../../environments/environment';
 import { Product } from 'src/app/models/product.model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -14,11 +14,11 @@ export class ProductService {
   URL: string = `${environment.apiURL}/products/`;
 
   insertProduct(product: Product) {
-    return this.http.post(this.URL, { product }).pipe(take(1));
+    return this.http.post(this.URL, { product });
   }
 
   updateProduct(product: Product) {
-    return this.http.patch(this.URL, {product});
+    return this.http.patch(this.URL, { product });
   }
   getProductByID(ID: string) {
     const url: string = `${this.URL}product-detail?id=${ID}`;
@@ -36,11 +36,8 @@ export class ProductService {
       }${filter['name'] ? '&name=' + filter['name'] : ''}`
     );
   }
-  detete(productID: string) {
-    return this.http.put(`${this.URL}delete-product`, { id: productID });
-  }
 
-  deleteMany(listOfID: string[]) {
-    return this.http.put(`${this.URL}delete-many-product`, { listOfID });
+  deleteProduct(listOfID: string[]) {
+    return this.http.request('delete', this.URL, { body: { listOfID } });
   }
 }

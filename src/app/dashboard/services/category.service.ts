@@ -29,4 +29,7 @@ export class CategoryService {
   updateCategory(categoryID: string, category: Category) {
     return this.http.put(this.URL, { id: categoryID, category });
   }
+  deleteCategory(listOfID: string[]) {
+    return this.http.request('delete', this.URL, { body: { listOfID } });
+  }
 }

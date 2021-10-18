@@ -1,17 +1,27 @@
-<div nz-row nzJustify="center" nzAlign="middle" class="py-5">
+<div nz-row nzJustify="center" nzAlign="middle">
   <div nz-col nzSpan="24" class="mb-2">
     <h4 nz-typography class="ant-text-primary m-0 p-0 text-center">Danh sách sản phẩm</h4>
   </div>
+  <div nz-col nzSpan="24" class="d-flex justify-content-end py-2">
+    <button [routerLink]="['../form']" nz-button nzType="primary">Thêm mới</button>
+    <button *ngIf="setOfCategoryChecked.size >0" [nzLoading]="requestLoading" (click)="deleteConfirmMultipleItem()"
+      nz-button nzType="dashed" class="d-flex align-items-center justify-content-center ml-2">
+      <i nz-icon nzTheme="outline" nzType="delete"></i>
+    </button>
+  </div>
   <div nz-col nzSpan="24">
-    <nz-table class="backdrop-filter" nzShowPagination="true" nzFrontPagination="false" [(nzPageIndex)]="categoriesVM.page"
-      [nzTotal]="categoriesVM.totalResult" [nzData]="categoriesVM.categories" [nzPageSize]="categoriesVM.perPage"
-      [nzLoading]="categoriesVM.loading" (nzPageIndexChange)="onPageIndexChange()" #basicTable>
+    <nz-table class="backdrop-filter" nzShowPagination="true" nzFrontPagination="false"
+      [(nzPageIndex)]="categoriesVM.page" [nzTotal]="categoriesVM.totalResult" [nzData]="categoriesVM.categories"
+      [nzPageSize]="categoriesVM.perPage" [nzLoading]="categoriesVM.loading" (nzPageIndexChange)="onPageIndexChange()"
+      #basicTable>
       <thead>
         <tr>
           <th><strong>Tên Danh Mục</strong></th>
           <th><strong>Slug</strong></th>
           <th><strong>Danh Mục Phụ</strong></th>
           <th nzAlign="center"><strong>Hành động</strong></th>
+          <th nzAlign="center" [nzChecked]="categoryChecked" [nzIndeterminate]="indeterminated"
+            (nzCheckedChange)="onAllItemChecked($event)"></th>
         </tr>
       </thead>
       <tbody>
@@ -28,15 +38,22 @@
               <span nz-typography nzType="danger">Không có</span>
             </ng-template>
           </td>
-          <td nzAlign="center">
-            <span [routerLink]="['../form', 'edit', data.slug]" nz-typography class="mx-1" nzType="warning"
-              nz-tooltip="Chỉnh sửa">
-              <i class="mx-1" nz-icon nzTheme="outline" nzType="edit"></i>
-            </span>
-            <span nz-typography class="mx-1" nzType="danger" nz-tooltip="Xoá">
-              <i class="mx-1" nz-icon nzTheme="outline" nzType="delete"></i>
-            </span>
+          <td *ngIf="data._id" nzAlign="center">
+            <button nz-button nzType="text" nz-tooltip="Chỉnh sửa" class="p-0">
+              <span [routerLink]="['../form', 'edit', data.slug]" nz-typography class="mx-1" nzType="warning"
+                nz-tooltip="Chỉnh sửa">
+                <i class="mx-1" nz-icon nzTheme="outline" nzType="edit"></i>
+              </span>
+            </button>
+            <button nz-button nzType="text" nz-tooltip="Xoá" class="p-0">
+              <span nz-typography nzType="danger" class="mx-1">
+                <i (click)="deteteConfirmSingleItem(data._id, data.name)" class="mx-1" nz-icon nzTheme="outline"
+                  nzType="delete"></i>
+              </span>
+            </button>
           </td>
+          <td *ngIf="data._id" nzAlign="center" [nzChecked]="setOfCategoryChecked.has(data._id)"
+            (nzCheckedChange)="onItemChecked(data._id, $event)"></td>
         </tr>
       </tbody>
     </nz-table>

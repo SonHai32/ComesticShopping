@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AuthActions } from '../actions/auth.action';
 import { catchError, exhaustMap, map, tap, timeout } from 'rxjs/operators';
-import { of, scheduled } from 'rxjs';
+import { of } from 'rxjs';
 @Injectable()
 export class AuthEffect {
   constructor(
@@ -20,7 +20,11 @@ export class AuthEffect {
           accessToken,
         })
       ),
-      catchError((error) => of(AuthActions.CheckAuthFailAction({message: (error as Error).message})))
+      catchError((error) =>
+        of(
+          AuthActions.CheckAuthFailAction({ message: (error as Error).message })
+        )
+      )
     )
   );
 }
