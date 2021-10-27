@@ -1,0 +1,27 @@
+<div nz-row>
+  <div nz-col nzSpan="6">
+    <app-edit-home-toolbox></app-edit-home-toolbox>
+  </div>
+  <div nz-col nzSpan="18">
+    <div [cdkDropListData]="rows" *ngFor="let row of rows" (cdkDropListDropped)="onDragDrop($event)" nz-row cdkDropList
+      class="border cdk-list">
+      <div nz-col nzSpan='24' class="bg-white cdk-box" cdkDrag>
+        <div nz-row nzAlign="middle" nzJustify="space-between">
+          <div nz-col nzSpan="20">
+            {{row.title.content}}
+          </div>
+          <div nz-col nzSpan="4" class="d-flex align-items-center justify-content-center">
+            <button nz-button nzType="text" nzShape="circle"
+              class="mx-1 d-flex align-items-center justify-content-center">
+              <i nz-icon nzType="edit" nzTheme="outline"></i>
+            </button>
+            <button nz-button nzType="text" nzShape="circle"
+              class="mx-1 d-flex align-items-center justify-content-center">
+              <i nz-icon nzType="delete" nzTheme="outline" class="ant-text-danger"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

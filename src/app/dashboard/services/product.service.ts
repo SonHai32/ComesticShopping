@@ -25,16 +25,19 @@ export class ProductService {
     return this.http.get(url);
   }
 
-  gelAll(filter: any): Observable<any[]> {
-    return this.http.get<Product[]>(
-      `${this.URL}?page=${filter['page'] - 1}&perPage=${filter['perPage']}${
-        filter['product_id'] ? '&id=' + filter['product_id'] : ''
-      }${filter['cat_id'] ? '&cat_id=' + filter['cat_id'] : ''}${
-        filter['price']
-          ? '&price=' + filter['price'][0] + ',' + filter['price'][1]
-          : ''
-      }${filter['name'] ? '&name=' + filter['name'] : ''}`
-    );
+  // gelAll(filter: any): Observable<any[]> {
+  //   return this.http.get<Product[]>(
+  //     `${this.URL}?page=${filter['page'] - 1}&perPage=${filter['perPage']}${
+  //       filter['product_id'] ? '&id=' + filter['product_id'] : ''
+  //     }${filter['cat_id'] ? '&cat_id=' + filter['cat_id'] : ''}${
+  //       filter['price']
+  //         ? '&price=' + filter['price'][0] + ',' + filter['price'][1]
+  //         : ''
+  //     }${filter['name'] ? '&name=' + filter['name'] : ''}`
+  //   );
+  // }
+  getProducts(filter?: any): Observable<any> {
+    return this.http.request('get', this.URL, { params: filter });
   }
 
   deleteProduct(listOfID: string[]) {

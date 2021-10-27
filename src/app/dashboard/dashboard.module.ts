@@ -1,8 +1,5 @@
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
-import { ProductCreateCompModule } from './modules/comp-modules/products/product-form-comp/product-form-comp.module';
-import { ProductRoutingModule } from './routing/product-routing.module';
-import { ProductCompModule } from './modules/comp-modules/products/product-list-comp/product-list-comp.module';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzGridModule } from 'ng-zorro-antd/grid';
@@ -19,11 +16,8 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
   declarations: [DashboardComponent],
   imports: [
     CommonModule,
-    // ProductRoutingModule,
     DashboardRoutingModule,
     MenuCompModule,
-    // ProductCompModule,
-    // ProductCreateCompModule,
     NzGridModule,
     NzAffixModule,
     NzLayoutModule,

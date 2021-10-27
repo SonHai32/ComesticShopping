@@ -1,0 +1,4 @@
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+  <h4 class="text-center">Tool box</h4>
+  <div class="example-box" *ngFor="let item of tools" cdkDrag>{{item.title}}</div>
+</div>

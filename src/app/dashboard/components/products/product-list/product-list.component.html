@@ -58,7 +58,7 @@
 
   <div nz-col nzSpan="24">
     <nz-table class="backdrop-filter" [nzBordered]="true" [nzOuterBordered]="true" nzShowSizeChanger
-      [nzPageSizeOptions]="[]" [nzData]="productList" [nzFrontPagination]="false" [nzLoading]="productLoading"
+      [nzPageSizeOptions]="[6, 8, 12, 24]" [nzData]="productList" [nzFrontPagination]="false" [nzLoading]="productLoading"
       [nzTotal]="totalProduct" [nzPageSize]="perPage" [nzPageIndex]="pageIndex"
       (nzQueryParams)="onQueryParamsChange($event)" #basicTable [nzData]="productList">
       <thead>

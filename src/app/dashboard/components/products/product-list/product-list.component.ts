@@ -27,7 +27,7 @@ export class ProductListComponent implements OnInit {
   productLoading: boolean = false;
   subscriptions: Subscription = new Subscription();
   pageIndex: number = 1;
-  perPage: number = 12;
+  perPage: number = 6;
   productChecked: boolean = false;
   indeterminated: boolean = false;
   setOfProductCheck = new Set<string>();
@@ -62,8 +62,12 @@ export class ProductListComponent implements OnInit {
     this.getCategoryList();
   }
   onQueryParamsChange(params: NzTableQueryParams) {
+    console.log(params);
     if (params.pageIndex) {
       this.pageIndex = params.pageIndex;
+      this.getProductList({});
+    } else if (params.pageSize) {
+      this.perPage = params.pageSize;
       this.getProductList({});
     }
   }
@@ -106,16 +110,17 @@ export class ProductListComponent implements OnInit {
     this.productLoading = true;
     this.subscriptions.add(
       this.productService
-        .gelAll(_query)
+        .getProducts({ page: this.pageIndex, perPage: this.perPage })
         .pipe(
           map((res: any) => {
             return {
               products: res.product_list as Product[],
-              total_result: res.total_num_product,
+              total_result: res.total_result as number,
             };
           })
         )
         .subscribe((val) => {
+          console.log(val);
           this.productList = val.products;
           this.totalProduct = val.total_result;
           this.productLoading = false;
@@ -154,19 +159,17 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteSingleProduct(ID: string) {
-    this.productService
-      .deleteProduct([ID])
-      .subscribe((res: any) => {
-        console.log(res);
-        if (res.status === 'SUCCESS') {
-          this.nzMessageService.success('Xoá thành công');
-          this.productList = this.productList.filter((val) => val._id !== ID);
-          this.refreshProductListCount(1);
-          this.refreshProductCheckedStatus();
-        } else {
-          this.nzMessageService.error(`Xoá thất bại.Error: ${res.message}`);
-        }
-      });
+    this.productService.deleteProduct([ID]).subscribe((res: any) => {
+      console.log(res);
+      if (res.status === 'SUCCESS') {
+        this.nzMessageService.success('Xoá thành công');
+        this.productList = this.productList.filter((val) => val._id !== ID);
+        this.refreshProductListCount(1);
+        this.refreshProductCheckedStatus();
+      } else {
+        this.nzMessageService.error(`Xoá thất bại.Error: ${res.message}`);
+      }
+    });
   }
 
   deleteMultipleProduct(): void {
