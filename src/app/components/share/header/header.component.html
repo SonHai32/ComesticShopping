@@ -19,8 +19,8 @@
   </div>
   <div nz-col nzXXl="6" nzXl="6" nzLg="6" nzMd="6" nzXs="24" nzSm="24"
     class="d-flex flex-row align-items-center justify-content-center">
-    <div [routerLink]="['/auth']" routerLinkActive="active" [nzPopoverContent]="
-            isLoggedIn && !isMobile ? userPopoverLoggedInTmp : ''
+    <div [nzPopoverContent]="
+            (currentUser | async) ? userPopoverLoggedInTmp : ''
           " (click)="openDrawerLoggedIn()" nz-popover nzPopoverPlacement="bottom" nzPopoverTrigger="hover" class="
             user
             mx-2
@@ -32,7 +32,11 @@
             align-items-center
           ">
       <i nz-icon nzType="user" nzTheme="outline"></i>
-      <span class="none-select mx-2">Tài khoản</span>
+      <span *ngIf="currentUser | async as user; else elseTpl" class="none-select mx-2">{{user.username}}</span>
+      <ng-template #elseTpl>
+        <span class="none-select mx-2">Tài khoản</span>
+      </ng-template>
+
     </div>
 
     <nz-badge [nzCount]="totalCart" [nzOffset]="[-30, 10]">
@@ -54,9 +58,10 @@
   </div>
 </div>
 
-<nz-drawer *ngIf="isLoggedIn" [nzKeyboard]="true" [nzClosable]="false" [nzVisible]="drawerLoggedIn" nzPlacement="bottom"
-  nzTitle="Tài khoản" [nzHeight]="400" (nzOnClose)="closeDrawerLoggedIn()">
+<nz-drawer *ngIf="currentUser | async as user" [nzKeyboard]="true" [nzClosable]="false" [nzVisible]="drawerLoggedIn"
+  nzPlacement="bottom" nzTitle="Tài khoản" [nzHeight]="400" (nzOnClose)="closeDrawerLoggedIn()">
   <ng-container *nzDrawerContent [ngTemplateOutlet]="userLoggedInTmp">
+    <span>{{user.username}}</span>
   </ng-container>
 </nz-drawer>
 <!-- start drawer for list cart item !!! JUST FOR MOBILE -->

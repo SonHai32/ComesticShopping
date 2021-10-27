@@ -21,9 +21,9 @@ export class ProductDetailComponent implements OnInit {
   }
 
   getRoutePro(productID: number){
-    this.prod.searchProducts(productID ?  {'product_id': productID, 'page': 1} : null).subscribe((data: any) =>{
-      this.product = data['products'][0]
-    })
+    // this.prod.searchProducts(productID ?  {'product_id': productID, 'page': 1} : null).subscribe((data: any) =>{
+    //   this.product = data['products'][0]
+    // })
   }
 
   changeSelectImageIndex(index: number){

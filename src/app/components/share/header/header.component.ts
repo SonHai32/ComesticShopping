@@ -1,7 +1,11 @@
+import { AuthSelector } from './../../../store/auth/selector/auth.selector';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { Cart } from './../../../models/cart.model';
 import { CartService } from '../../../services/cart.service';
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
+import { User } from 'src/app/models/user.model';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -15,9 +19,11 @@ export class HeaderComponent implements OnInit {
   navItems: any;
   drawerListCart = false;
   drawerLoggedIn = false;
+  currentUser!: Observable<User | null>
   constructor(
     private userService: UserService,
-    private CartService: CartService
+    private CartService: CartService,
+    private store: Store,
   ) {
     this.navItems = [
       { name: 'Trang chủ', path: '/' },
@@ -28,6 +34,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentUser = this.store.select(AuthSelector.UserSelector)
     if (navigator.userAgent.includes('Mobile')) {
       this.isMobile = true;
     }

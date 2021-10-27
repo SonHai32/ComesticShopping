@@ -7,8 +7,8 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { observable, Observable } from 'rxjs';
-import { first, take, mergeMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { take, mergeMap } from 'rxjs/operators';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -18,7 +18,6 @@ export class JwtInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     req = req.clone({ setHeaders: { 'Content-Type': 'application/json' } });
-    console.log(req.url);
     if (req.url.endsWith('refreshToken')) {
       req = req.clone({
         withCredentials: true,
@@ -27,17 +26,21 @@ export class JwtInterceptor implements HttpInterceptor {
       req.method == 'DELETE' ||
       req.method == 'PUT' ||
       req.method == 'POST' ||
-      req.method == 'PATCH'
+      req.method == 'PATCH' ||
+      (req.url.endsWith('users') && req.method == 'GET')
     ) {
-      return this.store.select(AuthSelector.tokenSelector).pipe(
+      return this.store.select(AuthSelector.TokenSelector).pipe(
         take(1),
         mergeMap((token: string) => {
-          req = req.clone({ setHeaders: { Authorization: `Bearer ${token}` } });
+          req = req.clone({
+            setHeaders: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
           return next.handle(req);
         })
       );
     }
-
     return next.handle(req);
   }
 }

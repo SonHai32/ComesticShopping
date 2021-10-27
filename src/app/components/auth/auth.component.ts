@@ -4,7 +4,6 @@ import { User } from './../../models/user.model';
 import { AuthenticateService } from './../../services/authenticate.service';
 import { CookieService } from 'ngx-cookie-service';
 import { Component, OnInit } from '@angular/core';
-User;
 import {
   FormBuilder,
   FormGroup,

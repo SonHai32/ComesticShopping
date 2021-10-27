@@ -1,3 +1,5 @@
+import { ProductDisplayComponent } from './../product-display/product-display.component';
+import { ProductCartComponent } from './../product-cart/product-cart.component';
 import { CartDetailComponent } from './../cart-detail/cart-detail.component';
 import { AuthComponent } from './../auth/auth.component';
 import { DefaultComponent } from './../default/default.component';
@@ -37,17 +39,14 @@ import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {HeaderComponent} from './header/header.component';
-import {FooterComponent} from './footer/footer.component'
-import {NavbarComponent} from './navbar/navbar.component';
+import { HeaderComponent } from './header/header.component';
+import { FooterComponent } from './footer/footer.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {RouterModule} from '@angular/router'
+import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import {ScrollingModule} from '@angular/cdk/scrolling';
-
-
-
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -58,8 +57,10 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     NavbarComponent,
     BannerComponent,
     CartDetailComponent,
+    ProductDisplayComponent,
     ProductsComponent,
-    ProductDetailComponent
+    ProductCartComponent,
+    ProductDetailComponent,
   ],
   imports: [
     CommonModule,
@@ -99,7 +100,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     NzMessageModule,
     NzSpinModule,
     SweetAlert2Module.forRoot(),
-    ScrollingModule
+    ScrollingModule,
   ],
   exports: [
     DefaultComponent,
@@ -111,7 +112,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
     ProductsComponent,
     ProductDetailComponent,
     CartDetailComponent,
-  ]
-
+    ProductDisplayComponent,
+  ],
 })
-export class ShareModule { }
+export class ShareModule {}

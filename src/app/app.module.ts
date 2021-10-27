@@ -1,3 +1,5 @@
+import { CartEffect } from './store/auth/effects/cart.effect';
+import { CartReducer } from './store/auth/reducers/cart.reducer';
 import { AppEffects } from './store/auth/effects/app.effect';
 import { NzMessageService, NzMessageModule } from 'ng-zorro-antd/message';
 import { AuthEffect } from './store/auth/effects/auth.effect';
@@ -22,7 +24,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconsProviderModule } from './icons-provider.module';
 import { Store, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { AuthenticateService } from './services/authenticate.service';
 import { EffectsModule } from '@ngrx/effects';
 import { AppReducers } from './store/auth/reducers/app.reducer';
 
@@ -36,8 +37,12 @@ registerLocaleData(en);
     AppRoutingModule,
     ShareModule,
     FormsModule,
-    StoreModule.forRoot({ auth: authReducer, app: AppReducers }),
-    EffectsModule.forRoot([AuthEffect, AppEffects]),
+    StoreModule.forRoot({
+      auth: authReducer,
+      app: AppReducers,
+      carts: CartReducer,
+    }),
+    EffectsModule.forRoot([AuthEffect, AppEffects, CartEffect]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: environment.production,

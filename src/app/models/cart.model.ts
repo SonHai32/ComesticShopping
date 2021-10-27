@@ -1,8 +1,8 @@
 import { Product } from './product.model';
-export class Cart{
-  constructor(public product: Product, public amount: number){
-    this.product = product;
-    this.amount = amount
-  }
-
+export interface Cart {
+  product: Product;
+  quantity: number;
+  total?: number;
+  created_by?: string;
 }
+

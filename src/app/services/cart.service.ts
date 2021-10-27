@@ -7,7 +7,7 @@ import * as Rx from 'rxjs';
   providedIn: 'root',
 })
 export class CartService {
-  private cartSubject = new Rx.BehaviorSubject([] as Cart[]);
+  private cartSubject = new Rx.BehaviorSubject<Cart[]>([]);
   private cartTotalSubject = new Rx.BehaviorSubject(0);
   private totalItemSubject = new Rx.BehaviorSubject(0);
   private totalPriceSubject = new Rx.BehaviorSubject(0);
@@ -35,7 +35,7 @@ export class CartService {
       let totalItem = 0;
       return new Promise((reslove, reject) => {
         listCart.forEach((cart: Cart) => {
-          totalItem += cart.amount;
+          totalItem += cart.quantity;
         });
         reslove(totalItem);
       });
@@ -51,26 +51,26 @@ export class CartService {
       let totalPrice: number = 0;
       return new Promise((reslove, reject) => {
         listCart.forEach((cart: Cart) => {
-          totalPrice += cart.amount * cart.product.display_price;
+          totalPrice += cart.quantity * cart.product.display_price;
         });
-        reslove(totalPrice)
+        reslove(totalPrice);
       });
     };
-    getTotalPrice().then((totalPrice: any) =>{
-      this.totalPriceSubject.next(totalPrice)
-    })
+    getTotalPrice().then((totalPrice: any) => {
+      this.totalPriceSubject.next(totalPrice);
+    });
   }
 
-  updateCartAmount(productID: string, amount: number) {
+  updateCartAmount(productID: string, quantity: number) {
     let listCart: Cart[] = this.cartSubject.value;
-    if (amount > 0) {
+    if (quantity > 0) {
       listCart.map((cart: Cart) => {
         if (cart.product._id === productID) {
-          cart.amount = amount;
+          cart.quantity = quantity;
         }
       });
       this.updateCart(listCart);
-    } else if (amount === 0) {
+    } else if (quantity === 0) {
       let newListCart: Cart[] = listCart.filter((cart: Cart) => {
         return cart.product._id !== productID;
       });
@@ -84,7 +84,7 @@ export class CartService {
     this.cartSubject.next(listCart);
     this.cartTotalSubject.next(listCart.length);
     this.updateTotalItem(listCart);
-    this.updateTotalPrice(listCart)
+    this.updateTotalPrice(listCart);
     localStorage.setItem('cart-list', JSON.stringify(this.cartSubject.value));
   }
 
@@ -117,7 +117,7 @@ export class CartService {
     };
     checkCartExistIndex().then((index: any) => {
       if (index !== -1) {
-        listCart[index].amount = cart.amount + listCart[index].amount;
+        listCart[index].quantity = cart.quantity + listCart[index].quantity;
       } else {
         listCart.push(cart);
       }
@@ -129,7 +129,7 @@ export class CartService {
     return this.totalItemSubject.asObservable();
   }
 
-  totalPriceObservable():Observable<number>{
-    return this.totalPriceSubject.asObservable()
+  totalPriceObservable(): Observable<number> {
+    return this.totalPriceSubject.asObservable();
   }
 }

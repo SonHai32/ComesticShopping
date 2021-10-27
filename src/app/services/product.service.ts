@@ -1,24 +1,27 @@
 import { Product } from './../models/product.model';
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ProductService {
+  private readonly URL: string = `${environment.apiURL}/products`;
+  // httpOptions = {
+  //   headers: new HttpHeaders({
+  //     'Content-Type': 'Application/json',
+  //     'Access-Control-Allow-Origin': '*',
+  //   }),
+  // };
 
-  httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'Application/json', 'Access-Control-Allow-Origin': '*' })
-  }
   // apiURI = 'http://localhost:5000/api/products'
-  apiURI = "https://hame-comestic-api.herokuapp.com/api/products"
-  constructor(private http:HttpClient) { }
+  // apiURI = 'https://hame-comestic-api.herokuapp.com/api/products';
 
+  constructor(private http: HttpClient) {}
 
-  searchProducts(filter: any): Observable<any[]>{
-      return this.http.get<Product[]>(`${this.apiURI}?page=${filter['page'] -1}${filter['product_id']?'&id=' + filter['product_id']: ''}${filter['category_id']?'&product_cat=' + filter['category_id']: ''}`, this.httpOptions);
+  getProducts(filter?: any): Observable<any> {
+    return this.http.request('get', this.URL, { params: filter });
   }
-
-
 }

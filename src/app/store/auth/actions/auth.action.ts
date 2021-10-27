@@ -14,6 +14,9 @@ enum AuthActionTypes {
   CHECK_AUTH = '[AUTH_ACTION] Check auth',
   CHECK_AUTH_SUCCESS = '[AUTH_ACTION] Check auth success',
   CHECK_AUTH_FAIL = '[AUTH_ACTION] Check auth fail',
+  GET_USER_AUTH = '[AUTH_ACTION] Get user auth',
+  GET_USER_AUTH_SUCCESS = '[AUTH_ACTION] Get user auth success',
+  GET_USER_AUTH_FAIL = '[AUTH_ACTION] Get user auth fail'
 }
 
 export const LoginAction = createAction(
@@ -55,6 +58,7 @@ export const SignOutFailAction = createAction(
 );
 
 export const CheckAuthAction = createAction(AuthActionTypes.CHECK_AUTH);
+
 export const CheckAuthSuccessAction = createAction(
   AuthActionTypes.CHECK_AUTH_SUCCESS,
   props<{ accessToken: string }>()
@@ -63,6 +67,13 @@ export const CheckAuthSuccessAction = createAction(
 export const CheckAuthFailAction = createAction(
   AuthActionTypes.CHECK_AUTH_FAIL, props<{message: string}>()
 );
+
+export const GetUserAuthAction = createAction(AuthActionTypes.GET_USER_AUTH)
+
+export const GetUserAuthSuccessAction = createAction(AuthActionTypes.GET_USER_AUTH_SUCCESS, props<{user: User}>())
+
+export const GetUserAuthFailAction = createAction(AuthActionTypes.GET_USER_AUTH_FAIL, props<{message: string}>())
+
 export const AuthActions = {
   LoginAction,
   LoginSuccessAction,
@@ -76,4 +87,7 @@ export const AuthActions = {
   CheckAuthAction,
   CheckAuthSuccessAction,
   CheckAuthFailAction,
+  GetUserAuthAction,
+  GetUserAuthSuccessAction,
+  GetUserAuthFailAction
 };

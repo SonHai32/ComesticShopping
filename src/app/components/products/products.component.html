@@ -27,19 +27,11 @@
         <img nz-image nzSrc="/assets/images/banners/HTD1705640x2401621227779.jpg" class="img-fluid" alt="Banner" />
       </div>
     </div>
-
-    <ng-container *ngTemplateOutlet="
-        productItemsCarousel;
-        context: {
-          listProducts: productData,
-          title: 'Top các sản phẩm bán chạy trong tuần'
-        }
-      ">
-    </ng-container>
+    <app-product-display></app-product-display>
   </div>
 
   <!-- start-product-item-carousel-template -->
-  <ng-template #productItemsCarousel let-listProducts="listProducts" let-title="title">
+  <!-- <ng-template #productItemsCarousel let-listProducts="listProducts" let-title="title">
     <nz-page-header class="site-page-header" nzTitle="{{ title }}">
       <nz-page-header-content>
         <nz-divider nzType="horizontal"></nz-divider>
@@ -53,25 +45,16 @@
         </owl-carousel-o>
       </nz-page-header-content>
     </nz-page-header>
-  </ng-template>
+  </ng-template> -->
   <!-- end-product-item-carousel-template -->
 
   <!-- start-product-template -->
   <ng-template #productTemplate let-listProducts="listProducts" let-title="title">
-    <nz-page-header class="site-page-header" nzTitle="{{ title }}">
-      <nz-page-header-content>
-        <div nz-row nzJustify="center" [nzGutter]="[{ xs: 8, sm: 16, md: 20, lg: 32 }, 24]">
-          <div *ngFor="let item of listProducts" nz-col nzXXl="6" nzXl="6" nzLg="8" nzMd="8" nzXs="12" nzSm="14"
-            nzXs="20" class="gutter-row">
-            <ng-container *ngTemplateOutlet="productCardItem; context: { product: item }"></ng-container>
-          </div>
-        </div>
-      </nz-page-header-content>
-    </nz-page-header>
+
     <div class="py-3 mt-3" nzAlign="middle" nz-row nzJustify="center">
       <div class="d-flex justify-content-center" nz-col nzSpan="16">
         <nz-pagination nzPageIndex="{{ page }}" (nzPageIndexChange)="handlePageIndexChange($event)"
-          nzTotal="{{ total_result }}" nzPageSize="{{ entries_per_page }}"></nz-pagination>
+          nzTotal="{{ total_result }}" nzPageSize="{{ perPage }}"></nz-pagination>
       </div>
     </div>
   </ng-template>
@@ -92,7 +75,7 @@
             justify-content-center
           " style="height: 280px">
           <div class="img-container w-100 d-flex justify-content-center">
-            <img nz-image class="img-fluid" width="200px" height="200px" nzSrc="{{ product.product_img_urls[0] }}"
+            <img nz-image class="img-fluid" width="200px" height="200px" nzSrc="{{ product.display_image }}"
               nzDisablePreview alt="" />
           </div>
 

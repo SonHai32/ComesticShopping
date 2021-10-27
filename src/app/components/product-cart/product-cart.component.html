@@ -1,0 +1,49 @@
+<nz-ribbon *ngIf="product" nzText="SALE OFF">
+  <nz-card nzHoverable [nzActions]="[actionAddToCart, actionBuyNow]">
+    <div [routerLink]="['/default', 'product', 'product-detail', product._id]" class="
+            card-content
+            w-100
+            d-flex
+            flex-column
+            align-items-center
+            justify-content-center
+          ">
+      <div class="img-container w-100 d-flex justify-content-center">
+        <img nz-image class="img-fluid" width="200px" height="200px" nzSrc="{{ product.display_image }}"
+          nzDisablePreview alt="" />
+      </div>
+
+      <div class="
+              d-flex
+              flex-column
+              align-items-center
+              justify-content-center
+              w-100
+              mt-auto
+            ">
+        <span nz-typography class="d-flex justify-content-center w-100 mt-1"><strong>{{ product.name}}</strong></span>
+        <div class="w-100 d-flex align-items-center justify-content-between">
+          <h5 class="mr-4" nz-typography>
+            <a nz-typography nzEditable="false">
+              {{ product.display_price | currency: "VND":"symbol" }}
+            </a>
+          </h5>
+          <h6 nz-typography nzType="secondary">
+            <del>{{
+              product.sell_price| currency: "VND":"symbol"
+              }}</del>
+          </h6>
+        </div>
+      </div>
+    </div>
+  </nz-card>
+</nz-ribbon>
+
+<ng-template #actionAddToCart>
+  <i nz-icon nzTooltipTitle="Thêm vào giỏ hàng" nzTooltipPlacement="top" nz-tooltip nzTooltipColor="cyan"
+    nzType="shopping-cart" nzTheme="outline"></i>
+</ng-template>
+<ng-template #actionBuyNow>
+  <i nzTooltipPlacement="top" nz-tooltip nzTooltipColor="cyan" nz-icon nzType="heart" nzTheme="outline"
+    nzTooltipTitle="Yêu thích"></i>
+</ng-template>

@@ -1,0 +1,34 @@
+<div nz-row nzAlign="middle" class="mt-2">
+  <nz-page-header [nzTitle]="productDisplay.title.content" [style.color]="productDisplay.title.color"
+    [style.background]="productDisplay.title.background"></nz-page-header>
+</div>
+<div *ngIf="productDisplay.display_type === 'grid'" style="min-height: 200px;" nz-row nzAlign="middle" class='p-4'
+  nzJustify="start" [nzGutter]="[12, 12]">
+  <ng-container *ngIf="productResposne | async as response; else loadingTpl">
+    <div *ngFor="let item of response.product_list" nz-col nzXXl="6" nzXl="6" nzLg="8" nzMd="8" nzXs="12" nzSm="12">
+      <app-product-cart [product]="item"></app-product-cart>
+    </div>
+    <div class="d-flex justify-content-center" nz-col nzSpan="24">
+      <nz-pagination [nzPageIndex]="response.page" (nzPageIndexChange)="handlePageIndexChange($event)"
+        [nzTotal]="response.total_result" [nzPageSize]="response.per_page"></nz-pagination>
+    </div>
+  </ng-container>
+</div>
+<div *ngIf="productDisplay.display_type === 'grid'" style="min-height: 200px;" nz-row nzAlign="middle" class='p-4'
+  nzJustify="center">
+  <ng-container *ngIf="productResposne | async as response; else loadingTpl">
+    <owl-carousel-o [options]="customOptions" class="w-100">
+      <ng-template *ngFor="let item of response.product_list" carouselSlide>
+        <div class="item-carousel p-4">
+          <app-product-cart [product]="item"></app-product-cart>
+        </div>
+      </ng-template>
+    </owl-carousel-o>
+  </ng-container>
+</div>
+
+<ng-template #loadingTpl>
+  <div nz-row nzAlign="middle" nzJustify="center" class="h-100 w-100 text-center">
+    <nz-spin nzSimple nzSize="large"></nz-spin>
+  </div>
+</ng-template>

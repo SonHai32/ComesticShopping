@@ -1,6 +1,5 @@
-export class User{
-  _id: string = ''
-  username: string = ''
-  emailAddress: string = ''
-  phoneNumber: string = ''
+export interface User {
+  _id: string;
+  username: string;
+  role: string;
 }

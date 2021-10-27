@@ -3,11 +3,14 @@ import { User } from './../models/user.model';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import * as Rx from 'rxjs'
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
   logger = new Rx.BehaviorSubject(false)
+
+  private readonly URL: string = `${environment.apiURL}/users`
 
   constructor(private http: HttpClient) {
     const user = localStorage.getItem('currentUser');
@@ -18,6 +21,7 @@ export class UserService {
       }
     }
   }
+
   logIn(userInfo: User) {
     localStorage.setItem('currentUser', JSON.stringify(userInfo));
     this.logger.next(true)
@@ -32,6 +36,8 @@ export class UserService {
     return this.logger.asObservable()
   }
 
-  getUserInfo(userID: string){
+  getUserAuth(): Observable<any>{
+    return this.http.get(this.URL)
   }
+
 }
