@@ -5,10 +5,10 @@
     <button nz-button nzType="primary" class="ml-2">
       Thêm
     </button>
-    <button nz-button nzType="dashed" class="ml-2">
+    <button *ngIf="submitFormBtn" nz-button nzType="dashed" class="ml-2">
       Cập nhật
     </button>
-    <button nz-button nzType="primary" class="ml-2">
+    <button *ngIf="checked || indeterminated" nz-button nzType="primary" class="ml-2">
       <div class="d-flex justify-content-center align-items-center">
         <i nz-icon nzType="delete" nzTheme="outline"></i>
       </div>
@@ -21,26 +21,29 @@
         <tr>
           <th nzAlign="center" nzWidth="10%">STT</th>
           <th nzAlign="center" nzWidth="25%">Mã nhóm</th>
-          <th nzAlign="center" nzWidth="45%">Tên nhóm</th>
+          <th nzAlign="center" nzWidth="40%">Tên nhóm</th>
           <th nzAlign="center" nzWidth="20%">Hành động</th>
+          <th [nzChecked]="checked" [nzIndeterminate]="indeterminated" nzAlign="center" nzWidth="5%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of editRowTable.data; index as idx">
           <ng-container *ngIf="!isEditable(idx); else editTemplate">
             <td nzAlign="center">{{ idx + 1 }}</td>
-            <td nzAlign="center">{{ data.group_id }}</td>
-            <td nzAlign="center">{{ data.title }}</td>
+            <td nzAlign="center">{{ data.data.group_id }}</td>
+            <td nzAlign="center">{{ data.data.title }}</td>
             <td nzAlign="center" class="d-flex align-items-center justify-content-center flex-wrap">
-              <button (click)="addEditable(idx, data.group_id, data.title)" nz-button nzType="text" nzShape="circle"
-                class="d-flex justify-content-center align-items-center">
+              <button (click)="addEditable(idx, data.data.group_id, data.data.title)" nz-button nzType="text"
+                nzShape="circle" class="d-flex justify-content-center align-items-center">
                 <i nz-icon nzType="edit" nzTheme="outline"></i>
               </button>
-              <button (click)="addEditable(idx, data.group_id, data.title)" nz-button nzType="text" nzShape="circle"
-                class="d-flex justify-content-center align-items-center">
+              <button (click)="addEditable(idx, data.data.group_id, data.data.title)" nz-button nzType="text"
+                nzShape="circle" class="d-flex justify-content-center align-items-center">
                 <i nz-icon nzType="delete" nzTheme="outline" class="ant-text-danger"></i>
               </button>
             </td>
+            <td *ngIf="data.data._id" (nzCheckedChange)="onCheckedChange(data.data._id, $event)"
+              [nzChecked]="setOfCheckedData.has(data.data._id)" nzAlign="center"></td>
           </ng-container>
           <ng-template #editTemplate>
             <td nzAlign="center">{{idx + 1 }}</td>
@@ -64,7 +67,7 @@
               </form>
             </td>
             <td nzAlign="center" class="d-flex align-items-center justify-content-center flex-wrap">
-              <button (click)="saveForm(data, idx)" nz-button nzType="text" nzShape="circle"
+              <button (click)="saveForm(data.data, idx)" nz-button nzType="text" nzShape="circle"
                 class="d-flex justify-content-center align-items-center mx-1">
                 <i nz-icon nzType="save" nzTheme="outline"></i>
               </button>

@@ -15,27 +15,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductGroupsComponent implements OnInit {
   constructor(private fb: FormBuilder) {}
-  validateForm!: FormGroup;
-  editCache: { [key: string]: { edit: boolean; data: ProductGroup } } = {};
-  formEditData: { data: ProductGroup; index: number }[] = [];
-
-  data2: ProductGroup[] = [
+  data2: { edited: boolean; data: ProductGroup }[] = [
     {
-      _id: 'dsads',
-      group_id: 'san-pham-ban-chay',
-      title: 'Sản phẩm bán chạy',
+      edited: false,
+      data: {
+        _id: 'dddddddddddddddddddddd',
+        group_id: 'san-pham-ban-chay',
+        title: 'Sản phẩm bán chạy',
+      },
     },
     {
-      _id: 'dsadsa',
-      group_id: '',
-      title: '',
+      edited: false,
+      data: {
+        _id: 'dsads',
+        group_id: '',
+        title: 'asdasdasd',
+      },
     },
   ];
 
-  startEdit(id: string): void {
-    this.editCache[id].edit = true;
-  }
-
+  validateForm!: FormGroup;
+  formEditData: { data: ProductGroup; index: number }[] = [];
+  newFormData: ProductGroup[] = [];
+  checked = false;
+  indeterminated = false;
+  setOfCheckedData = new Set<string>();
+  submitFormBtn = false;
   ngOnInit(): void {
     this.initFormValidate();
   }
@@ -91,26 +96,41 @@ export class ProductGroupsComponent implements OnInit {
   }
 
   saveForm(data: ProductGroup, index: number): void {
-    if (data._id) {
-      const groupID =
-        this.validateForm.controls[`product-group-id-${index}`].value;
-      const groupTitle =
-        this.validateForm.controls[`product-group-title-${index}`].value;
-      this.data2.forEach((val) => {
-        if (val._id === data._id) {
-          val.group_id = groupID;
-          val.title = groupTitle;
+    const groupID =
+      this.validateForm.controls[`product-group-id-${index}`].value;
+    const groupTitle =
+      this.validateForm.controls[`product-group-title-${index}`].value;
+    if (!(data.group_id === groupID)) {
+      if (data._id) {
+        this.data2.forEach((val) => {
+          if (val.data._id === data._id) {
+            val.data.group_id = groupID;
+            val.data.title = groupTitle;
+          }
+        });
+      } else {
+        const isDuplicated = this.newFormData.some((val: ProductGroup) => {
+          return val.title === data.title;
+        });
+        if (!isDuplicated) {
+          this.newFormData.push({ group_id: groupID, title: groupTitle });
+        } else {
+          return;
         }
-      });
+      }
+      this.data2[index].data = data;
+      this.data2[index].edited = true;
+
+      if (this.formEditData.some((val) => val.index === index)) {
+        this.formEditData = this.formEditData.map((val) => {
+          return { ...val, data };
+        });
+      } else {
+        this.formEditData.push({ data, index });
+      }
+      this.submitFormVisible();
     }
-    this.data2[index] = data;
-    if (this.formEditData.some((val) => val.index === index)) {
-      this.formEditData = this.formEditData.map((val) => {
-        return { ...val, data };
-      });
-    } else {
-      this.formEditData.push({ data, index });
-    }
+
     this.hideEditableForm(index);
   }
 
@@ -122,5 +142,39 @@ export class ProductGroupsComponent implements OnInit {
   onProductGroupTitleChange(value: string, index: number): void {
     const formControlName = `product-group-id-${index}`;
     this.validateForm.controls[formControlName].setValue(textToSlug(value));
+  }
+
+  submitFormVisible(): void {
+    const isFormEdit =
+      this.data2.some((val) => {
+        return val.edited;
+      }) || this.newFormData.length > 0;
+    if (isFormEdit) {
+      this.submitFormBtn = true;
+    }
+  }
+
+  onCheckedChange(id: string, checked: boolean): void {
+    this.updateChekedChange(id, checked);
+    this.refreshCheckedChange();
+  }
+
+  updateChekedChange(id: string, checked: boolean): void {
+    if (checked) {
+      this.setOfCheckedData.add(id);
+    } else {
+      this.setOfCheckedData.delete(id);
+    }
+  }
+
+  refreshCheckedChange(): void {
+    this.indeterminated = this.data2.some((val) => {
+      return val.data._id && this.setOfCheckedData.has(val.data._id);
+    });
+
+    this.checked = this.data2.every((val) => {
+      return val.data._id && this.setOfCheckedData.has(val.data._id);
+    });
+
   }
 }
