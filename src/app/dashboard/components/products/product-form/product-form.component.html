@@ -4,7 +4,8 @@
       phẩm'}}</h2>
   </div>
   <div class="product-create-container-bg p-4 rounded shadow" nz-col nzXl="16" nzLg="16" nzMd="18" nzSpan="24">
-    <dashboard-custom-form (inputChange)="onFormInputChange($event)" (removeChildDynamicForm)="removeChildDynamicForm($event.fieldName, $event.control)"
+    <dashboard-custom-form (inputChange)="onFormInputChange($event)"
+      (removeChildDynamicForm)="removeChildDynamicForm($event.fieldName, $event.control)"
       (addChildDynamicForm)="addProductField($event)" [currentFormList]="formList"
       [currentDynamicFormList]="dynamicFormList" [currentFormGroup]="validateForm"></dashboard-custom-form>
     <div nz-row nzGutter="8" nzJustify="center">
@@ -14,7 +15,7 @@
             <nz-form-label>Danh mục</nz-form-label>
           </nz-form-item>
           <nz-form-item class="m-0 p-0">
-            <nz-select [compareWith]="compareFn" [ngModelOptions]="{standalone: true}" [(ngModel)]="categorySelected"
+            <nz-select [compareWith]="categoryCompareSlug" [ngModelOptions]="{standalone: true}" [(ngModel)]="categorySelected"
               nzAllowClear nzShowSearch="true" nzPlaceHolder="Chọn danh mục">
               <ng-container *ngFor="let item of categoriesSelectData">
                 <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
@@ -25,6 +26,9 @@
                 </div>
               </nz-option>
             </nz-select>
+          </nz-form-item>
+          <nz-form-item class="m-0 p-0">
+
           </nz-form-item>
         </form>
       </div>

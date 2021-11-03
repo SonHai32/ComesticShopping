@@ -118,7 +118,7 @@ export class ProductCreateComponent implements OnInit {
       });
   }
 
-  compareFn = (o1: Category, o2: Category) =>
+  categoryCompareSlug = (o1: Category, o2: Category) =>
     o1 && o2 ? o1.slug === o2.slug : o1 === o2;
 
   initForm() {
