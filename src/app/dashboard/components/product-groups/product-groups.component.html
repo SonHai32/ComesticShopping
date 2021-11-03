@@ -2,45 +2,69 @@
 
 <div nz-row nzJustify="end">
   <div nz-col class="py-2">
-    <button nz-button nzType="primary" class="ml-2">
+    <nz-badge *ngIf="submitAddBtn" [nzCount]="itemNewCount">
+      <button *ngIf="submitAddBtn" (click)="showAddNewConfirmBox()" nz-button nzType="primary" class="ml-2">
+        Thêm nhóm mới
+      </button>
+    </nz-badge>
+    <nz-badge *ngIf="submitUpdateBtn" [nzCount]="itemUpdateCount">
+      <button (click)="showUpdateConfirmBox()" nz-button nzType="primary" class="ml-2">
+        Cập nhật
+      </button>
+    </nz-badge>
+    <button (click)="addNewForm()" nz-button nzType="primary" class="ml-2">
       Thêm
     </button>
-    <button *ngIf="submitFormBtn" nz-button nzType="dashed" class="ml-2">
-      Cập nhật
-    </button>
-    <button *ngIf="checked || indeterminated" nz-button nzType="primary" class="ml-2">
-      <div class="d-flex justify-content-center align-items-center">
+    <button *ngIf="checked || indeterminated" (click)="showDeleteConfirmBox()" nz-button nzType="dashed" class="ml-2">
+      <div class="d-flex justify-content-center align-items-center ant-text-primary">
         <i nz-icon nzType="delete" nzTheme="outline"></i>
       </div>
     </button>
   </div>
   <div nz-col nzSpan="24">
-
-    <nz-table #editRowTable nzBordered [nzData]="data2" nzTableLayout="fixed">
+    <nz-table #editRowTable class="backdrop-filter" nzBordered [nzLoading]="dataLoading"
+      [(nzPageIndex)]="currentPageIndex" [(nzPageSize)]="pageSize" [nzData]="productGroupData" nzTableLayout="fixed">
       <thead>
         <tr>
-          <th nzAlign="center" nzWidth="10%">STT</th>
-          <th nzAlign="center" nzWidth="25%">Mã nhóm</th>
-          <th nzAlign="center" nzWidth="40%">Tên nhóm</th>
-          <th nzAlign="center" nzWidth="20%">Hành động</th>
-          <th [nzChecked]="checked" [nzIndeterminate]="indeterminated" nzAlign="center" nzWidth="5%"></th>
+          <th nzAlign="center">STT</th>
+          <th nzAlign="center">Mã nhóm</th>
+          <th nzAlign="center">Tên nhóm</th>
+          <th nzAlign="center">Trạng thái</th>
+          <th nzAlign="center">Hành động</th>
+          <th (nzCheckedChange)="onAllItemChecked($event)" [nzChecked]="checked" [nzIndeterminate]="indeterminated"
+            nzAlign="center" nzWidth="5%"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let data of editRowTable.data; index as idx">
           <ng-container *ngIf="!isEditable(idx); else editTemplate">
             <td nzAlign="center">{{ idx + 1 }}</td>
-            <td nzAlign="center">{{ data.data.group_id }}</td>
-            <td nzAlign="center">{{ data.data.title }}</td>
-            <td nzAlign="center" class="d-flex align-items-center justify-content-center flex-wrap">
-              <button (click)="addEditable(idx, data.data.group_id, data.data.title)" nz-button nzType="text"
-                nzShape="circle" class="d-flex justify-content-center align-items-center">
-                <i nz-icon nzType="edit" nzTheme="outline"></i>
-              </button>
-              <button (click)="addEditable(idx, data.data.group_id, data.data.title)" nz-button nzType="text"
-                nzShape="circle" class="d-flex justify-content-center align-items-center">
-                <i nz-icon nzType="delete" nzTheme="outline" class="ant-text-danger"></i>
-              </button>
+            <td nzAlign="center">{{ data.data.group_id ? data.data.group_id: 'Chưa có dữ liệU'}}</td>
+            <td nzAlign="center">
+              <span nz-typography>
+                {{ data.data.title ? data.data.title: 'Chưa có dữ liệU'}}
+              </span>
+              <span *ngIf="data.edited" nz-typography nzType="danger">(Đã chỉnh sửa)</span>
+            </td>
+            <td nzAlign="left">
+              <span *ngIf="data.data.status" nz-typography nzType="success">Hoạt động</span>
+              <span *ngIf="!data.data.status" nz-typography nzType="danger">Vô hiệu hoá</span>
+            </td>
+            <td nzAlign="center">
+              <div class="d-flex align-items-center justify-content-center flex-wrap h-100 w-100">
+                <button (click)="addEditable(idx, data.data.group_id, data.data.title)" nz-button nzType="text"
+                  nzShape="circle" class="d-flex justify-content-center align-items-center">
+                  <i nz-icon nzType="edit" nzTheme="outline"></i>
+                </button>
+                <button *ngIf="!data.isNew" (click)="showDeleteConfirmBox(data.data._id)" nz-button nzType="text"
+                  nzShape="circle" class="d-flex justify-content-center align-items-center">
+                  <i nz-icon nzType="delete" nzTheme="outline" class="ant-text-danger"></i>
+                </button>
+                <button *ngIf="data.isNew" (click)="removeNewForm(idx)" nz-button nzType="text" nzShape="circle"
+                  class="d-flex justify-content-center align-items-center">
+                  <i nz-icon nzType="close-circle" nzTheme="outline" class="ant-text-danger"></i>
+                </button>
+              </div>
             </td>
             <td *ngIf="data.data._id" (nzCheckedChange)="onCheckedChange(data.data._id, $event)"
               [nzChecked]="setOfCheckedData.has(data.data._id)" nzAlign="center"></td>
@@ -51,7 +75,8 @@
               <form *ngIf="validateForm" nz-form [formGroup]="validateForm" class="w-100">
                 <nz-form-item class="m-0 p-0">
                   <nz-form-control [nzErrorTip]="getErrorTooltips(idx, 'id')">
-                    <input nz-input [formControlName]="'product-group-id-' + idx">
+                    <input placeholder="Mã nhóm sản phẩm" nz-input
+                      [formControlName]="'product-group-id-'+((pageSize * (currentPageIndex -1) + idx ).toString())">
                   </nz-form-control>
                 </nz-form-item>
               </form>
@@ -60,21 +85,30 @@
               <form *ngIf="validateForm" nz-form [formGroup]="validateForm" class="w-100">
                 <nz-form-item class="m-0 p-0">
                   <nz-form-control [nzErrorTip]="getErrorTooltips(idx, 'title')">
-                    <input nz-input [formControlName]="'product-group-title-' + idx"
+                    <input placeholder="Tên nhóm sản phẩm" nz-input
+                      [formControlName]="'product-group-title-' + ((pageSize * (currentPageIndex -1) + idx ).toString())"
                       (ngModelChange)="onProductGroupTitleChange($event, idx)">
                   </nz-form-control>
                 </nz-form-item>
               </form>
             </td>
-            <td nzAlign="center" class="d-flex align-items-center justify-content-center flex-wrap">
-              <button (click)="saveForm(data.data, idx)" nz-button nzType="text" nzShape="circle"
-                class="d-flex justify-content-center align-items-center mx-1">
-                <i nz-icon nzType="save" nzTheme="outline"></i>
-              </button>
-              <button (click)="hideEditableForm(idx)" nz-button nzType="text" nzShape="circle"
-                class="d-flex justify-content-center align-items-center mx-1">
-                <i nz-icon nzType="close-square" nzTheme="outline" class="ant-text-danger"></i>
-              </button>
+            <td nzAlign="left">
+              <nz-radio-group [(ngModel)]="data.data.status" (ngModelChange)="onRadioChange(idx, data.isNew)">
+                <label nz-radio [nzValue]="true">Hoạt động</label>
+                <label nz-radio [nzValue]="false">Vô hiệu hoá</label>
+              </nz-radio-group>
+            </td>
+            <td nzAlign="center">
+              <div class="d-flex align-items-center justify-content-center flex-wrap w-100 h-100">
+                <button (click)="saveForm(data.data, idx)" nz-button nzType="text" nzShape="circle"
+                  class="d-flex justify-content-center align-items-center mx-1">
+                  <i nz-icon nzType="save" nzTheme="outline"></i>
+                </button>
+                <button (click)="hideEditableForm(idx)" nz-button nzType="text" nzShape="circle"
+                  class="d-flex justify-content-center align-items-center mx-1">
+                  <i nz-icon nzType="close-square" nzTheme="outline" class="ant-text-danger"></i>
+                </button>
+              </div>
             </td>
           </ng-template>
         </tr>
