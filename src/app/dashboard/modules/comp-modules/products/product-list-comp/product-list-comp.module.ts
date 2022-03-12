@@ -1,3 +1,4 @@
+import { DisplayListWithPropertyModule } from './../../../../../helpers/pipes/display-list-with-property/display-list-with-property.module';
 import { NzAffixModule } from 'ng-zorro-antd/affix';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
 import { NzSelectModule } from 'ng-zorro-antd/select';
@@ -42,6 +43,7 @@ import { CommonModule } from '@angular/common';
     NzInputModule,
     NzAffixModule,
     ReactiveFormsModule,
+    DisplayListWithPropertyModule,
   ],
   exports: [ProductListComponent]
 })

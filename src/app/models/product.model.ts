@@ -1,3 +1,4 @@
+import { ProductGroup } from './product-group.model';
 import { Category } from './category.model';
 export interface Product {
   _id?: string;
@@ -18,6 +19,7 @@ export interface Product {
   images_list: string[];
   display_image: string;
   post_markdown?: string;
+  product_groups?: ProductGroup[];
   created_detail: {
     created_at: Date;
     created_by_id: string;

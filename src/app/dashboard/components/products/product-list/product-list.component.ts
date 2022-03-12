@@ -33,7 +33,7 @@ export class ProductListComponent implements OnInit {
   setOfProductCheck = new Set<string>();
   listOfCategory: Category[] = [];
   listOfCategoryFilters: NzTableFilterList = [];
-  categorySelected: any = null;
+  categoryFilterSelected!: Category;
   productFilterName: string = '';
   categoriesSelectData!: Category[];
   categoriesSelectDataLoading: boolean = true;
@@ -58,18 +58,11 @@ export class ProductListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getProductList({});
+    this.getProductList();
     this.getCategoryList();
   }
   onQueryParamsChange(params: NzTableQueryParams) {
-    console.log(params);
-    if (params.pageIndex) {
-      this.pageIndex = params.pageIndex;
-      this.getProductList({});
-    } else if (params.pageSize) {
-      this.perPage = params.pageSize;
-      this.getProductList({});
-    }
+    this.getProductList();
   }
 
   getCategoryList() {
@@ -92,26 +85,29 @@ export class ProductListComponent implements OnInit {
       });
   }
   productFilterSubmmit() {
-    this.getProductList({});
+    this.getProductList();
   }
-  getProductList(filter: {}) {
-    let _query: any = {
-      ...filter,
-      page: this.pageIndex,
-      perPage: this.perPage,
-      price: this.sliderProductPrice.value,
-    };
-    if (this.categorySelected) {
-      _query.cat_id = (this.categorySelected as Category).slug;
+  getProductList(): void {
+    this.productLoading = true;
+    const query: any = {};
+
+    query.priceStart = this.sliderProductPrice.value[0];
+    query.priceEnd = this.sliderProductPrice.value[1];
+    query.page = this.pageIndex;
+    query.perPage = this.perPage;
+
+    if (this.categoryFilterSelected) {
+      query.category_slug = this.categoryFilterSelected.slug;
     }
     if (this.productFilterName) {
-      _query.name = this.productFilterName;
+      query.name = this.productFilterName;
     }
-    this.productLoading = true;
+
     this.subscriptions.add(
       this.productService
-        .getProducts({ page: this.pageIndex, perPage: this.perPage })
+        .getProducts(query)
         .pipe(
+          take(1),
           map((res: any) => {
             return {
               products: res.product_list as Product[],
@@ -228,7 +224,7 @@ export class ProductListComponent implements OnInit {
   }
 
   refreshProductListCount(removeSize: number) {
-    this.getProductList({});
+    this.getProductList();
     if (removeSize >= this.perPage) {
       this.productChecked = false;
       this.indeterminated = false;

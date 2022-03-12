@@ -13,10 +13,8 @@
         <form nz-form>
           <nz-form-item class="m-0 p-0">
             <nz-form-label>Danh mục</nz-form-label>
-          </nz-form-item>
-          <nz-form-item class="m-0 p-0">
-            <nz-select [compareWith]="categoryCompareSlug" [ngModelOptions]="{standalone: true}" [(ngModel)]="categorySelected"
-              nzAllowClear nzShowSearch="true" nzPlaceHolder="Chọn danh mục">
+            <nz-select [compareWith]="categoryCompareSlug" [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="categorySelected" nzAllowClear nzShowSearch="true" nzPlaceHolder="Chọn danh mục">
               <ng-container *ngFor="let item of categoriesSelectData">
                 <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
               </ng-container>
@@ -28,7 +26,13 @@
             </nz-select>
           </nz-form-item>
           <nz-form-item class="m-0 p-0">
-
+            <nz-form-label>Danh mục</nz-form-label>
+            <nz-select [(ngModel)]="productGroupSelectedList" (ngModelChange)="test($event)"
+              [compareWith]="productGroupCompare" [ngModelOptions]="{standalone: true}" nzAllowClear nzShowSearch
+              nzMode="multiple" nzPlaceHolder="Lựa chọn nhóm sản phẩm">
+              <nz-option *ngFor="let option of productGroupSelectionList" [nzLabel]="option.title" [nzValue]="option">
+              </nz-option>
+            </nz-select>
           </nz-form-item>
         </form>
       </div>

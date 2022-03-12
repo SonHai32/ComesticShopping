@@ -1,3 +1,4 @@
+import { ProductGroup } from './../../../../models/product-group.model';
 import { isNumberValid } from './../../../../utils/custom-regex.util';
 import { ActivatedRoute } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -23,12 +24,12 @@ import { ProductService } from '../../../services/product.service';
 import { textToSlug } from 'src/app/utils/text-to-slug.util';
 import { isUrlValid } from 'src/app/utils/custom-regex.util';
 import { CurrencyPipe } from '@angular/common';
+import { ProductGroupService } from 'src/app/dashboard/services/product-group.service';
 
 @Component({
   selector: 'dashboard-product-form',
   templateUrl: './product-form.component.html',
   styleUrls: ['./product-form.component.scss'],
-  providers: [CurrencyPipe],
 })
 export class ProductCreateComponent implements OnInit {
   constructor(
@@ -37,17 +38,19 @@ export class ProductCreateComponent implements OnInit {
     private productService: ProductService,
     private categoryService: CategoryService,
     private nzMessageService: NzMessageService,
-    private currencyPipe: CurrencyPipe
+    private productGroupSevice: ProductGroupService
   ) {}
 
-  currentRoute: string = 'create';
+  currentRoute = 'create';
   currentProduct!: Product;
   formList: CustomForm[] = [];
   dynamicFormList: CustomDynamicForm[] = [];
   validateForm!: FormGroup;
   categoriesSelectData!: Category[];
-  categoriesSelectDataLoading: boolean = true;
+  categoriesSelectDataLoading = true;
   categorySelected: any = null;
+  productGroupSelectionList: ProductGroup[] = [];
+  productGroupSelectedList: ProductGroup[] = [];
   defaultnzGridColType: nzGridColType = {
     nzXxl: 12,
     nzXl: 12,
@@ -85,6 +88,15 @@ export class ProductCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentRoute = this.activatedRoute.snapshot.url[0].path;
+    this.productGroupSevice
+      .getProductGroupList()
+      .pipe(
+        take(1),
+        map((res) => res.product_groups as ProductGroup[])
+      )
+      .subscribe((val: ProductGroup[]) => {
+        this.productGroupSelectionList = val;
+      });
     this.categoryService
       .getAllCategory()
       .pipe(take(1))
@@ -111,6 +123,7 @@ export class ProductCreateComponent implements OnInit {
         if (val.status === 'SUCCESS') {
           this.currentProduct = val.product as Product;
           this.categorySelected = this.currentProduct.category;
+          this.productGroupSelectedList = val.product.product_groups as ProductGroup[]
           this.initForm();
         } else {
           this.initForm();
@@ -121,7 +134,16 @@ export class ProductCreateComponent implements OnInit {
   categoryCompareSlug = (o1: Category, o2: Category) =>
     o1 && o2 ? o1.slug === o2.slug : o1 === o2;
 
-  initForm() {
+  productGroupCompare = (o1: ProductGroup, o2: ProductGroup) => {
+    const a = o1 && o2 ? o1.title === o2.title : o1 === o2;
+    return a;
+  };
+
+  test(a: any) {
+    console.log(a);
+  }
+
+  initForm(): void {
     this.initListDynamicControl();
     this.initValidateForm();
     this.initValidateDynamicForm();
@@ -524,15 +546,17 @@ export class ProductCreateComponent implements OnInit {
 
     const productDescriptionTooltips = (): string => {
       if (this.validateForm.controls.hasOwnProperty(formControlName)) {
-        if (this.validateForm.controls[formControlName].hasError('required'))
+        if (this.validateForm.controls[formControlName].hasError('required')) {
           return 'Vui lòng nhập thông tin sản phẩm';
+        }
       }
       return '';
     };
     const productBrandTooltips = (): string => {
       if (this.validateForm.controls.hasOwnProperty(formControlName)) {
-        if (this.validateForm.controls[formControlName].hasError('required'))
+        if (this.validateForm.controls[formControlName].hasError('required')) {
           return 'Vui lòng nhập thương hiệu';
+        }
       }
       return '';
     };
@@ -619,6 +643,7 @@ export class ProductCreateComponent implements OnInit {
       product['colors'] = colors;
       product['sizes'] = sizes;
       product['images_list'] = images_list;
+      product['product_groups'] = this.productGroupSelectedList;
       if (this.categorySelected) {
         product['category'] = this.categorySelected as Category;
         if (this.currentRoute === 'edit') {
@@ -639,8 +664,9 @@ export class ProductCreateComponent implements OnInit {
     if (!c.value) {
       return { required: true };
     } else {
-      if (!isNumberValid(c.value)) return { notNumber: true };
-      else if (Number(c.value) < 0) {
+      if (!isNumberValid(c.value)) {
+        return { notNumber: true };
+      } else if (Number(c.value) < 0) {
         return { isNegative: true };
       }
     }
@@ -650,8 +676,9 @@ export class ProductCreateComponent implements OnInit {
     if (!c.value) {
       return { required: true };
     } else {
-      if (!isNumberValid(c.value)) return { notNumber: true };
-      else if (Number(c.value) < 0) {
+      if (!isNumberValid(c.value)) {
+        return { notNumber: true };
+      } else if (Number(c.value) < 0) {
         return { isNegative: true };
       }
     }
@@ -875,7 +902,9 @@ export class ProductCreateComponent implements OnInit {
           if (index >= 0) {
             this.listOfProductSizeFormControl.splice(index, 1);
             flag = true;
-          } else return;
+          } else {
+            return;
+          }
         }
         break;
       case 'color':
@@ -884,7 +913,9 @@ export class ProductCreateComponent implements OnInit {
           if (index >= 0) {
             this.listOfProductColorFormControl.splice(index, 1);
             flag = true;
-          } else return;
+          } else {
+            return;
+          }
         }
         break;
       case 'image':
@@ -893,7 +924,9 @@ export class ProductCreateComponent implements OnInit {
             const index = this.listOfProductImageFormControl.indexOf(control);
             this.listOfProductImageFormControl.splice(index, 1);
             flag = true;
-          } else return;
+          } else {
+            return;
+          }
         }
         break;
       default:
@@ -908,36 +941,45 @@ export class ProductCreateComponent implements OnInit {
   }
 
   onFormInputChange(form: { formControlName: string; value: string }) {
-    if (form.formControlName === 'name')
+    if (form.formControlName === 'name') {
       this.validateForm.controls['slug'].setValue(textToSlug(form.value));
-    else if (
+    } else if (
       form.formControlName === 'sell_price' ||
       form.formControlName === 'discount'
     ) {
       const sell_price = this.validateForm.controls['sell_price'].value;
       const discount = this.validateForm.controls['discount'].value;
-      if (!sell_price) return;
-      if (!discount && this.validateForm.controls['sell_price'].valid)
+      if (!sell_price) {
+        return;
+      }
+      if (!discount && this.validateForm.controls['sell_price'].valid) {
         this.setDisplayPriceValue(sell_price);
-      else if (
+      } else if (
         this.validateForm.controls['sell_price'].valid &&
         this.validateForm.controls['discount'].valid
-      )
+      ) {
         this.setDisplayPriceValue(this.caclDisplayPrice(sell_price, discount));
-      else return;
+      } else {
+        return;
+      }
     } else if (form.formControlName === 'display_price') {
       const originalPrice = this.validateForm.controls['original_price'].value;
       const displayPrice = this.validateForm.controls['display_price'].value;
-      if (originalPrice && displayPrice)
+      if (originalPrice && displayPrice) {
         this.setProfit(this.calcProfit(displayPrice, originalPrice));
-      else this.setProfit(0);
-    } else return;
+      } else {
+        this.setProfit(0);
+      }
+    } else {
+      return;
+    }
   }
 
   caclDisplayPrice(sellPrice: number, discount: number): number {
     const x = Math.floor((sellPrice * discount) / 100);
     return sellPrice - x;
   }
+
   setDisplayPriceValue(value: number): void {
     this.validateForm.controls['display_price'].setValue(value);
   }
@@ -945,6 +987,7 @@ export class ProductCreateComponent implements OnInit {
   calcProfit(displayPrice: number, originalPrice: number) {
     return displayPrice - originalPrice;
   }
+
   setProfit(profit: number) {
     this.validateForm.controls['profit'].setValue(profit);
   }

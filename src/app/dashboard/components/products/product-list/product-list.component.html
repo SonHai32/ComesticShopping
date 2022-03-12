@@ -10,7 +10,7 @@
       </div>
       <div nz-col nzXl="5" nzLg="5" nzMd="12" nzSpan="24" class="d-flex justify-content-end">
         <nz-select class="w-100" [compareWith]="compareFn" [ngModelOptions]="{standalone: true}"
-          [(ngModel)]="categorySelected" nzAllowClear nzShowSearch="true" nzPlaceHolder="Lọc theo danh mục">
+          [(ngModel)]="categoryFilterSelected" nzAllowClear nzShowSearch="true" nzPlaceHolder="Lọc theo danh mục">
           <ng-container *ngFor="let item of categoriesSelectData">
             <nz-option [nzValue]="item" [nzLabel]="item.name"></nz-option>
           </ng-container>
@@ -32,7 +32,7 @@
         <button [nzPopoverOverlayStyle]="{'min-width': '300px'}" nz-button nzPopoverPlacement="bottom" nzBlock
           nz-popover nzPopoverTitle="Giá sản phẩm" [nzPopoverContent]="contentTemplate" nzPopoverTrigger="click"
           class="text-left ant-text-placholder-color">
-          Lọc theo giá
+          Lọc theo giá ( {{sliderProductPrice.value[0]}} - {{sliderProductPrice.value[1]}} )
         </button>
       </div>
       <div nz-col nzXl="5" nzLg="5" nzMd="12" nzSpan="24" class="d-flex justify-content-end">
@@ -58,16 +58,16 @@
 
   <div nz-col nzSpan="24">
     <nz-table class="backdrop-filter" [nzBordered]="true" [nzOuterBordered]="true" nzShowSizeChanger
-      [nzPageSizeOptions]="[6, 8, 12, 24]" [nzData]="productList" [nzFrontPagination]="false" [nzLoading]="productLoading"
-      [nzTotal]="totalProduct" [nzPageSize]="perPage" [nzPageIndex]="pageIndex"
+      [nzPageSizeOptions]="[6, 8, 12, 24]" [nzData]="productList" [nzFrontPagination]="false"
+      [nzLoading]="productLoading" [nzTotal]="totalProduct" [(nzPageSize)]="perPage" [(nzPageIndex)]="pageIndex"
       (nzQueryParams)="onQueryParamsChange($event)" #basicTable [nzData]="productList">
       <thead>
         <tr>
           <th nzAlign="center"><strong>Sản phẩm</strong></th>
           <th nzAlign="center" [nzFilters]="listOfCategoryFilters" [nzFilterFn]="categoryFilterFuntion"><strong>Danh
               mục</strong></th>
+          <th nzAlign="center"><strong>Nhóm sản phẩm</strong></th>
           <th nzAlign="center"><strong>Giá gốc</strong></th>
-          <th nzAlign="center"><strong>Giá bán</strong></th>
           <th nzAlign="center"><strong>Chiết khấu</strong></th>
           <th nzAlign="center"><strong>Tồn kho</strong></th>
           <th nzAlign="center"><strong>Hành động</strong></th>
@@ -88,8 +88,11 @@
               {{data.category.name}}
             </span>
           </td>
-          <td nzAlign="center"> <span nz-typography>{{data.original_price| currency: 'VND':
-              'symbol'}}</span></td>
+          <td nzAlign="center"> <span *ngIf="data.product_groups" nz-typography>{{data.product_groups |
+              displayListWithProperty : 'title'}}</span>
+
+            <span nz-typography *ngIf="!data.product_groups">Chưa có</span>
+            </td>
           <td> <span nz-typography>
               {{data.display_price| currency: 'VND': 'symbol'}}
             </span></td>
